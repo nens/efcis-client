@@ -1,0 +1,52 @@
+.TableDiv {
+  font-family: 'Fira Sans', sans-serif;
+  overflow: scroll;
+}
+
+.Table {
+  overflow: scroll;
+  font-family: 'Fira Sans', sans-serif;
+  width: 3800px;
+}
+
+.Table thead {
+  width: 3800px;
+  display: block;
+}
+.Table thead tr {
+}
+.Table thead tr th {
+  width: 200px;
+  overflow: hidden;
+  font-family: 'Fira Sans', sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-right: 1px solid #ccc;
+}
+
+.Table tbody {
+  width: 3800px;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.Table tbody tr {
+}
+.Table tbody tr td {
+  width: 200px;
+  overflow: hidden;
+  cursor: pointer;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+.WideModal {
+  width: 90%;
+}
+
+.Highlight {
+  background-color: #ffd54f;
+}
+
+.Active {
+  background-color: #f48f42;
+}

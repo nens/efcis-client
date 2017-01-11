@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.1 (25234) - http://www.bohemiancoding.com/sketch -->
+    <title>waterlabel@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="100%" id="radialGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#ECECEC" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="All" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="All-logos" sketch:type="MSArtboardGroup" transform="translate(-704.000000, -55.000000)">
+            <g id="logo-waterlabel" sketch:type="MSLayerGroup" transform="translate(651.000000, 28.000000)">
+                <g id="circle">
+                    <path d="M152.478188,204.261692 C195.01577,204.261692 229.499294,169.806795 229.499294,127.304526 C229.499294,84.8022571 195.01577,50.3473605 152.478188,50.3473605 C109.940605,50.3473605 75.4570811,84.8022571 75.4570811,127.304526 C75.4570811,169.806795 109.940605,204.261692 152.478188,204.261692 Z" id="Mask" fill="url(#radialGradient-1)" sketch:type="MSShapeGroup"></path>
+                    <g id="svg+xml" transform="translate(122.651399, 51.422625)">
+                        <g id="logo-waterlabel@2x">
+                            <g id="Page-1">
+                                <path d="M0.0308719621,0 L57.939867,0 L57.939867,74.9476246 L29.039491,102.93809 L0.0308719621,74.9476251 L0.0308719621,0 L0.0308719621,0 Z" id="Path-1" fill="#6E359E" sketch:type="MSShapeGroup"></path>
+                                <text id="w" fill="#FFFFFF" sketch:type="MSTextLayer" font-family="Helvetica" font-size="62.1913679" font-weight="normal">
+                                    <tspan x="7.13940982" y="61.5115957">w</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="Group" transform="translate(70.882952, 45.532108)" stroke="#FFFFFF" fill="#FFFFFF" sketch:type="MSShapeGroup">
+                        <path d="M81.6348601,163.183253 C126.720548,163.183253 163.26972,126.653437 163.26972,81.5916263 C163.26972,36.5298154 126.720548,0 81.6348601,0 C36.5491718,0 0,36.5298154 0,81.5916263 C0,126.653437 36.5491718,163.183253 81.6348601,163.183253 Z M81.6348601,156.496719 C123.025721,156.496719 156.579644,122.960567 156.579644,81.5916263 C156.579644,40.2226857 123.025721,6.68653327 81.6348601,6.68653327 C40.2439989,6.68653327 6.69007634,40.2226857 6.69007634,81.5916263 C6.69007634,122.960567 40.2439989,156.496719 81.6348601,156.496719 Z" id="Mask"></path>
+                    </g>
+                </g>
+                <text id="Waterlabel" sketch:type="MSTextLayer" font-family="Syntax LT Std" font-size="22.9252569" font-weight="bold" sketch:alignment="middle" fill="#6E359E">
+                    <tspan x="99.1292153" y="171.904688">Waterlabel</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

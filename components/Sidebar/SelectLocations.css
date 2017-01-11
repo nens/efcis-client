@@ -1,0 +1,13 @@
+
+.WideModal {
+  width: 90%;
+}
+
+.Map {
+  position: absolute;
+  width: 98%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  top: 0;
+}

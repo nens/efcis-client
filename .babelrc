@@ -1,0 +1,16 @@
+{
+  "presets": ["es2015", "stage-2", "react"],
+  "plugins": [
+    "transform-class-properties",
+    [
+      "react-intl", {
+        "messagesDir": "./build/messages/"
+      }
+    ]
+  ],
+  "env": {
+    "development": {
+      "presets": ["react-hmre"]
+    }
+  }
+}

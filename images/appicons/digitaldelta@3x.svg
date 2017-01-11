@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.1 (25234) - http://www.bohemiancoding.com/sketch -->
+    <title>digitaldelta@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="85" cy="85" r="85"></circle>
+    </defs>
+    <g id="All" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="All-logos" sketch:type="MSArtboardGroup" transform="translate(-372.000000, -55.000000)">
+            <g id="logo-digitaldelta" sketch:type="MSLayerGroup" transform="translate(388.000000, 71.000000)">
+                <mask id="mask-2" sketch:name="Mask" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#FFFFFF" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                <g id="BlueWhite" mask="url(#mask-2)" sketch:type="MSShapeGroup">
+                    <g transform="translate(-16.707376, -43.840878)">
+                        <rect id="Rectangle-2" fill="#0074BF" x="17.4069649" y="123.593964" width="181.893004" height="106.803841"></rect>
+                        <ellipse id="Oval-1" fill="#4691D1" cx="93.9366786" cy="93.9366786" rx="93.9366786" ry="93.9366786"></ellipse>
+                        <rect id="Rectangle-2" fill="#FFFFFF" x="7.96252047" y="34.0466392" width="191.337449" height="95.1440329"></rect>
+                    </g>
+                </g>
+                <g id="3D-Wall" mask="url(#mask-2)">
+                    <g transform="translate(13.641975, 125.576132)">
+                        <g id="GreenBlock" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(127.937760, 0.000000)">
+                            <rect id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup" x="0" y="3.51778237" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.61713879,3.58050115 L-3.83693077e-13,3.61668969 L5.57990162,0.193230495 L14.3525992,0.28269054 L9.61713879,3.58050115 Z" id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.5059083,-3.19744231e-14 L14.5059083,9.75951906 L9.71144715,13.0545527 L9.71144715,3.48618469 L14.5059083,-3.19744231e-14 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                        <g id="WhiteBlock" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(88.834628, 19.981004)">
+                            <rect id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup" x="0.11659808" y="3.51778237" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.73373687,3.58050115 L-3.84581256e-13,3.61668969 L5.6964997,0.193230495 L14.4691973,0.28269054 L9.73373687,3.58050115 Z" id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.6225063,-3.19744231e-14 L14.6225063,9.75951906 L9.82804523,13.0545527 L9.82804523,3.48618469 L14.6225063,-3.19744231e-14 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                        <g id="WhiteBlock-Copy" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(68.965349, 10.553347)">
+                            <rect id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup" x="0" y="3.51778237" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.61713879,3.58050115 L-3.83693077e-13,3.61668969 L5.57990162,0.193230495 L14.3525992,0.28269054 L9.61713879,3.58050115 Z" id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.5059083,-3.19744231e-14 L14.5059083,9.75951906 L9.71144715,13.0545527 L9.71144715,3.48618469 L14.5059083,-3.19744231e-14 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                        <path d="M1.75802565,13.7708114 L7.79435043,10.3444796 L26.6502347,10.7917983 L26.7019438,22.7171849 L31.0763941,22.730109 L31.0763941,32.6781029 L40.550659,32.6773849 L40.2468678,44.936645 L21.1087377,44.2969003 L20.9306284,23.5321234 L11.5447,23.4739648 L11.6754092,30.2174912 L0.10117838,31.0051455 L1.42047982,18.8593306 L1.75802565,13.7708114 Z" id="Path-13" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                        <g id="GreenBlock" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(11.822631, 0.844268)">
+                            <rect id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup" x="0" y="3.37707108" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.61713879,3.43978986 L-3.97903932e-13,3.47597839 L5.57990162,0.0525192005 L14.3525992,0.141979245 L9.61713879,3.43978986 Z" id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.5059083,0 L14.5059083,9.90023036 L9.57070154,13.0545527 L9.57070154,3.34547339 L14.5059083,0 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                            <path d="M57.9577423,22.6901029 L67.0057385,22.806701 L67.033509,30.1912946 L63.5869752,30.1912946 L57.839195,34.2798354 L57.9577423,22.6901029 Z" id="Path-15" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                        <rect id="Rectangle-10" fill="#FFFFFF" sketch:type="MSShapeGroup" x="11.5411401" y="23.4987863" width="9.57070154" height="16.6039328"></rect>
+                        <path d="M40.5347359,32.926443 L50.2461831,32.926443 L50.2461831,47.2789951 L40.0683436,47.2789951 L40.5347359,32.926443 Z" id="Rectangle-11" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <path d="M79.288074,33.0671543 L89.3010203,33.0671543 L88.951226,53.7517147 L78.9382797,53.7517147 L79.288074,33.0671543 Z" id="Rectangle-12" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <rect id="Rectangle-13" fill="#FFFFFF" sketch:type="MSShapeGroup" x="98.6626732" y="33.0912675" width="17.1709645" height="15.0561086"></rect>
+                        <g id="WhiteBlock-Copy-2" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(21.111842, 10.553347)">
+                            <rect id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup" x="0" y="3.51778237" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.61713879,3.58050115 L-3.83693077e-13,3.61668969 L5.57990162,0.193230495 L14.3525992,0.28269054 L9.61713879,3.58050115 Z" id="Rectangle-4" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.5059083,-3.19744231e-14 L14.5059083,9.75951906 L9.71144715,13.0545527 L9.71144715,3.48618469 L14.5059083,-3.19744231e-14 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                        <path d="M40.5858499,32.9505086 L40.8168522,23.7564226 L46.5891383,20.2192368 L50.1269058,20.1589242 L50.1269058,13.8120944 L55.8371757,10.2374965 L74.9702785,10.6460428 L69.7160545,14.0138761 L69.9422821,33.4291388 L75.9374889,29.9879542 L78.858575,30.1286655 L78.858575,23.5417374 L83.5089232,20.1589246 L94.713838,20.1589246 L89.0373211,23.3734437 L89.0373211,33.1168055 L79.3950015,33.0572109 L79.1888831,46.6907373 L50.0091239,45.220258 L50.1283422,32.975358 L59.9247984,32.975358 L59.9247984,23.771065 L50.6642601,23.771065 L50.5505795,32.9753584 L40.5858499,32.9505086 Z" id="Path-14" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                        <path d="M50.6278985,23.7983921 L59.9558296,23.7983921 L59.9558296,33.0507588 L50.5538454,33.0507588 L50.6278985,23.7983921 Z" id="Path-16" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <path d="M89.1983406,33.0559322 L98.6896068,33.0559322 L98.6896068,43.7788582 L89.0095756,43.7788582 L89.1983406,33.0559322 Z" id="Path-17" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                        <path d="M98.7086861,33.1115512 L103.489956,29.7700037 L108.56404,29.7700037 L108.56404,23.6943676 L113.574868,20.3539978 L128.078784,20.3539978 L128.078784,13.0435835 L137.688703,13.0435835 L142.491837,9.79065432 L142.491837,16.1563331 L121.144291,37.999482 L116.274456,33.1308336 L98.7086861,33.1115512 Z" id="Path-18" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                        <path d="M30.9566841,23.615212 L35.7766149,20.325132 L46.6220825,20.3441848 L40.8100339,23.8547075 L40.6455251,32.7229918 L31.0276326,32.7244498 L30.9566841,23.615212 Z" id="Path-19" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <path d="M118.206681,20.3008185 L118.206681,13.6974822 L123.542141,10.5347582 L128.072121,10.5347582 L128.072121,20.3394752 L118.206681,20.3008185 Z" id="Path-20" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                        <g id="GreenBlock" stroke-width="1" fill="none" sketch:type="MSLayerGroup" transform="translate(60.170818, 0.864413)">
+                            <rect id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup" x="0" y="3.51778237" width="9.71144715" height="9.56836806"></rect>
+                            <path d="M9.61713879,3.58050115 L-3.83693077e-13,3.61668969 L5.57990162,0.193230495 L14.3525992,0.28269054 L9.61713879,3.58050115 Z" id="Rectangle-4" fill="#C7D200" sketch:type="MSShapeGroup"></path>
+                            <path d="M14.5059083,-3.19744231e-14 L14.5059083,9.75951906 L9.71144715,13.0545527 L9.71144715,3.48618469 L14.5059083,-3.19744231e-14 Z" id="Rectangle-4" fill="#0074BF" sketch:type="MSShapeGroup"></path>
+                        </g>
+                    </g>
+                </g>
+                <g id="Text" mask="url(#mask-2)" sketch:alignment="middle" font-size="29.1495199" font-family="Plau" sketch:type="MSTextLayer" font-weight="420">
+                    <g transform="translate(36.526618, 52.358731)">
+                        <text id="DIGITAL">
+                            <tspan x="1.04136339" y="28" fill="#0074BF">DIGITAL</tspan>
+                        </text>
+                        <text id="DELTA">
+                            <tspan x="11.4031068" y="59.6783942" fill="#FFFFFF">DELTA</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
