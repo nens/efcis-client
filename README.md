@@ -1,6 +1,20 @@
 EFCIS-CLIENT
 ============
 
+Motivation
+----------
+
+- Why a separate repository/project?
+
+Because we gain the following advantages:
+
+ - Hot Module Reloading for quick iteration during development
+ - No need to install full EFCIS stack to build/release front-end
+ - Redux integration
+ - redux-persist with localForage to persist to IndexedDB
+ - ES6 modules
+
+
 
 Install dependencies
 --------------------
