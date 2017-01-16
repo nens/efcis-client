@@ -9,7 +9,9 @@ require('!style!css!../../node_modules/bootstrap-daterangepicker/daterangepicker
 
 const dateFormat = 'DD-MM-YYYY';
 
-// import {} from '../actions.jsx';
+import {
+  setPeriod,
+} from '../../actions.jsx';
 
 class SelectPeriod extends Component {
 
@@ -17,12 +19,30 @@ class SelectPeriod extends Component {
     super(props);
     this.state = {
       ranges: {
-        'Vandaag': [moment(), moment()],
-        'Gisteren': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Laatste 7 dagen': [moment().subtract(6, 'days'), moment()],
-        'Laatste 30 dagen': [moment().subtract(29, 'days'), moment()],
-        'Deze maand': [moment().startOf('month'), moment().endOf('month')],
-        'Vorige maand': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        'Vandaag': [
+          moment(),
+          moment(),
+        ],
+        'Gisteren': [
+          moment().subtract(1, 'days'),
+          moment().subtract(1, 'days'),
+        ],
+        'Laatste 7 dagen': [
+          moment().subtract(6, 'days'),
+          moment(),
+        ],
+        'Laatste 30 dagen': [
+          moment().subtract(29, 'days'),
+          moment(),
+        ],
+        'Deze maand': [
+          moment().startOf('month'),
+          moment().endOf('month'),
+        ],
+        'Vorige maand': [
+          moment().subtract(1, 'month').startOf('month'),
+          moment().subtract(1, 'month').endOf('month'),
+        ],
       },
       locale: {
         daysOfWeek: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
@@ -32,10 +52,14 @@ class SelectPeriod extends Component {
         fromLabel: 'Van',
         toLabel: 'Tot',
         customRangeLabel: 'Anders',
-        monthNames: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
-        firstDay: 1
-      }
+        monthNames: [
+          'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli',
+          'Augustus', 'September', 'Oktober', 'November', 'December',
+        ],
+        firstDay: 1,
+      },
     };
+    this.applyDateRange = this.applyDateRange.bind(this);
   }
 
   componentDidMount() {}
@@ -48,11 +72,11 @@ class SelectPeriod extends Component {
 
   componentWillReceiveProps(newProps) {}
 
-  applyDateRange(event, picker){
-    this.props.setPeriod(
-        picker.startDate.format(dateFormat),
-        picker.endDate.format(dateFormat)
-    );
+  applyDateRange(event, picker) {
+    this.props.dispatch(setPeriod(
+      picker.startDate.format(dateFormat),
+      picker.endDate.format(dateFormat)
+    ));
   }
 
   setSeason(e) {
@@ -60,7 +84,7 @@ class SelectPeriod extends Component {
   }
 
   isSummer() {
-    if ('summer' == localStorage.getItem('season')) {
+    if ('summer' === localStorage.getItem('season')) {
       return true;
     }
     else {
@@ -69,7 +93,7 @@ class SelectPeriod extends Component {
   }
 
   isWinter() {
-    if ('winter' == localStorage.getItem('season')) {
+    if ('winter' === localStorage.getItem('season')) {
       return true;
     }
     else {
@@ -78,9 +102,9 @@ class SelectPeriod extends Component {
   }
 
   render() {
-    let start = this.props.startDate;
-    let end = this.props.endDate;
-    let label = start + ' - ' + end;
+    const start = this.props.opnames.startDate;
+    const end = this.props.opnames.endDate;
+    let label = `${start} - ${end}`;
     if (start === end) {
         label = start;
     }
@@ -88,20 +112,22 @@ class SelectPeriod extends Component {
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>
-          <h3 className='panel-title'><i className='fa fa-clock-o'></i>&nbsp;Periode</h3>
+          <h3 className='panel-title'>
+            <i className='fa fa-clock-o'></i>&nbsp;Periode
+          </h3>
         </div>
         <div className='panel-body'>
         <DateRangePicker
           locale={this.state.locale}
-          startDate={moment(this.props.startDate, dateFormat)}
-          endDate={moment(this.props.endDate, dateFormat)}
+          startDate={moment(this.props.opnames.startDate, dateFormat)}
+          endDate={moment(this.props.opnames.endDate, dateFormat)}
           ranges={this.state.ranges}
           onApply={this.applyDateRange}>
           <Button className='selected-date-range-btn' style={{width:'100%'}}>
             <div className='pull-left'><i className='fa fa-calendar'></i></div>
               <div style={{overflow: 'hidden', 'whiteSpace': 'initial'}}>
                 {label}&nbsp;
-              <div  className='pull-right'>
+              <div className='pull-right'>
                 <span className='caret'/>
               </div>
             </div>
