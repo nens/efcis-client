@@ -11,6 +11,7 @@ const dateFormat = 'DD-MM-YYYY';
 
 import {
   setPeriod,
+  fetchOpnames,
 } from '../../actions.jsx';
 
 class SelectPeriod extends Component {
@@ -77,6 +78,7 @@ class SelectPeriod extends Component {
       picker.startDate.format(dateFormat),
       picker.endDate.format(dateFormat)
     ));
+    this.props.dispatch(fetchOpnames());
   }
 
   setSeason(e) {
@@ -102,8 +104,8 @@ class SelectPeriod extends Component {
   }
 
   render() {
-    const start = this.props.opnames.startDate;
-    const end = this.props.opnames.endDate;
+    const start = this.props.opnames.start_date;
+    const end = this.props.opnames.end_date;
     let label = `${start} - ${end}`;
     if (start === end) {
         label = start;
@@ -119,8 +121,8 @@ class SelectPeriod extends Component {
         <div className='panel-body'>
         <DateRangePicker
           locale={this.state.locale}
-          startDate={moment(this.props.opnames.startDate, dateFormat)}
-          endDate={moment(this.props.opnames.endDate, dateFormat)}
+          startDate={moment(this.props.opnames.start_date, dateFormat)}
+          endDate={moment(this.props.opnames.end_date, dateFormat)}
           ranges={this.state.ranges}
           onApply={this.applyDateRange}>
           <Button className='selected-date-range-btn' style={{width:'100%'}}>

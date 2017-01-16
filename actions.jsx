@@ -95,12 +95,16 @@ export function fetchOpnames(page) {
     const filtersObject = getState().opnames.filters;
     const meetnetids = getState().opnames.meetnets;
     const locationids = getState().opnames.locationIds;
+    const start_date = getState().opnames.start_date;
+    const end_date = getState().opnames.end_date;
 
     const dataObject = {
       page: page,
       page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      start_date,
+      end_date,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const opnamesEndpoint = $.ajax({

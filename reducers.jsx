@@ -50,8 +50,8 @@ function opnames(state = {
     });
   case SET_PERIOD:
     return Object.assign({}, state, {
-      startDate: action.startDate,
-      endDate: action.endDate,
+      start_date: action.startDate,
+      end_date: action.endDate,
     });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
