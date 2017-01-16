@@ -86,6 +86,49 @@ class TableApp extends Component {
     this.props.dispatch(fetchOpnames(this.props.opnames.page));
   }
 
+  renderOverlayFilter(filterValue, colName) {
+                      return (<div><OverlayTrigger
+                        trigger='click'
+                        placement='bottom'
+                        rootClose={true}
+                        overlay={
+                        <Popover id='filter-popover' title={
+                          <span>{'Filter'}
+                            {filterValue ? <a
+                              onClick={() => this.setFilter('', colName)}
+                              className='btn btn-text btn-xs pull-right'>
+                              Wis
+                            </a> : ''}
+                          </span>
+                        }>
+                          <input
+                            defaultValue={(filterValue) ?
+                            filterValue : '' }
+                            autoFocus
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                this.setFilter(
+                                  e.target.value, colName);
+                                }
+                              }
+                            } />
+                        </Popover>
+                        }>
+                        <Button bsSize='xsmall'>
+                          Filter
+                        </Button>
+                      </OverlayTrigger>
+                      <div className='pull-right'>
+                        <Button bsSize='xsmall' onClick={(e) => {
+                          console.log('sort');
+                          // this.props.dispatch(setOrder('loc_oms'))
+                        }}>
+                          <i className='fa fa-long-arrow-up'></i>
+                        </Button>
+                      </div>
+		      </div>);
+}
+
   render() {
 
     const totalResults = (this.props.opnames.results.count) ?
@@ -128,106 +171,39 @@ class TableApp extends Component {
                     <tr style={{ fontWeight: 'bold' }}>
                       <th style={{ width: 300 }}>
                         Locatie omschrijving<br/>
-                      <OverlayTrigger
-                        trigger='click'
-                        placement='bottom'
-                        rootClose={true}
-                        overlay={
-                        <Popover id='filter-popover' title={
-                          <span>{'Filter'}
-                            {(this.props.opnames.filters.loc_oms) ? <a
-                              onClick={() => this.setFilter('', 'loc_oms')}
-                              className='btn btn-text btn-xs pull-right'>
-                              Wis
-                            </a> : ''}
-                          </span>
-                        }>
-                          <input
-                            defaultValue={(this.props.opnames.filters.loc_oms) ?
-                            this.props.opnames.filters.loc_oms : '' }
-                            autoFocus
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                this.setFilter(
-                                  e.target.value, 'loc_oms');
-                                }
-                              }
-                            } />
-                        </Popover>
-                        }>
-                        <Button bsSize='xsmall'>
-                          Filter
-                        </Button>
-                      </OverlayTrigger>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall' onClick={(e) => {
-                          console.log('sort');
-                          // this.props.dispatch(setOrder('loc_oms'))
-                        }}>
-                          <i className='fa fa-long-arrow-up'></i>
-                        </Button>
-                      </div>
+                        {this.renderOverlayFilter(this.props.opnames.filters.loc_oms, 'loc_oms')}
                       </th>
-                      <th style={{ width: 100 }}>
+                      <th>
+		        <div style={{ width: 100 }}>
                         ID<br/>
-                      <OverlayTrigger
-                        trigger='click'
-                        placement='bottom'
-                        rootClose={true}
-                        overlay={
-                        <Popover id='filter-popover' title='Filter'>
-                          <input
-                            defaultValue={(this.props.opnames.filters.id) ?
-                            this.props.opnames.filters.id : ''}
-                            autoFocus
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                this.setFilter(
-                                  e.target.value, 'id');
-                                }
-                              }
-                            } />
-                        </Popover>
-                        }>
-                        <Button bsSize='xsmall'>
-                          Filter
-                        </Button>
-                      </OverlayTrigger>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+			{this.renderOverlayFilter(this.props.opnames.filters.loc_id, 'loc_id')}
+		        </div>
                       </th>
-                      <th>Datum<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th style={{ width: 100 }}>Datum<br/>
+			<div className='pull-right'>
+                          <Button bsSize='xsmall' onClick={(e) => {
+                              console.log('sort');
+                              // this.props.dispatch(setOrder(''))
+                            }}>
+                            <i className='fa fa-long-arrow-up'></i>
+                          </Button>
+			</div>
                       </th>
-                      <th>Tijd<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th style={{ width: 100 }}>Tijd<br/>
+			<div className='pull-right'>
+                          <Button bsSize='xsmall' onClick={(e) => {
+                              console.log('sort');
+                              // this.props.dispatch(setOrder(''))
+                            }}>
+                            <i className='fa fa-long-arrow-up'></i>
+                          </Button>
+			</div>
                       </th>
-                      <th>Parameteromschrijving<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th style={{ width: 190 }}>Parameteromschrijving<br/>
+			{this.renderOverlayFilter(this.props.opnames.filters.par_oms, 'par_oms')}
                       </th>
-                      <th>Parameteromschrijving (NL)<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th style={{ width: 210 }}>Parameteromschrijving (NL)<br/>
+			{this.renderOverlayFilter(this.props.opnames.filters.par_oms_nl, 'par_oms_nl')}
                       </th>
                       <th>WNS omschrijving<br/>
                       <Button bsSize='xsmall'>
@@ -330,18 +306,25 @@ class TableApp extends Component {
                           modalResult: result,
                         })}>
                           <td style={{ width: 300 }}>
-                            {result.loc_oms}
-                            <Highlighter
-                              highlightClassName={styles.Highlight}
-                              searchWords={[this.props.opnames.filters.loc_oms]}
-                              textToHighlight={result.loc_oms}
-                            />
+                          <Highlighter
+                           highlightClassName={styles.Highlight}
+                           searchWords={[this.props.opnames.filters.loc_oms]}
+                           textToHighlight={result.loc_oms}
+			  />
                           </td>
-                          <td style={{ width: 100 }}>{result.id}</td>
-                          <td>{result.datum}</td>
-                          <td>{result.tijd}</td>
-                          <td>{result.par_oms}</td>
-                          <td>{result.par_oms_nl}</td>
+                          <td>
+			    <div style={{ width: 100 }}>
+			    <Highlighter
+                              highlightClassName={styles.Highlight}
+                              searchWords={[this.props.opnames.filters.loc_id]}
+                              textToHighlight={result.loc_id}
+                            />
+			    </div>
+			  </td>
+                          <td style={{ width: 100 }}>{result.datum}</td>
+                          <td style={{ width: 100 }}>{result.tijd}</td>
+                          <td style={{ width: 190 }}>{result.par_oms}</td>
+                          <td style={{ width: 210 }}>{result.par_oms_nl}</td>
                           <td>{result.wns_oms}</td>
                           <td>{result.detectiegrens}</td>
                           <td>{result.waarde_n}</td>
