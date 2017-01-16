@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import styles from './Sidebar.css';
 import _ from 'lodash';
+import { Button } from 'react-bootstrap';
 import SelectPeriod from './Sidebar/SelectPeriod.jsx';
 import SelectLocations from './Sidebar/SelectLocations.jsx';
 import SelectParameters from './Sidebar/SelectParameters.jsx';
 import { Router, Route, Link, browserHistory } from 'react-router'
 
-
-// import {} from '../actions.jsx';
+import {
+  resetAllFilters,
+} from '../actions.jsx';
 
 class Sidebar extends Component {
 
@@ -34,6 +36,13 @@ class Sidebar extends Component {
         <SelectPeriod {...this.props} />
         <SelectLocations {...this.props} />
         <SelectParameters {...this.props} />
+        <Button
+          onClick={() => {
+            this.props.dispatch(resetAllFilters());
+            window.location.reload();
+          }}
+          bsStyle='warning'
+          bsSize='xsmall'>Reset</Button>
       </div>
     );
   }

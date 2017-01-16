@@ -8,10 +8,17 @@ export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
 
+
+export function resetAllFilters() {
+  return {
+    type: RESET_ALL_FILTERS,
+  };
+}
 
 export function setPeriod(startDate, endDate) {
   return {
