@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+import { ButtonGroup, Button, Modal } from 'react-bootstrap';
 import GeoJsonUpdatable from '../lib/GeoJsonUpdatable.jsx';
 import { Wave } from 'better-react-spinkit';
 import sharedStyles from './SharedStyles.css';
@@ -12,7 +13,9 @@ import _ from 'lodash';
 import $ from 'jquery';
 import L from 'leaflet';
 
-// import {} from '../actions.jsx';
+import {
+  fetchFeatures,
+} from '../actions.jsx';
 
 class MapApp extends Component {
 
@@ -21,17 +24,16 @@ class MapApp extends Component {
     this.state = {
       width: window.innerWidth,
       height: window.innerHeight,
-      features: [],
-      isFetching: false,
+      showColorByModal: false,
     };
     this.updateDimensions = this.updateDimensions.bind(this);
-    this.loadMapData = this.loadMapData.bind(this);
+    this.hideColorByModal = this.hideColorByModal.bind(this);
   }
 
   componentDidMount() {
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
-    this.loadMapData();
+    this.props.dispatch(fetchFeatures());
   }
 
   componentWillUnmount() {
@@ -42,32 +44,11 @@ class MapApp extends Component {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  componentWillReceiveProps(newProps) {
-    this.loadMapData();
-  }
+  componentWillReceiveProps(newProps) {}
 
-  loadMapData() {
+  hideColorByModal() {
     this.setState({
-      isFetching: true,
-    });
-    $.ajax({
-      url: '/api/map/',
-      type: 'post',
-      dataType: 'json',
-      data: {
-        color_by: '',
-        start_date: this.props.opnames.start_date,
-        end_date: this.props.opnames.end_date,
-        meetnets: this.props.opnames.meetnets.join(','),
-        locations: this.props.opnames.locationIds.join(','),
-      },
-      success: (data) => {
-        this.setState({
-          features: data.features,
-          isFetching: false,
-        });
-        return data;
-      },
+      showColorByModal: false,
     });
   }
 
@@ -88,10 +69,10 @@ class MapApp extends Component {
             <div className='col-md-2'>
             <Sidebar {...this.props} />
             </div>
-            <div className='col-md-10' style={{ height: this.state.height - 150 }}>
+            <div className='col-md-10' style={{ height: this.state.height - 180 }}>
             <Map
               style={{
-                opacity: (this.state.isFetching) ? 0.5 : 1,
+                opacity: (this.props.opnames.isFetching) ? 0.5 : 1,
               }}
               className={styles.Map}
               center={position} zoom={11}>
@@ -100,7 +81,7 @@ class MapApp extends Component {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
               <GeoJsonUpdatable
-                data={this.state.features}
+                data={this.props.opnames.features.features}
                 pointToLayer={(feature, latlng) => {
                   const geojsonMarkerOptions = {
                     radius: 8,
@@ -115,7 +96,7 @@ class MapApp extends Component {
                 // filter={(f) => console.log('filter', f)}
               />
             </Map>
-            {(this.state.isFetching) ?
+            {(this.props.opnames.isFetching) ?
               <div style={{
                 position: 'absolute',
                 left: this.state.width / 2.7,
@@ -127,7 +108,40 @@ class MapApp extends Component {
             }
             </div>
           </div>
+          <div className='row'>
+            <div className='col-md-12'>
+              <hr/>
+              <ButtonGroup className='pull-right'>
+                <Button
+                  onClick={() => this.setState({ showColorByModal: true })}>
+                  <i className='fa fa-paint-brush'></i>&nbsp;Selecteer parameter
+                </Button>
+                <Button
+                  onClick={() => this.setState({ showSettingsModal: true })}>
+                  <i className='fa fa-cog'></i>&nbsp;Legenda instellingen
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+
         </div>
+
+        <Modal
+          {...this.props}
+          show={this.state.showColorByModal}
+          onHide={this.hideColorByModal}>
+          <Modal.Header closeButton>
+            <Modal.Title id='colorbymodal'>Selecteer parameter om op te kleuren</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          ...
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => {
+              console.log('select and close');
+            }}>Selecteren &amp; sluiten</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

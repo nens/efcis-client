@@ -12,9 +12,10 @@ import SelectLocationsMeetnet from './SelectLocationsMeetnet.jsx';
 require('!style!css!../../node_modules/jstree/dist/themes/default/style.css');
 
 import {
-  setMeetnets,
   clearLocationsSelection,
+  fetchFeatures,
   fetchOpnames,
+  setMeetnets,
 } from '../../actions.jsx';
 
 
@@ -92,6 +93,7 @@ class SelectLocations extends Component {
                 onClick={() => {
                   this.props.dispatch(setMeetnets([]));
                   this.props.dispatch(fetchOpnames());
+                  this.props.dispatch(fetchFeatures());
                 }}>&nbsp;<i className='fa fa-times'></i></span>
             </span> :
             'Geen filter'}
@@ -111,6 +113,7 @@ class SelectLocations extends Component {
               onClick={() => {
                 this.props.dispatch(clearLocationsSelection());
                 this.props.dispatch(fetchOpnames());
+                this.props.dispatch(fetchFeatures());
               }}
               style={{ cursor: 'pointer' }}>&nbsp;<i className='fa fa-times'></i></span>
           </span> :
@@ -155,9 +158,8 @@ class SelectLocations extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => {
-              this.props.dispatch(
-                fetchOpnames()
-              );
+              this.props.dispatch(fetchOpnames());
+              this.props.dispatch(fetchFeatures());
               this.hideListModal();
             }}>Selecteren &amp; sluiten</Button>
           </Modal.Footer>

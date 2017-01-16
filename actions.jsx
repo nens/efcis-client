@@ -6,8 +6,10 @@ export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
+export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const REQUEST_FEATURES = 'REQUEST_FEATURES';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MEETNETS = 'SET_MEETNETS';
@@ -92,6 +94,7 @@ function receiveOpnames(results, page) {
   };
 }
 
+
 export function fetchOpnames(page) {
   return (dispatch, getState) => {
     // if (getState().opnames.page === page && page !== 1) {
@@ -130,4 +133,55 @@ export function fetchOpnames(page) {
       return dispatch(receiveOpnames(opnamesResults, page));
     });
   };
+}
+
+
+
+
+function requestFeatures() {
+  return {
+    type: REQUEST_FEATURES,
+  };
+}
+
+function receiveFeatures(results) {
+  return {
+    type: RECEIVE_FEATURES,
+    results,
+  };
+}
+
+export function fetchFeatures() {
+  return (dispatch, getState) => {
+    dispatch(requestFeatures());
+
+    const filtersObject = getState().opnames.filters;
+    const meetnetids = getState().opnames.meetnets;
+    const locationids = getState().opnames.locationIds;
+    const start_date = getState().opnames.start_date;
+    const end_date = getState().opnames.end_date;
+    const season = getState().opnames.season;
+
+    const dataObject = {
+      page_size: 200,
+      meetnets: meetnetids.join(','),
+      locations: locationids.join(','),
+      start_date,
+      end_date,
+      season,
+    };
+    const mergedData = _.merge(dataObject, filtersObject);
+    const featuresEndpoint = $.ajax({
+      url: '/api/map/',
+      type: 'post',
+      dataType: 'json',
+      data: mergedData,
+      success: (data) => {
+        return data;
+      },
+    });
+    Promise.all([featuresEndpoint]).then(([featuresResults]) => {
+      return dispatch(receiveFeatures(featuresResults));
+    });
+  }
 }

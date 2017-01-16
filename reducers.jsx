@@ -6,8 +6,10 @@ import {
   ADD_LOCATION_TO_SELECTION,
   APPLY_FILTER,
   CLEAR_LOCATIONS_SELECTION,
+  RECEIVE_FEATURES,
   RECEIVE_OPNAMES,
   REMOVE_LOCATION_FROM_SELECTION,
+  REQUEST_FEATURES,
   REQUEST_OPNAMES,
   RESET_ALL_FILTERS,
   SET_LOCATIONS,
@@ -32,6 +34,7 @@ function opnames(state = {
   locations: [],
   locationIds: [],
   meetnets: [],
+  features: [],
   season: undefined,
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
@@ -51,6 +54,7 @@ function opnames(state = {
       locations: [],
       locationIds: [],
       meetnets: [],
+      features: [],
       season: undefined,
     });
   case SET_SEASON:
@@ -111,6 +115,15 @@ function opnames(state = {
       isFetching: false,
       page: action.page,
       results: action.results,
+    });
+  case REQUEST_FEATURES:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_FEATURES:
+    return Object.assign({}, state, {
+      isFetching: false,
+      features: action.results,
     });
   case SET_MEETNETS:
     return Object.assign({}, state, {

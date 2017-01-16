@@ -10,8 +10,9 @@ require('!style!css!../../node_modules/bootstrap-daterangepicker/daterangepicker
 const dateFormat = 'DD-MM-YYYY';
 
 import {
-  setPeriod,
+  fetchFeatures,
   fetchOpnames,
+  setPeriod,
   setSeason,
 } from '../../actions.jsx';
 
@@ -80,12 +81,14 @@ class SelectPeriod extends Component {
       picker.startDate.format(dateFormat),
       picker.endDate.format(dateFormat)
     ));
+    this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
   }
 
   handleSeasonChange() {
     const season = this.refs.season.value;
     this.props.dispatch(setSeason(season));
+    this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
   }
 
