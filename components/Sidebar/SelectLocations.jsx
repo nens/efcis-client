@@ -14,6 +14,7 @@ require('!style!css!../../node_modules/jstree/dist/themes/default/style.css');
 import {
   setMeetnets,
   clearLocationsSelection,
+  fetchOpnames,
 } from '../../actions.jsx';
 
 
@@ -88,9 +89,10 @@ class SelectLocations extends Component {
               </span>
               <span
                 style={{ cursor: 'pointer' }}
-                onClick={() => this.props.dispatch(
-                setMeetnets([])
-              )}>&nbsp;<i className='fa fa-times'></i></span>
+                onClick={() => {
+                  this.props.dispatch(setMeetnets([]));
+                  this.props.dispatch(fetchOpnames());
+                }}>&nbsp;<i className='fa fa-times'></i></span>
             </span> :
             'Geen filter'}
           </p>
