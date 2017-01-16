@@ -37,7 +37,7 @@ class Sidebar extends Component {
         <Button
           onClick={() => {
             this.props.dispatch(resetAllFilters());
-            window.location.reload();
+            // window.location.reload();
           }}
           bsStyle='warning'
           bsSize='xsmall'>
