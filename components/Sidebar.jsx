@@ -41,12 +41,4 @@ class Sidebar extends Component {
 
 Sidebar.propTypes = {};
 
-// function mapStateToProps(state) {
-//   // This function maps the Redux state to React Props.
-//   return {
-//   };
-// }
-
-// export default connect(mapStateToProps)(App);
-
 export default Sidebar;
