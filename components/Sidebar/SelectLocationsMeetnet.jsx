@@ -8,6 +8,7 @@ import $ from 'jquery';
 import {
   setMeetnets,
   fetchOpnames,
+  fetchFeatures,
 } from '../../actions.jsx';
 
 class SelectLocationsMeetnet extends Component {
@@ -161,9 +162,8 @@ class SelectLocationsMeetnet extends Component {
                 $('#meetnet-tree').jstree().get_selected()
               )
             );
-            this.props.dispatch(
-              fetchOpnames()
-            );
+            this.props.dispatch(fetchOpnames());
+            this.props.dispatch(fetchFeatures());
             this.props.hideMeetnetModal();
           }}>Selecteren &amp; sluiten</Button>
         </Modal.Footer>
