@@ -1,17 +1,22 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { combineReducers } from 'redux';
 // import undoable, { distinctState } from 'redux-undo';
 import {
   ADD_LOCATION_TO_SELECTION,
+  APPLY_FILTER,
   CLEAR_LOCATIONS_SELECTION,
+  RECEIVE_OPNAMES,
   REMOVE_LOCATION_FROM_SELECTION,
   REQUEST_OPNAMES,
-  RECEIVE_OPNAMES,
-  APPLY_FILTER,
-  SET_MEETNETS,
+  RESET_ALL_FILTERS,
   SET_LOCATIONS,
+  SET_MEETNETS,
+  SET_PERIOD,
+  SET_SEASON,
 } from './actions.jsx';
 
+const dateFormat = 'DD-MM-YYYY';
 
 function opnames(state = {
   isFetching: false,
@@ -20,16 +25,43 @@ function opnames(state = {
   filters: {},
   sort_fields: undefined,
   sort_dirs: undefined,
-  start_date: undefined,
-  end_date: undefined,
+  start_date: moment().subtract(29, 'days').format(dateFormat),
+  end_date: moment().format(dateFormat),
   parametergroeps: [],
   parameters: [],
   locations: [],
   locationIds: [],
   meetnets: [],
+  season: undefined,
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
   switch (action.type) {
+  case RESET_ALL_FILTERS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      results: {},
+      page: 1,
+      filters: {},
+      sort_fields: undefined,
+      sort_dirs: undefined,
+      start_date: moment().subtract(29, 'days').format(dateFormat),
+      end_date: moment().format(dateFormat),
+      parametergroeps: [],
+      parameters: [],
+      locations: [],
+      locationIds: [],
+      meetnets: [],
+      season: undefined,
+    });
+  case SET_SEASON:
+    return Object.assign({}, state, {
+      season: action.season,
+    });
+  case SET_PERIOD:
+    return Object.assign({}, state, {
+      start_date: action.startDate,
+      end_date: action.endDate,
+    });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
       locations: [],

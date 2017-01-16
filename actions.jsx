@@ -2,15 +2,39 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
-export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
-export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
-export const APPLY_FILTER = 'APPLY_FILTER';
-export const SET_MEETNETS = 'SET_MEETNETS';
-export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
+export const APPLY_FILTER = 'APPLY_FILTER';
+export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
+export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
+export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
+export const SET_LOCATIONS = 'SET_LOCATIONS';
+export const SET_MEETNETS = 'SET_MEETNETS';
+export const SET_PERIOD = 'SET_PERIOD';
+export const SET_SEASON = 'SET_SEASON';
 
+
+export function resetAllFilters() {
+  return {
+    type: RESET_ALL_FILTERS,
+  };
+}
+
+export function setSeason(season) {
+  return {
+    type: SET_SEASON,
+    season,
+  };
+}
+
+export function setPeriod(startDate, endDate) {
+  return {
+    type: SET_PERIOD,
+    startDate,
+    endDate,
+  };
+}
 
 export function clearLocationsSelection() {
   return {
@@ -79,12 +103,18 @@ export function fetchOpnames(page) {
     const filtersObject = getState().opnames.filters;
     const meetnetids = getState().opnames.meetnets;
     const locationids = getState().opnames.locationIds;
+    const start_date = getState().opnames.start_date;
+    const end_date = getState().opnames.end_date;
+    const season = getState().opnames.season;
 
     const dataObject = {
       page: page,
       page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      start_date,
+      end_date,
+      season,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const opnamesEndpoint = $.ajax({
