@@ -25,29 +25,40 @@ function opnames(state = {
   parametergroeps: [],
   parameters: [],
   locations: [],
-  locationObjects: [],
+  locationIds: [],
   meetnets: [],
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
   switch (action.type) {
   case CLEAR_LOCATIONS_SELECTION:
-    return Object.assign({}, state, {locations: []});
+    return Object.assign({}, state, {
+      locations: [],
+      locationIds: [],
+    });
   case ADD_LOCATION_TO_SELECTION:
     const locationsById = state.locations.filter((l) => {
-      if (l.id === action.locationObject.id) return l;
+      if (l.id === action.locationObject.id) {
+        return l;
+      }
+      return false;
     });
     if (locationsById.length === 0) {
       return Object.assign({}, state, {
         locations: [...state.locations, action.locationObject],
+        locationIds: [...state.locationIds, action.locationObject.id],
       });
     }
-    else {
-      return state;
-    }
+    return state;
   case REMOVE_LOCATION_FROM_SELECTION:
     return Object.assign({}, state, {
       locations: state.locations.filter((l) => {
         if (l.id === action.id) {
+          return false;
+        }
+        return true;
+      }),
+      locationIds: state.locationIds.filter((l) => {
+        if (l === action.id) {
           return false;
         }
         return true;
