@@ -2,15 +2,24 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
-export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
-export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
-export const APPLY_FILTER = 'APPLY_FILTER';
-export const SET_MEETNETS = 'SET_MEETNETS';
-export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
+export const APPLY_FILTER = 'APPLY_FILTER';
+export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
+export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
+export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const SET_LOCATIONS = 'SET_LOCATIONS';
+export const SET_MEETNETS = 'SET_MEETNETS';
+export const SET_PERIOD = 'SET_PERIOD';
 
+
+export function setPeriod(startDate, endDate) {
+  return {
+    type: SET_PERIOD,
+    startDate,
+    endDate,
+  };
+}
 
 export function clearLocationsSelection() {
   return {
