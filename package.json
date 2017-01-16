@@ -27,6 +27,7 @@
     "isomorphic-fetch": "",
     "jquery": "",
     "json-loader": "",
+    "jstree": "^3.3.3",
     "leaflet": "",
     "leaflet-draw": "^0.4.9",
     "leaflet-geodesy": "^0.2.1",

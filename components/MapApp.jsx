@@ -72,4 +72,13 @@ class MapApp extends Component {
 
 MapApp.propTypes = {};
 
-export default MapApp;
+
+function mapStateToProps(state) {
+  // This function maps the Redux state to React Props.
+  return {
+    'opnames': state.opnames,
+  };
+}
+
+
+export default connect(mapStateToProps)(MapApp);

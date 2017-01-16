@@ -133,7 +133,15 @@ class TableApp extends Component {
                         placement='bottom'
                         rootClose={true}
                         overlay={
-                        <Popover id='filter-popover' title='Filter'>
+                        <Popover id='filter-popover' title={
+                          <span>{'Filter'}
+                            {(this.props.opnames.filters.loc_oms) ? <a
+                              onClick={() => this.setFilter('', 'loc_oms')}
+                              className='btn btn-text btn-xs pull-right'>
+                              Wis
+                            </a> : ''}
+                          </span>
+                        }>
                           <input
                             defaultValue={(this.props.opnames.filters.loc_oms) ?
                             this.props.opnames.filters.loc_oms : '' }

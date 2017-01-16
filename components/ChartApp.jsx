@@ -28,30 +28,30 @@ class ChartApp extends Component {
     window.addEventListener('resize', this.updateDimensions);
 
     Highcharts.chart(this.refs.boxplotContainer, {
-       "chart":{
-          "type":"boxplot"
+       'chart':{
+          'type':'boxplot'
        },
-       "title":{
-          "text":"test"
+       'title':{
+          'text':'test'
        },
 
-       "xAxis":{
-          "categories":[
-             "Amerongerwetering bij Immenhof (MACFT_URTIDIOI[%][NVT][OW]) 01-01-2009 - 01-03-2012"
+       'xAxis':{
+          'categories':[
+             'Amerongerwetering bij Immenhof (MACFT_URTIDIOI[%][NVT][OW]) 01-01-2009 - 01-03-2012'
           ],
-          "title":{
-             "text":"Opnames"
+          'title':{
+             'text':'Opnames'
           }
        },
-       "yAxis":{
-          "title":{
-             "text":"test"
+       'yAxis':{
+          'title':{
+             'text':'test'
           }
        },
-       "series":[
+       'series':[
           {
-             "name":"Opnames",
-             "data":[
+             'name':'Opnames',
+             'data':[
                 [
                    0.5,
                    0.5,
@@ -60,10 +60,10 @@ class ChartApp extends Component {
                    0.5
                 ]
              ],
-             "tooltip":{
-                "headerFormat":"<em>{series.name} - {point.key}</em><br/>"
+             'tooltip':{
+                'headerFormat':'<em>{series.name} - {point.key}</em><br/>'
              },
-             "_colorIndex":0
+             '_colorIndex':0
           }
        ]
     });
@@ -163,4 +163,11 @@ class ChartApp extends Component {
 
 ChartApp.propTypes = {};
 
-export default ChartApp;
+function mapStateToProps(state) {
+  // This function maps the Redux state to React Props.
+  return {
+    'opnames': state.opnames,
+  };
+}
+
+export default connect(mapStateToProps)(ChartApp);
