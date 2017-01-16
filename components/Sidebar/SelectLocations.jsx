@@ -108,7 +108,10 @@ class SelectLocations extends Component {
             }}>{`${this.props.opnames.locations.length} locatie(s)`}
             </span>
             <span
-              onClick={() => this.props.dispatch(clearLocationsSelection())}
+              onClick={() => {
+                this.props.dispatch(clearLocationsSelection());
+                this.props.dispatch(fetchOpnames());
+              }}
               style={{ cursor: 'pointer' }}>&nbsp;<i className='fa fa-times'></i></span>
           </span> :
           'Geen filter'}
@@ -151,7 +154,12 @@ class SelectLocations extends Component {
             <SelectLocationsList {...this.props} />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.hideListModal}>Sluiten</Button>
+            <Button onClick={() => {
+              this.props.dispatch(
+                fetchOpnames()
+              );
+              this.hideListModal();
+            }}>Selecteren &amp; sluiten</Button>
           </Modal.Footer>
         </Modal>
 
