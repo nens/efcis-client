@@ -12,11 +12,19 @@ export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
+export const SET_SEASON = 'SET_SEASON';
 
 
 export function resetAllFilters() {
   return {
     type: RESET_ALL_FILTERS,
+  };
+}
+
+export function setSeason(season) {
+  return {
+    type: SET_SEASON,
+    season,
   };
 }
 
@@ -97,6 +105,7 @@ export function fetchOpnames(page) {
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
+    const season = getState().opnames.season;
 
     const dataObject = {
       page: page,
@@ -105,6 +114,7 @@ export function fetchOpnames(page) {
       locations: locationids.join(','),
       start_date,
       end_date,
+      season,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const opnamesEndpoint = $.ajax({

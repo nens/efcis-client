@@ -12,6 +12,7 @@ const dateFormat = 'DD-MM-YYYY';
 import {
   setPeriod,
   fetchOpnames,
+  setSeason,
 } from '../../actions.jsx';
 
 class SelectPeriod extends Component {
@@ -61,6 +62,7 @@ class SelectPeriod extends Component {
       },
     };
     this.applyDateRange = this.applyDateRange.bind(this);
+    this.handleSeasonChange = this.handleSeasonChange.bind(this);
   }
 
   componentDidMount() {}
@@ -81,26 +83,10 @@ class SelectPeriod extends Component {
     this.props.dispatch(fetchOpnames());
   }
 
-  setSeason(e) {
-    localStorage.setItem('season', e.target.value);
-  }
-
-  isSummer() {
-    if ('summer' === localStorage.getItem('season')) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  isWinter() {
-    if ('winter' === localStorage.getItem('season')) {
-      return true;
-    }
-    else {
-      return false;
-    }
+  handleSeasonChange() {
+    const season = this.refs.season.value;
+    this.props.dispatch(setSeason(season));
+    this.props.dispatch(fetchOpnames());
   }
 
   render() {
@@ -139,10 +125,11 @@ class SelectPeriod extends Component {
       <br/>Seizoen<br/>
         <div className='input-group'>
           <select
-            value={this.props.season}
+            ref='season'
+            value={this.props.opnames.season}
             className='form-control'
             id='season'
-            onChange={this.props.handleSeasonChange}>
+            onChange={this.handleSeasonChange}>
             <option value=''>Alle maanden</option>
             <option value='summer'>April – September</option>
             <option value='winter'>Oktober - Maart</option>

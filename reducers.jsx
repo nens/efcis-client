@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { combineReducers } from 'redux';
 // import undoable, { distinctState } from 'redux-undo';
 import {
@@ -12,8 +13,10 @@ import {
   SET_LOCATIONS,
   SET_MEETNETS,
   SET_PERIOD,
+  SET_SEASON,
 } from './actions.jsx';
 
+const dateFormat = 'DD-MM-YYYY';
 
 function opnames(state = {
   isFetching: false,
@@ -22,13 +25,14 @@ function opnames(state = {
   filters: {},
   sort_fields: undefined,
   sort_dirs: undefined,
-  start_date: undefined,
-  end_date: undefined,
+  start_date: moment().subtract(29, 'days').format(dateFormat),
+  end_date: moment().format(dateFormat),
   parametergroeps: [],
   parameters: [],
   locations: [],
   locationIds: [],
   meetnets: [],
+  season: undefined,
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
   switch (action.type) {
@@ -40,13 +44,18 @@ function opnames(state = {
       filters: {},
       sort_fields: undefined,
       sort_dirs: undefined,
-      start_date: undefined,
-      end_date: undefined,
+      start_date: moment().subtract(29, 'days').format(dateFormat),
+      end_date: moment().format(dateFormat),
       parametergroeps: [],
       parameters: [],
       locations: [],
       locationIds: [],
       meetnets: [],
+      season: undefined,
+    });
+  case SET_SEASON:
+    return Object.assign({}, state, {
+      season: action.season,
     });
   case SET_PERIOD:
     return Object.assign({}, state, {
