@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
-require('!style!css!../../node_modules/bootstrap-daterangepicker/daterangepicker.css');
 import { Button } from 'react-bootstrap';
 import _ from 'lodash';
+require('!style!css!../../node_modules/bootstrap-daterangepicker/daterangepicker.css');
 
 const dateFormat = 'DD-MM-YYYY';
 
