@@ -169,89 +169,89 @@ class TableApp extends Component {
                        className={styles.Table}>
                     <thead>
                     <tr style={{ fontWeight: 'bold' }}>
-                      <th style={{ width: 300 }}>
-                        Locatie omschrijving<br/>
-                        {this.renderOverlayFilter(this.props.opnames.filters.loc_oms, 'loc_oms')}
+                      <th>
+		        <div style={{ width: 300 }}>
+                          Locatie omschrijving<br/>
+                          {this.renderOverlayFilter(this.props.opnames.filters.loc_oms, 'loc_oms')}
+		        </div>
                       </th>
                       <th>
-		        <div style={{ width: 100 }}>
+		        <div style={{ width: 110 }}>
                         ID<br/>
 			{this.renderOverlayFilter(this.props.opnames.filters.loc_id, 'loc_id')}
 		        </div>
                       </th>
-                      <th style={{ width: 100 }}>Datum<br/>
-			<div className='pull-right'>
-                          <Button bsSize='xsmall' onClick={(e) => {
+                      <th>
+		        <div style={{ width: 100 }}>Datum<br/>
+			  <div className='pull-right'>
+                            <Button bsSize='xsmall' onClick={(e) => {
                               console.log('sort');
                               // this.props.dispatch(setOrder(''))
-                            }}>
-                            <i className='fa fa-long-arrow-up'></i>
-                          </Button>
-			</div>
+                              }}>
+                              <i className='fa fa-long-arrow-up'></i>
+                            </Button>
+			  </div>
+		        </div>
                       </th>
-                      <th style={{ width: 100 }}>Tijd<br/>
-			<div className='pull-right'>
-                          <Button bsSize='xsmall' onClick={(e) => {
+		      <th>
+		        <div style={{ width: 100 }}>Tijd<br/>
+			  <div className='pull-right'>
+                            <Button bsSize='xsmall' onClick={(e) => {
                               console.log('sort');
                               // this.props.dispatch(setOrder(''))
-                            }}>
-                            <i className='fa fa-long-arrow-up'></i>
-                          </Button>
-			</div>
+                              }}>
+                              <i className='fa fa-long-arrow-up'></i>
+                            </Button>
+			  </div>
+		        </div>
                       </th>
-                      <th style={{ width: 190 }}>Parameteromschrijving<br/>
-			{this.renderOverlayFilter(this.props.opnames.filters.par_oms, 'par_oms')}
+                      <th>
+		        <div style={{ width: 190 }}>
+		          Parameteromschrijving<br/>
+			  {this.renderOverlayFilter(this.props.opnames.filters.par_oms, 'par_oms')}
+		        </div>
                       </th>
-                      <th style={{ width: 210 }}>Parameteromschrijving (NL)<br/>
-			{this.renderOverlayFilter(this.props.opnames.filters.par_oms_nl, 'par_oms_nl')}
+                      <th>
+		        <div style={{ width: 210 }}>
+		          Parameteromschrijving (NL)<br/>
+			  {this.renderOverlayFilter(this.props.opnames.filters.par_oms_nl, 'par_oms_nl')}
+		        </div>
                       </th>
-                      <th>WNS omschrijving<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 300 }}>
+		          WNS omschrijving<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.wns_oms, 'wns_oms')}
+		        </div>
                       </th>
-                      <th>Detectiegrens<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 120 }}>
+		          Detectiegrens<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.detectiegrens, 'detectiegrens')}
+		        </div>
                       </th>
-                      <th>Waarde N<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 150 }}>
+		          Waarde N<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.waarde_n, 'waarde_n')}
+		        </div>
                       </th>
-                      <th>Waarde A<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 100 }}>
+		          Waarde A<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.waarde_n, 'waarde_n')}
+                        </div>
                       </th>
-                      <th>Activiteit<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 200 }}>
+		          Activiteit<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.activiteit, 'activiteit')}
+                        </div>
                       </th>
-                      <th>Eenheid omschrijving<br/>
-                      <Button bsSize='xsmall'>
-                        Filter
-                      </Button>
-                      <div className='pull-right'>
-                        <Button bsSize='xsmall'><i className='fa fa-long-arrow-up'></i></Button>
-                      </div>
+                      <th>
+		        <div style={{ width: 230 }}>
+		          Eenheid omschrijving<br/>
+		          {this.renderOverlayFilter(this.props.opnames.filters.eenheid_oms, 'eenheid_oms')}
+                        </div>
                       </th>
                       <th>Hoedanigheid omschrijving<br/>
                       <Button bsSize='xsmall'>
@@ -305,15 +305,17 @@ class TableApp extends Component {
                           showModal: true,
                           modalResult: result,
                         })}>
-                          <td style={{ width: 300 }}>
-                          <Highlighter
-                           highlightClassName={styles.Highlight}
-                           searchWords={[this.props.opnames.filters.loc_oms]}
-                           textToHighlight={result.loc_oms}
-			  />
+                          <td>
+			    <div style={{ width: 300 }}>
+                              <Highlighter
+                               highlightClassName={styles.Highlight}
+                               searchWords={[this.props.opnames.filters.loc_oms]}
+                               textToHighlight={result.loc_oms}
+			      />
+			    </div>
                           </td>
                           <td>
-			    <div style={{ width: 100 }}>
+			    <div style={{ width: 110 }}>
 			    <Highlighter
                               highlightClassName={styles.Highlight}
                               searchWords={[this.props.opnames.filters.loc_id]}
@@ -321,16 +323,16 @@ class TableApp extends Component {
                             />
 			    </div>
 			  </td>
-                          <td style={{ width: 100 }}>{result.datum}</td>
-                          <td style={{ width: 100 }}>{result.tijd}</td>
-                          <td style={{ width: 190 }}>{result.par_oms}</td>
-                          <td style={{ width: 210 }}>{result.par_oms_nl}</td>
-                          <td>{result.wns_oms}</td>
-                          <td>{result.detectiegrens}</td>
-                          <td>{result.waarde_n}</td>
-                          <td>{result.waarde_a}</td>
-                          <td>{result.activiteit}</td>
-                          <td>{result.eenheid_oms}</td>
+                          <td><div style={{ width: 100 }}>{result.datum}</div></td>
+                          <td><div style={{ width: 100 }}>{result.tijd}</div></td>
+                          <td><div style={{ width: 190 }}>{result.par_oms}</div></td>
+                          <td><div style={{ width: 210 }}>{result.par_oms_nl}</div></td>
+                          <td><div style={{ width: 300 }}>{result.wns_oms}</div></td>
+                          <td><div style={{ width: 120 }}>{result.detectiegrens}</div></td>
+                          <td><div style={{ width: 150 }}>{result.waarde_n}</div></td>
+                          <td><div style={{ width: 100 }}>{result.waarde_a}</div></td>
+                          <td><div style={{ width: 200 }}>{result.activiteit}</div></td>
+                          <td><div style={{ width: 230 }}>{result.eenheid_oms}</div></td>
                           <td>{result.hoed_oms}</td>
                           <td>{result.grondsoort}</td>
                           <td>{result.afvoergebied}</td>
