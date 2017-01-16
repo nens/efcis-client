@@ -3,13 +3,14 @@ import { combineReducers } from 'redux';
 // import undoable, { distinctState } from 'redux-undo';
 import {
   ADD_LOCATION_TO_SELECTION,
+  APPLY_FILTER,
   CLEAR_LOCATIONS_SELECTION,
+  RECEIVE_OPNAMES,
   REMOVE_LOCATION_FROM_SELECTION,
   REQUEST_OPNAMES,
-  RECEIVE_OPNAMES,
-  APPLY_FILTER,
-  SET_MEETNETS,
   SET_LOCATIONS,
+  SET_MEETNETS,
+  SET_PERIOD,
 } from './actions.jsx';
 
 
@@ -30,6 +31,11 @@ function opnames(state = {
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
   switch (action.type) {
+  case SET_PERIOD:
+    return Object.assign({}, state, {
+      startDate: action.startDate,
+      endDate: action.endDate,
+    });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
       locations: [],
