@@ -6,11 +6,11 @@
 .Table {
   overflow: scroll;
   font-family: 'Fira Sans', sans-serif;
-  width: 3800px;
+  width: 3853px;
 }
 
 .Table thead {
-  width: 3800px;
+  width: 3853px;
   display: block;
 }
 .Table thead tr {
@@ -25,7 +25,7 @@
 }
 
 .Table tbody {
-  width: 3800px;
+  width: 3853px;
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
