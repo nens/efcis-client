@@ -88,9 +88,47 @@ class TableApp extends Component {
     this.props.dispatch(fetchOpnames(this.props.opnames.page));
   }
 
-  setSorting(colName, direction) {
-    this.props.dispatch(applySorting(colName, direction));
+  setSorting(colName) {
+    let currentDirection = this.getCurrentDirection(colName);
+    let nextDirection = this.getNextDirection(currentDirection);
+    let newSorting = Object.assign({}, this.props.opnames.sorting);
+
+    if (nextDirection == null) {
+      delete newSorting[colName];
+    } else {
+      newSorting[colName] = nextDirection;
+    }
+    this.props.dispatch(applySorting(newSorting));
     this.props.dispatch(fetchOpnames(this.props.opnames.page));
+  }
+
+  getNextDirection(currentDirection) {
+    /* currentDirection has to be null, 1, -1 */
+    if (currentDirection == null){
+      return 1;
+    }
+    if (currentDirection == 1){
+      return -1;
+    }
+    return null;
+  }
+
+  getCurrentDirection(colName) {
+    if (this.props.opnames.sorting.hasOwnProperty(colName)) {
+      return this.props.opnames.sorting[colName];
+    } else {
+      return null;
+    }
+  }
+
+  renderSortingButton(colName) {
+    return (<Button bsSize='xsmall' onClick={(e) => {
+	this.setSorting(colName);
+      }}>
+      {(this.getCurrentDirection(colName) == 1) ? <i className='fa fa-long-arrow-up'></i> : ''}
+      {(this.getCurrentDirection(colName) == -1) ? <i className='fa fa-long-arrow-down'></i> : ''}
+      {(this.getCurrentDirection(colName) == null) ? <i className='fa fa-arrows-v'></i> : ''}
+    </Button>);
   }
 
   renderOverlayFilter(filterValue, colName) {
@@ -126,16 +164,10 @@ class TableApp extends Component {
       </Button>
     </OverlayTrigger>
     <div className='pull-right'>
-      <Button bsSize='xsmall' onClick={(e) => {
-	console.log('sort');
-	this.setSorting(colName, 1);
-	// this.props.dispatch(setOrder('loc_oms'))
-      }}>
-	<i className='fa fa-long-arrow-up'></i>
-      </Button>
+      { this.renderSortingButton(colName) }
     </div>
     </div>);
-}
+  }
 
   render() {
 
@@ -192,24 +224,14 @@ class TableApp extends Component {
                       <th>
 		        <div style={{ width: 100 }}>Datum<br/>
 			  <div className='pull-right'>
-                            <Button bsSize='xsmall' onClick={(e) => {
-                              console.log('sort');
-                              // this.props.dispatch(setOrder(''))
-                              }}>
-                              <i className='fa fa-long-arrow-up'></i>
-                            </Button>
+			    { this.renderSortingButton('datum') }
 			  </div>
 		        </div>
                       </th>
 		      <th>
 		        <div style={{ width: 100 }}>Tijd<br/>
 			  <div className='pull-right'>
-                            <Button bsSize='xsmall' onClick={(e) => {
-                              console.log('sort');
-                              // this.props.dispatch(setOrder(''))
-                              }}>
-                              <i className='fa fa-long-arrow-up'></i>
-                            </Button>
+			    { this.renderSortingButton('tijd') }
 			  </div>
 		        </div>
                       </th>

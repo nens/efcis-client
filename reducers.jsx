@@ -26,8 +26,7 @@ function opnames(state = {
   results: {},
   page: 1,
   filters: {},
-  sort_fields: undefined,
-  sort_dirs: undefined,
+  sorting: {},
   start_date: moment().subtract(29, 'days').format(dateFormat),
   end_date: moment().format(dateFormat),
   parametergroeps: [],
@@ -46,8 +45,7 @@ function opnames(state = {
       results: {},
       page: 1,
       filters: {},
-      sort_fields: undefined,
-      sort_dirs: undefined,
+      sorting: {},
       start_date: moment().subtract(29, 'days').format(dateFormat),
       end_date: moment().format(dateFormat),
       parametergroeps: [],
@@ -109,8 +107,7 @@ function opnames(state = {
     });
   case APPLY_SORTING:
     return Object.assign({}, state, {
-      sort_fields: action.colName,
-      sort_dirs: action.direction,
+      sorting: action.sorting,
     });
   case REQUEST_OPNAMES:
     return Object.assign({}, state, {
