@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
+export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
@@ -80,6 +81,15 @@ export function applyFilter(q, colName) {
   };
 }
 
+export function applySorting(colName, direction) {
+  return {
+    type: APPLY_SORTING,
+    colName,
+    direction,
+  };
+}
+
+
 function requestOpnames() {
   return {
     type: REQUEST_OPNAMES,
@@ -104,6 +114,8 @@ export function fetchOpnames(page) {
     dispatch(requestOpnames());
 
     const filtersObject = getState().opnames.filters;
+    const sort_fields = getState().opnames.sort_fields;
+    const sort_dirs = getState().opnames.sort_dirs;
     const meetnetids = getState().opnames.meetnets;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
@@ -118,6 +130,8 @@ export function fetchOpnames(page) {
       start_date,
       end_date,
       season,
+      sort_fields,
+      sort_dirs,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const opnamesEndpoint = $.ajax({

@@ -16,6 +16,7 @@ import _ from 'lodash';
 import {
   fetchOpnames,
   applyFilter,
+  applySorting,
 } from '../actions.jsx';
 
 
@@ -33,6 +34,7 @@ class TableApp extends Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.gotoPage = _.debounce(this.gotoPage.bind(this), 500);
     this.setFilter = this.setFilter.bind(this);
+    this.setSorting = this.setSorting.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideExportModal = this.hideExportModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -86,6 +88,11 @@ class TableApp extends Component {
     this.props.dispatch(fetchOpnames(this.props.opnames.page));
   }
 
+  setSorting(colName, direction) {
+    this.props.dispatch(applySorting(colName, direction));
+    this.props.dispatch(fetchOpnames(this.props.opnames.page));
+  }
+
   renderOverlayFilter(filterValue, colName) {
     return (<div><OverlayTrigger
       trigger='click'
@@ -121,6 +128,7 @@ class TableApp extends Component {
     <div className='pull-right'>
       <Button bsSize='xsmall' onClick={(e) => {
 	console.log('sort');
+	this.setSorting(colName, 1);
 	// this.props.dispatch(setOrder('loc_oms'))
       }}>
 	<i className='fa fa-long-arrow-up'></i>
@@ -312,7 +320,7 @@ class TableApp extends Component {
                               <Highlighter
                                highlightClassName={styles.Highlight}
                                searchWords={[this.props.opnames.filters.loc_oms]}
-                               textToHighlight={(result.loc_oms) ? result.loc_om : '' }
+                               textToHighlight={(result.loc_oms) ? result.loc_oms.toString() : '' }
 			      />
 			    </div>
                           </td>
@@ -321,7 +329,7 @@ class TableApp extends Component {
 			    <Highlighter
 				highlightClassName={styles.Highlight}
 				searchWords={[this.props.opnames.filters.loc_id]}
-				textToHighlight={(result.loc_id) ? result.loc_id : '' }
+				textToHighlight={(result.loc_id) ? result.loc_id.toString() : '' }
                             />
 			    </div>
 			  </td>
@@ -332,7 +340,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.par_oms]}
-				  textToHighlight={(result.par_oms) ? result.par_oms : '' }
+				  textToHighlight={(result.par_oms) ? result.par_oms.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -341,7 +349,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.par_oms_nl]}
-				  textToHighlight={(result.par_oms_nl) ? result.par_oms_nl : '' }
+				  textToHighlight={(result.par_oms_nl) ? result.par_oms_nl.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -350,7 +358,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.wns_oms]}
-				  textToHighlight={(result.wns_oms) ? result.wns_oms : ''}
+				  textToHighlight={(result.wns_oms) ? result.wns_oms.toString() : ''}
                               />
 			    </div>
 			  </td>
@@ -359,7 +367,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.detectiegrens]}
-				  textToHighlight={(result.detectiegrens) ? result.detectiegrens : '' }
+				  textToHighlight={(result.detectiegrens) ? result.detectiegrens.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -368,7 +376,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.waarde_n]}
-				  textToHighlight={(result.waarde_n) ? result.waarde_n : '' }
+				  textToHighlight={(result.waarde_n) ? result.waarde_n.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -377,7 +385,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.waarde_a]}
-				  textToHighlight={(result.waarde_a) ? result.waarde_a : '' }
+				  textToHighlight={(result.waarde_a) ? result.waarde_a.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -386,7 +394,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.activiteit]}
-				  textToHighlight={(result.activiteit) ? result.activiteit : '' }
+				  textToHighlight={(result.activiteit) ? result.activiteit.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -395,7 +403,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.eenheid_oms]}
-				  textToHighlight={(result.eenheid_oms) ? result.eenheid_oms : '' }
+				  textToHighlight={(result.eenheid_oms) ? result.eenheid_oms.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -404,7 +412,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.hoed_oms]}
-				  textToHighlight={(result.hoed_oms) ? result.hoed_oms : '' }
+				  textToHighlight={(result.hoed_oms) ? result.hoed_oms.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -413,7 +421,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.comp_oms]}
-				  textToHighlight={(result.comp_oms) ? result.comp_oms : '' }
+				  textToHighlight={(result.comp_oms) ? result.comp_oms.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -422,7 +430,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.landgebruik]}
-				  textToHighlight={(result.landgebruik) ? result.landgebruik : '' }
+				  textToHighlight={(result.landgebruik) ? result.landgebruik.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -431,7 +439,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.grondsoort]}
-				  textToHighlight={(result.grondsoort) ? result.grondsoort : '' }
+				  textToHighlight={(result.grondsoort) ? result.grondsoort.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -440,7 +448,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.afvoergebied]}
-				  textToHighlight={(result.afvoergebied) ? result.afvoergebied : '' }
+				  textToHighlight={(result.afvoergebied) ? result.afvoergebied.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -449,7 +457,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.watertype]}
-				  textToHighlight={(result.watertype) ? result.watertype : '' }
+				  textToHighlight={(result.watertype) ? result.watertype.toString() : '' }
                               />
 			    </div>
 			  </td>
@@ -458,7 +466,7 @@ class TableApp extends Component {
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
 				  searchWords={[this.props.opnames.filters.validatiestatus]}
-				  textToHighlight={(result.validatiestatus) ? result.validatiestatus : '' }
+				  textToHighlight={(result.validatiestatus) ? result.validatiestatus.toString() : '' }
                               />
 			    </div>
 			  </td>

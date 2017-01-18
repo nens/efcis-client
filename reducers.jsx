@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import {
   ADD_LOCATION_TO_SELECTION,
   APPLY_FILTER,
+  APPLY_SORTING,
   CLEAR_LOCATIONS_SELECTION,
   RECEIVE_FEATURES,
   RECEIVE_OPNAMES,
@@ -105,6 +106,11 @@ function opnames(state = {
       filters: {
         ...state.filters, [action.colName]: action.q,
       },
+    });
+  case APPLY_SORTING:
+    return Object.assign({}, state, {
+      sort_fields: action.colName,
+      sort_dirs: action.direction,
     });
   case REQUEST_OPNAMES:
     return Object.assign({}, state, {
