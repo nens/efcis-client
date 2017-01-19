@@ -6,17 +6,17 @@
 .Table {
   overflow: scroll;
   font-family: 'Fira Sans', sans-serif;
-  width: 3800px;
+  width: 3853px;
 }
 
 .Table thead {
-  width: 3800px;
+  width: 3853px;
   display: block;
 }
 .Table thead tr {
 }
 .Table thead tr th {
-  width: 200px;
+  /*width: 200px;*/
   overflow: hidden;
   font-family: 'Fira Sans', sans-serif;
   text-overflow: ellipsis;
@@ -25,7 +25,7 @@
 }
 
 .Table tbody {
-  width: 3800px;
+  width: 3853px;
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
@@ -33,7 +33,7 @@
 .Table tbody tr {
 }
 .Table tbody tr td {
-  width: 200px;
+  /*width: 200px;*/
   overflow: hidden;
   cursor: pointer;
   font-family: 'Fira Sans', sans-serif;

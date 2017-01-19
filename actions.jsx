@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
+export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
@@ -91,6 +92,14 @@ export function applyFilter(q, colName) {
   };
 }
 
+export function applySorting(sorting) {  
+  return {
+    type: APPLY_SORTING,
+    sorting,
+  };
+}
+
+
 function requestOpnames() {
   return {
     type: REQUEST_OPNAMES,
@@ -115,12 +124,13 @@ export function fetchOpnames(page) {
     dispatch(requestOpnames());
 
     const filtersObject = getState().opnames.filters;
+    const sort_fields = Object.keys(getState().opnames.sorting);
+    const sort_dirs = Object.values(getState().opnames.sorting);
     const meetnetids = getState().opnames.meetnets;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
-
     const dataObject = {
       page: page,
       page_size: 200,
@@ -129,6 +139,8 @@ export function fetchOpnames(page) {
       start_date,
       end_date,
       season,
+      sort_fields: sort_fields.join(','),
+      sort_dirs: sort_dirs.join(','),
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const opnamesEndpoint = $.ajax({

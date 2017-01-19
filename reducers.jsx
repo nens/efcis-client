@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import {
   ADD_LOCATION_TO_SELECTION,
   APPLY_FILTER,
+  APPLY_SORTING,
   CLEAR_LOCATIONS_SELECTION,
   RECEIVE_FEATURES,
   RECEIVE_OPNAMES,
@@ -28,8 +29,7 @@ function opnames(state = {
   results: {},
   page: 1,
   filters: {},
-  sort_fields: undefined,
-  sort_dirs: undefined,
+  sorting: {},
   start_date: moment().subtract(29, 'days').format(dateFormat),
   end_date: moment().format(dateFormat),
   parametergroeps: [],
@@ -55,8 +55,7 @@ function opnames(state = {
       results: {},
       page: 1,
       filters: {},
-      sort_fields: undefined,
-      sort_dirs: undefined,
+      sorting: {},
       start_date: moment().subtract(29, 'days').format(dateFormat),
       end_date: moment().format(dateFormat),
       parametergroeps: [],
@@ -134,6 +133,10 @@ function opnames(state = {
       filters: {
         ...state.filters, [action.colName]: action.q,
       },
+    });
+  case APPLY_SORTING:
+    return Object.assign({}, state, {
+      sorting: action.sorting,
     });
   case REQUEST_OPNAMES:
     return Object.assign({}, state, {
