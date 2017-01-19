@@ -1,0 +1,11 @@
+.Legend {
+  cursor: pointer;
+  font-size: .8em;
+}
+.LegendList {
+  display: inline;
+  list-style-type: none;
+  /*height: 20px;*/
+  width: 5%;
+  padding: 0 15px 0 15px;
+}

@@ -12,6 +12,7 @@ import styles from './MapApp.css';
 import TopNav from './TopNav.jsx';
 import MapStatisticsPicker from './MapStatisticsPicker.jsx';
 import Sidebar from './Sidebar.jsx';
+import Legend from './Legend.jsx';
 import _ from 'lodash';
 import $ from 'jquery';
 import L from 'leaflet';
@@ -113,7 +114,9 @@ class MapApp extends Component {
 						<div className='col-md-2'>
 						<Sidebar {...this.props} />
 						</div>
-						<div className='col-md-10' style={{ height: this.state.height - 180 }}>
+						<div className='col-md-10' style={{
+              height: this.state.height - 190
+            }}>
 						<Map
 							style={{
 								opacity: (this.props.opnames.isFetching) ? 0.5 : 1,
@@ -166,7 +169,9 @@ class MapApp extends Component {
 
 									if (feature.properties.is_krw_area &&
 											this.props.opnames.features.isKrwScore) {
+
 												console.log('------->', mapColors(feature.properties.latest_value));
+
 										geojsonMarkerOptions = {
 											weight: 1,
 											color: mapColors(feature.properties.latest_value),
@@ -259,9 +264,11 @@ class MapApp extends Component {
 						</div>
 					</div>
 					<div className='row'>
-						<div className='col-md-12'>
+						<div className='col-md-2'/>
+						<div className='col-md-10'>
 							<hr/>
-							<ButtonGroup className='pull-right'>
+              <Legend {...this.props} />
+							<ButtonGroup>
 								<Button
 									onClick={() => this.setState({ showColorByModal: true })}>
 									<i className='fa fa-paint-brush'></i>&nbsp;
