@@ -11,11 +11,22 @@ export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
 export const REQUEST_FEATURES = 'REQUEST_FEATURES';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
+export const SET_COLOR_BY = 'SET_COLOR_BY';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
+export const SET_MAP_POSITION = 'SET_MAP_POSITION';
+export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 
+
+
+export function setMapStatistics(statisticsType) {
+  return {
+    type: SET_MAP_STATISTICS,
+    statisticsType,
+  };
+}
 
 export function resetAllFilters() {
   return {
@@ -135,8 +146,12 @@ export function fetchOpnames(page) {
   };
 }
 
-
-
+export function setColorBy(id) {
+  return {
+    type: SET_COLOR_BY,
+    id,
+  };
+}
 
 function requestFeatures() {
   return {
@@ -161,14 +176,15 @@ export function fetchFeatures() {
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const color_by = getState().opnames.color_by;
 
     const dataObject = {
-      page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
       start_date,
       end_date,
       season,
+      color_by,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const featuresEndpoint = $.ajax({
@@ -184,4 +200,11 @@ export function fetchFeatures() {
       return dispatch(receiveFeatures(featuresResults));
     });
   }
+}
+
+export function setMapPosition(object) {
+  return {
+    type: SET_MAP_POSITION,
+    object,
+  };
 }

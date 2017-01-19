@@ -12,7 +12,10 @@ import {
   REQUEST_FEATURES,
   REQUEST_OPNAMES,
   RESET_ALL_FILTERS,
+  SET_COLOR_BY,
   SET_LOCATIONS,
+  SET_MAP_POSITION,
+  SET_MAP_STATISTICS,
   SET_MEETNETS,
   SET_PERIOD,
   SET_SEASON,
@@ -33,9 +36,16 @@ function opnames(state = {
   parameters: [],
   locations: [],
   locationIds: [],
+  map_statistics: 'lastval',
   meetnets: [],
   features: [],
   season: undefined,
+  color_by: undefined,
+  map: {
+    lat: 52.0741,
+    lng: 5.1432,
+    zoom: 11,
+  },
 }, action) {
   // console.log('reducer reports() was called with state', state, 'and action', action);
   switch (action.type) {
@@ -53,9 +63,20 @@ function opnames(state = {
       parameters: [],
       locations: [],
       locationIds: [],
+      map_statistics: 'lastval',
       meetnets: [],
       features: [],
       season: undefined,
+      color_by: undefined,
+      map: {
+        lat: 52.0741,
+        lng: 5.1432,
+        zoom: 11,
+      },
+    });
+  case SET_MAP_POSITION:
+    return Object.assign({}, state, {
+      map: action.object,
     });
   case SET_SEASON:
     return Object.assign({}, state, {
@@ -65,6 +86,14 @@ function opnames(state = {
     return Object.assign({}, state, {
       start_date: action.startDate,
       end_date: action.endDate,
+    });
+  case SET_COLOR_BY:
+    return Object.assign({}, state, {
+      color_by: action.id,
+    });
+  case SET_MAP_STATISTICS:
+    return Object.assign({}, state, {
+      map_statistics: action.statisticsType,
     });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
