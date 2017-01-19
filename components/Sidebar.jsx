@@ -37,7 +37,18 @@ class Sidebar extends Component {
         <Button
           onClick={() => {
             this.props.dispatch(resetAllFilters());
-            // window.location.reload();
+            const req = indexedDB.deleteDatabase('localforage');
+            req.onsuccess = function () {
+                console.log('Deleted database successfully');
+                window.location.reload();
+            };
+            req.onerror = function () {
+                console.log('Could not delete database');
+            };
+            req.onblocked = function () {
+                console.log('Could not delete database due to the operation being blocked');
+                window.location.reload();
+            };
           }}
           bsStyle='warning'
           bsSize='xsmall'>
