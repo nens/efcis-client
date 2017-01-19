@@ -12,6 +12,8 @@ import {
   REMOVE_LOCATION_FROM_SELECTION,
   REQUEST_FEATURES,
   REQUEST_OPNAMES,
+  REQUEST_CHARTS,
+  RECEIVE_CHARTS,
   RESET_ALL_FILTERS,
   SET_COLOR_BY,
   SET_LOCATIONS,
@@ -156,6 +158,15 @@ function opnames(state = {
     return Object.assign({}, state, {
       isFetching: false,
       features: action.results,
+    });
+  case REQUEST_CHARTS:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_CHARTS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      charts: action.results,
     });
   case SET_MEETNETS:
     return Object.assign({}, state, {

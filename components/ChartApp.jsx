@@ -3,14 +3,18 @@ import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import sharedStyles from './SharedStyles.css';
 import TopNav from './TopNav.jsx';
+import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
-import {Tabs, Tab} from 'react-bootstrap';
+import SelectSeries from './SelectSeries.jsx';
+import {Button, Modal, Tabs, Tab} from 'react-bootstrap';
 import {ScatterChart, Scatter, AreaChart, Area, Brush, LineChart, ReferenceLine, BarChart, Line, Bar, XAxis, YAxis,
         CartesianGrid, Tooltip, Legend} from 'recharts';
 
 import _ from 'lodash';
 
-// import {} from '../actions.jsx';
+import {
+  fetchCharts,
+} from '../actions.jsx';
 
 class ChartApp extends Component {
 
@@ -19,8 +23,12 @@ class ChartApp extends Component {
     this.state = {
       width: window.innerWidth,
       height: window.innerHeight,
+      showLeftYAxisModal: false,
+      showRightYAxisModal: false,
     };
     this.updateDimensions = this.updateDimensions.bind(this);
+    this.hideLeftYAxisModal = this.hideLeftYAxisModal.bind(this);
+    this.hideRightYAxisModal = this.hideRightYAxisModal.bind(this);
   }
 
   componentDidMount() {
@@ -80,9 +88,17 @@ class ChartApp extends Component {
 
   componentWillReceiveProps(newProps) {}
 
+  hideLeftYAxisModal() {
+    this.setState({ showLeftYAxisModal: false });
+  }
+
+  hideRightYAxisModal() {
+    this.setState({ showRightYAxisModal: false });
+  }
+
   updateDimensions() {
     this.setState({
-      width: document.getElementById('chart').offsetWidth-20,
+      width: document.getElementById('chart').offsetWidth - 20,
       height: document.getElementById('chart').offsetHeight,
     });
   }
@@ -132,6 +148,25 @@ class ChartApp extends Component {
                  <Line type='monotone' dataKey='pv' stroke='#8884d8' />
                  <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
                 </LineChart>
+                <hr/>
+                <div className='col-md-6'>
+                  <Button onClick={() => {
+                    this.setState({ showLeftYAxisModal: true, });
+                    this.props.dispatch(fetchCharts());
+                  }}>
+                    <i className='fa fa-plus-circle'></i>
+                  </Button>
+                </div>
+                <div className='col-md-6'>
+                  <Button
+                    className='pull-right'
+                    onClick={() => {
+                      this.setState({ showRightYAxisModal: true, });
+                      this.props.dispatch(fetchCharts());
+                    }}>
+                    <i className='fa fa-plus-circle'></i>
+                  </Button>
+                </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
                 <div
@@ -156,6 +191,57 @@ class ChartApp extends Component {
             </div>
           </div>
         </div>
+        <Modal
+          {...this.props}
+          show={this.state.showLeftYAxisModal}
+          dialogClassName={styles.WideModal}
+          onHide={this.hideLeftYAxisModal}>
+          <Modal.Header closeButton>
+            <Modal.Title id='leftYAxisModal'>Configureer linker Y-as</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <ul style={{
+            height: 600,
+            overflowY: 'scroll',
+          }}>
+            {this.props.opnames.charts.map((chart, i) => {
+              return (
+                <li key={i}
+                    style={{ cursor: 'pointer' }}>
+                    {chart.wns} - {chart.location}
+                </li>
+              );
+            })}
+          </ul>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => {
+              this.hideLeftYAxisModal();
+            }}>Toepassen</Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          {...this.props}
+          show={this.state.showRightYAxisModal}
+          dialogClassName={styles.WideModal}
+          onHide={this.hideRightYAxisModal}>
+          <Modal.Header closeButton>
+            <Modal.Title id='rightYAxisModal'>Configureer rechter Y-as</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <SelectSeries
+              {...this.props}
+              onSelect={(data) => {
+                console.log('data', data);
+              }}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => {
+              this.hideRightYAxisModal();
+            }}>Toepassen</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

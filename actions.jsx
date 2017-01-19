@@ -6,11 +6,13 @@ export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
 export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
-export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
+export const RECEIVE_CHARTS = 'RECEIVE_CHARTS';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
+export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
-export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const REQUEST_CHARTS = 'REQUEST_CHARTS';
 export const REQUEST_FEATURES = 'REQUEST_FEATURES';
+export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
@@ -92,7 +94,7 @@ export function applyFilter(q, colName) {
   };
 }
 
-export function applySorting(sorting) {  
+export function applySorting(sorting) {
   return {
     type: APPLY_SORTING,
     sorting,
@@ -213,6 +215,58 @@ export function fetchFeatures() {
     });
   }
 }
+
+
+
+function requestCharts() {
+  return {
+    type: REQUEST_CHARTS,
+  };
+}
+
+function receiveCharts(results) {
+  return {
+    type: RECEIVE_CHARTS,
+    results,
+  };
+}
+
+
+export function fetchCharts() {
+  return (dispatch, getState) => {
+    dispatch(requestCharts());
+
+    const filtersObject = getState().opnames.filters;
+    const meetnetids = getState().opnames.meetnets;
+    const locationids = getState().opnames.locationIds;
+    const start_date = getState().opnames.start_date;
+    const end_date = getState().opnames.end_date;
+    const season = getState().opnames.season;
+
+    const dataObject = {
+      meetnets: meetnetids.join(','),
+      locations: locationids.join(','),
+      start_date,
+      end_date,
+      season,
+    };
+    const mergedData = _.merge(dataObject, filtersObject);
+    const chartsEndpoint = $.ajax({
+      url: '/api/graphs/',
+      type: 'post',
+      dataType: 'json',
+      data: mergedData,
+      success: (data) => {
+        return data;
+      },
+    });
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveCharts(chartsResults));
+    });
+  }
+}
+
+
 
 export function setMapPosition(object) {
   return {

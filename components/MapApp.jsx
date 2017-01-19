@@ -276,7 +276,7 @@ class MapApp extends Component {
 								</Button>
 								<Button
 									onClick={() => this.setState({ showSettingsModal: true })}>
-									<i className='fa fa-cog'></i>&nbsp;Legenda instellingen
+									<i className='fa fa-cog'></i>&nbsp;Kaartinstellingen
 								</Button>
 							</ButtonGroup>
 							<MapStatisticsPicker {...this.props} />

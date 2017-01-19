@@ -159,41 +159,46 @@ class SelectLocationsList extends Component {
     return (
       <div>
           <div className='row'>
-            <div className='col-md-4' style={{ height: 50 }} />
-            <div className='col-md-4' style={{ height: 50 }}>
-              <input
-                 type='text'
-                 ref='filterText'
-                 className='form-control'
-                 placeholder='Filter resultaten'
-                 onChange={(e) => this.setState({
-                   filterString: e.target.value,
-                 })} />
-            </div>
-            <div className='col-md-4' style={{ height: 50 }}>
-              <div>Geselecteerde Locaties ({
-                _.size(this.props.opnames.locations)
-              })</div>
-            </div>
-          </div>
-          <div className='row'>
             <div className='col-md-4'
                  style={{ overflowY: 'scroll', height: 600 }}>
                <div id='meetnet-location-tree' />
             </div>
-            <div className='col-md-4'
-                 style={{ overflowY: 'scroll', height: 600 }}>
+            <div className='col-md-4'>
+                 <input
+                    type='text'
+                    ref='filterText'
+                    style={{ margin: 5 }}
+                    className='form-control'
+                    autoFocus='autofocus'
+                    placeholder='Filter locaties'
+                    onChange={(e) => this.setState({
+                      filterString: e.target.value,
+                    })} />
                  <ul className='from'
+                     style={{ overflowY: 'scroll', height: 600 }}
                      id='location-list'>
                    {locationsList}
                  </ul>
             </div>
             <div className='col-md-4'
-                 style={{ overflowY: 'scroll', height: 600 }}>
-                <ul className='to'
-                    id='selection-location-list'>
-                  {selectedLocationsList}
-                </ul>
+                 style={{
+                   overflowY: 'scroll',
+                   height: 600,
+                  }}>
+                {(selectedLocationsList.length > 0) ?
+                  <ul className='to'
+                      id='selection-location-list'>
+                    {selectedLocationsList}
+                  </ul>
+                  :
+                  <div style={{
+                    position: 'absolute',
+                    top: 100,
+                    left: '20%',
+                    color: '#ccc',
+                    fontSize: '1.5em',
+                  }}>Selecteer een of meerdere locatie(s)</div>
+                }
             </div>
           </div>
        </div>
