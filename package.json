@@ -19,6 +19,7 @@
     "babel-preset-stage-2": "^6.18.0",
     "better-react-spinkit": "^2.0.0-4",
     "brfs": "",
+    "colorbrewer": "^1.0.0",
     "d3": "",
     "floatthead": "^1.4.5",
     "geojson-vt": "^2.4.0",
