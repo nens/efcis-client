@@ -1,11 +1,11 @@
 {
   "name": "efics-client",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "EFCIS client w/ Redux",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nens/efcis-client-redux.git",
-    "name": "nens/efcis-client-redux"
+    "url": "git+https://github.com/nens/efcis-client.git",
+    "name": "nens/efcis-client"
   },
   "scripts": {
     "start": "node server.js",
