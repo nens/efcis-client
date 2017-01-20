@@ -1,10 +1,3 @@
-# js installs
-vendor/
-node_modules/
-node_modules
-.npm-debug.log
-.grunt/
-
 # test stuff
 _SpecRunner.html
 qa/
@@ -12,12 +5,23 @@ qa/
 tmp/
 tmp
 .tmp/
-templates.js
 doc/
+
+# Mac specific
 .DS_Store
+
+# Ansible
 hosts
 production_hosts
-auth.json
-npm-debug.log
+
+# Buck-trap
+dist
 dist/
 auth.json
+
+# NPM and Yarn
+npm-debug.log
+yarn-error.log
+node_modules/
+node_modules
+vendor/
