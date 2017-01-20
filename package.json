@@ -1,6 +1,6 @@
 {
   "name": "efics-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "EFCIS client w/ Redux",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "buck-trap": "buck-trap -a",
+    "release": "buck-trap -a",
     "build": "NODE_ENV=production webpack --config webpack.production.config.js",
     "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --require ./test/setup.js",
     "test:watch": "npm test -- --watch"
