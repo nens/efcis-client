@@ -43,13 +43,19 @@ $ npm run build
 ```
 
 
-Release bundle to github
+Release bundle to Github
 ------------------------
 
-Configure [buck-trap](https://www.npmjs.com/package/buck-trap), then run:
+Configure [buck-trap](https://www.npmjs.com/package/buck-trap).
 
+Buck-trap is installed when running yarn install. The only thing you need to do
+is to copy `deploy/auth.json.example` to `deploy/auth.json`, and edit that file,
+so that it contains your [Github Personal Access Token](https://github.com/settings/tokens)
+with the proper scopes selected.
+
+Then run:
 ```
-$ npm run buck-trap
+$ npm run release
 ```
 
 

@@ -10,12 +10,21 @@ var definePlugin = new webpack.DefinePlugin({
 
 var config = {
   // We change to normal source mapping
-  devtool: 'source-map',
+  // devtool: 'source-map',
   entry: './index.jsx',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
   },
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      // sourceMap: false,
+      compress: {
+        warnings: false
+      }
+    }),
+  ],
   module: {
     loaders: [
       {
@@ -36,10 +45,11 @@ var config = {
         test: /\.js$/,
         loader: 'transform/cacheable?brfs'
       },
-      { test: /\.(png|jpg|svg|woff|eot|ttf|otf)$/,
+      { test: /\.(png|gif|jpg|svg|woff|eot|ttf|otf)$/,
         loader: 'url-loader?limit=100000'
       }
-    ]
+    ],
+    noParse: [new RegExp(path.resolve(__dirname, 'node_modules/localforage/dist/localforage.js'))]
   }
 };
 

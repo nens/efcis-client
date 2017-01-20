@@ -20,3 +20,6 @@ production_hosts
 auth.json
 npm-debug.log
 dist/
+auth.json
+deploy/
+dist/
