@@ -21,8 +21,19 @@ export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
+export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
+export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
+export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID';
+export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
 
 
+
+export function setMapPosition(object) {
+  return {
+    type: SET_MAP_POSITION,
+    object,
+  };
+}
 
 export function setMapStatistics(statisticsType) {
   return {
@@ -216,6 +227,45 @@ export function fetchFeatures() {
   }
 }
 
+export function removeFromLinechartsLeftYById(id) {
+  return {
+    type: REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID,
+    id,
+  }
+}
+
+
+function requestDataForLeftY() {
+  return {
+    type: REQUEST_DATA_FOR_LEFT_Y,
+  };
+}
+
+function receiveDataForLeftY(chart, results) {
+  return {
+    type: RECEIVE_DATA_FOR_LEFT_Y,
+    chart,
+    results,
+  };
+}
+
+export function addToLinechartsLeftY(chart) {
+  return (dispatch, getState) => {
+    dispatch(requestDataForLeftY());
+
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: `/api/lines/${chart.id}/`,
+      success: (data) => {
+        return data;
+      }
+    });
+
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveDataForLeftY(chart, chartsResults));
+    });
+  }
+}
 
 
 function requestCharts() {
@@ -264,13 +314,4 @@ export function fetchCharts() {
       return dispatch(receiveCharts(chartsResults));
     });
   }
-}
-
-
-
-export function setMapPosition(object) {
-  return {
-    type: SET_MAP_POSITION,
-    object,
-  };
 }

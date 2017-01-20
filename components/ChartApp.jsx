@@ -1,20 +1,96 @@
 // @flow
 import { connect } from 'react-redux';
+import $ from 'jquery';
 import React, { Component, PropTypes } from 'react';
 import sharedStyles from './SharedStyles.css';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
-import SelectSeries from './SelectSeries.jsx';
 import {Button, Modal, Tabs, Tab} from 'react-bootstrap';
 import {ScatterChart, Scatter, AreaChart, Area, Brush, LineChart, ReferenceLine, BarChart, Line, Bar, XAxis, YAxis,
         CartesianGrid, Tooltip, Legend} from 'recharts';
-
 import _ from 'lodash';
 
 import {
   fetchCharts,
+  addToLinechartsLeftY,
+  removeFromLinechartsLeftYById,
 } from '../actions.jsx';
+
+
+class LineChartComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {}
+
+  componentWillReceiveProps(nextProps, nextState) {
+    // // console.log('nextProps', nextProps);
+    // // console.log('nextState', nextState);
+    // if (nextProps.opnames.linechartsLeftY.length > this.props.opnames.linechartsLeftY.length) {
+    //   console.log('fetch line data');
+    //   const chartLoaders = nextProps.opnames.linechartsLeftY.map((chart) => {
+    //     return $.ajax({
+    //       type: 'GET',
+    //       url: `/api/lines/${chart.id}/`,
+    //       success: (data) => {
+    //         return data;
+    //       }
+    //     });
+    //   });
+    //   Promise.all([chartLoaders]).then(([chartResults]) => {
+    //     console.log('------>', chartResults);
+    //   });
+    // }
+  }
+
+  render() {
+    // const linedata = [
+    //   {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+    //   {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+    // ];
+    const dataArrays = this.props.opnames.linechartsLeftY.map((chartObject) => {
+      return {
+        'data': chartObject.data,
+        'id': chartObject.id,
+        'unit': chartObject.unit,
+        'wns': chartObject.wns,
+        'location': chartObject.location,
+      };
+    });
+    const linedata = dataArrays.map((dataArray) => {
+      return dataArray.data.map((d) => {
+        return {
+          name: dataArray.location,
+          datetime: d.datetime,
+          value: d.value,
+        };
+      });
+    });
+
+    console.log('----->', _.concat(linedata));
+
+    return (
+      <LineChart width={this.props.width}
+                 height={500}
+                 data={linedata[1]}
+                 margin={{top: 20, right: 50, left: 20, bottom: 5}}>
+        <XAxis dataKey='datetime'/>
+        <YAxis/>
+        <CartesianGrid strokeDasharray='3 3'/>
+        <Tooltip/>
+        <Legend />
+        <ReferenceLine x='Page C' stroke='red' label='Max PV PAGE'/>
+        <ReferenceLine y={9800} label='Max' stroke='red'/>
+        <Line type='monotone' dataKey='value' stroke='#8884d8' />
+        {/* <Line type='monotone' dataKey='uv' stroke='#82ca9d' /> */}
+     </LineChart>
+    );
+  }
+}
+
 
 class ChartApp extends Component {
 
@@ -25,6 +101,7 @@ class ChartApp extends Component {
       height: window.innerHeight,
       showLeftYAxisModal: false,
       showRightYAxisModal: false,
+      currentUnit: undefined,
     };
     this.updateDimensions = this.updateDimensions.bind(this);
     this.hideLeftYAxisModal = this.hideLeftYAxisModal.bind(this);
@@ -77,7 +154,6 @@ class ChartApp extends Component {
     });
   }
 
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
   }
@@ -108,22 +184,13 @@ class ChartApp extends Component {
                   {x: 170, y: 300, z: 400}, {x: 140, y: 250, z: 280},
                   {x: 150, y: 400, z: 500}, {x: 110, y: 280, z: 200}];
 
-    const linedata = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    ];
+
 
     const candledata = [
       {x: new Date(2016, 6, 1), open: 5, close: 10, high: 15, low: 0},
       {x: new Date(2016, 6, 2), open: 10, close: 15, high: 20, low: 5},
       {x: new Date(2016, 6, 3), open: 15, close: 20, high: 25, low: 10},
     ];
-
 
     return (
       <div>
@@ -136,23 +203,15 @@ class ChartApp extends Component {
             <div className='col-md-10' id='chart'>
             <Tabs activeKey={this.state.key} id='chart-tab'>
               <Tab eventKey={1} title='Tijdreeks'>
-                <LineChart width={this.state.width} height={500} data={linedata}
-                           margin={{top: 20, right: 50, left: 20, bottom: 5}}>
-                 <XAxis dataKey='name'/>
-                 <YAxis/>
-                 <CartesianGrid strokeDasharray='3 3'/>
-                 <Tooltip/>
-                 <Legend />
-                 <ReferenceLine x='Page C' stroke='red' label='Max PV PAGE'/>
-                 <ReferenceLine y={9800} label='Max' stroke='red'/>
-                 <Line type='monotone' dataKey='pv' stroke='#8884d8' />
-                 <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
-                </LineChart>
+                <LineChartComponent
+                  {...this.props}
+                  width={this.state.width}
+                />
                 <hr/>
                 <div className='col-md-6'>
                   <Button onClick={() => {
-                    this.setState({ showLeftYAxisModal: true, });
                     this.props.dispatch(fetchCharts());
+                    this.setState({ showLeftYAxisModal: true, });
                   }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>
@@ -161,8 +220,8 @@ class ChartApp extends Component {
                   <Button
                     className='pull-right'
                     onClick={() => {
-                      this.setState({ showRightYAxisModal: true, });
                       this.props.dispatch(fetchCharts());
+                      this.setState({ showRightYAxisModal: true, });
                     }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>
@@ -180,8 +239,8 @@ class ChartApp extends Component {
                   width={this.state.width}
                   height={500}
                   margin={{top: 20, right: 100, bottom: 20, left: 20}}>
-                	<XAxis dataKey={'x'} name='stature' unit='cm'/>
-                	<YAxis dataKey={'y'} name='weight' unit='kg'/>
+                  <XAxis dataKey={'x'} name='stature' unit='cm'/>
+                  <YAxis dataKey={'y'} name='weight' unit='kg'/>
                 	<Scatter name='A school' data={scatterdata} fill='#8884d8'/>
                 	<CartesianGrid />
                 	<Tooltip cursor={{strokeDasharray: '3 3'}}/>
@@ -197,22 +256,60 @@ class ChartApp extends Component {
           dialogClassName={styles.WideModal}
           onHide={this.hideLeftYAxisModal}>
           <Modal.Header closeButton>
-            <Modal.Title id='leftYAxisModal'>Configureer linker Y-as</Modal.Title>
+            <Modal.Title id='leftYAxisModal'>
+              Configureer linker Y-as
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <ul style={{
-            height: 600,
-            overflowY: 'scroll',
-          }}>
-            {this.props.opnames.charts.map((chart, i) => {
-              return (
-                <li key={i}
-                    style={{ cursor: 'pointer' }}>
-                    {chart.wns} - {chart.location}
-                </li>
-              );
-            })}
-          </ul>
+          <div className='row'>
+          <div className='col-md-6'>
+            <ul style={{
+              height: 600,
+              overflowY: 'scroll',
+            }}>
+              {this.props.opnames.charts.map((chart, i) => {
+                return (
+                  <li key={i}
+                      onClick={() => {
+                        if (this.state.currentUnit === chart.unit ||
+                           !this.state.currentUnit) {
+                          this.setState({
+                            currentUnit: chart.unit,
+                          });
+                          this.props.dispatch(addToLinechartsLeftY(chart));
+                        }
+                      }}
+                      style={{
+                        cursor: (this.state.currentUnit === chart.unit ||
+                                !this.state.currentUnit) ? 'pointer' : '',
+                        opacity: (this.state.currentUnit === chart.unit ||
+                                !this.state.currentUnit) ? 1 : 0.4,
+                      }}>
+                      {chart.wns} - {chart.location}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className='col-md-6'>
+            <ul>
+              {this.props.opnames.linechartsLeftY.map((chart, i) => {
+                return (
+                  <li
+                    style={{ cursor: 'pointer', }}
+                    onClick={() => {
+                      this.props.dispatch(
+                        removeFromLinechartsLeftYById(chart.id)
+                      );
+                    }}
+                    key={i}>
+                    {/* {chart.wns} - {chart.location} */}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          </div>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => {
@@ -229,12 +326,19 @@ class ChartApp extends Component {
             <Modal.Title id='rightYAxisModal'>Configureer rechter Y-as</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <SelectSeries
-              {...this.props}
-              onSelect={(data) => {
-                console.log('data', data);
-              }}
-            />
+            <ul style={{
+              height: 600,
+              overflowY: 'scroll',
+            }}>
+              {this.props.opnames.charts.map((chart, i) => {
+                return (
+                  <li key={i}
+                      style={{ cursor: 'pointer' }}>
+                      {chart.wns} - {chart.location}
+                  </li>
+                );
+              })}
+            </ul>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => {

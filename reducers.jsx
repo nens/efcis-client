@@ -14,6 +14,8 @@ import {
   REQUEST_OPNAMES,
   REQUEST_CHARTS,
   RECEIVE_CHARTS,
+  REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID,
+  REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID,
   RESET_ALL_FILTERS,
   SET_COLOR_BY,
   SET_LOCATIONS,
@@ -22,6 +24,8 @@ import {
   SET_MEETNETS,
   SET_PERIOD,
   SET_SEASON,
+  REQUEST_DATA_FOR_LEFT_Y,
+  RECEIVE_DATA_FOR_LEFT_Y,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -41,6 +45,11 @@ function opnames(state = {
   map_statistics: 'lastval',
   meetnets: [],
   features: [],
+  charts: [],
+  linechartsLeftY: [],
+  linechartsRightY: [],
+  boxplotCharts: [],
+  scatterplotCharts: [],
   season: undefined,
   color_by: undefined,
   map: {
@@ -67,6 +76,7 @@ function opnames(state = {
       map_statistics: 'lastval',
       meetnets: [],
       features: [],
+      charts: [],
       season: undefined,
       color_by: undefined,
       map: {
@@ -176,11 +186,26 @@ function opnames(state = {
     return Object.assign({}, state, {
       locations: action.ids,
     });
+  case REQUEST_DATA_FOR_LEFT_Y:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_DATA_FOR_LEFT_Y:
+    return Object.assign({}, state, {
+      isFetching: false,
+      linechartsLeftY: [...state.linechartsLeftY, action.results],
+    });
+  case REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID:
+    return Object.assign({}, state, {
+      linechartsLeftY: state.linechartsLeftY.filter((chart) => {
+        if (chart.id === action.id) return false;
+        return chart;
+      }),
+    });
   default:
     return state;
   }
 }
-
 
 const rootReducer = combineReducers({
   opnames,
