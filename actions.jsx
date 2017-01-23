@@ -7,10 +7,16 @@ export const APPLY_FILTER = 'APPLY_FILTER';
 export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_CHARTS = 'RECEIVE_CHARTS';
+export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
+export const RECEIVE_DATA_FOR_RIGHT_Y = 'RECEIVE_DATA_FOR_RIGHT_Y';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
+export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID';
+export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
 export const REQUEST_CHARTS = 'REQUEST_CHARTS';
+export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
+export const REQUEST_DATA_FOR_RIGHT_Y = 'REQUEST_DATA_FOR_RIGHT_Y';
 export const REQUEST_FEATURES = 'REQUEST_FEATURES';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
@@ -21,10 +27,6 @@ export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
-export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
-export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
-export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID';
-export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
 
 
 export function setMapPosition(object) {
@@ -225,6 +227,49 @@ export function fetchFeatures() {
     });
   }
 }
+
+export function removeFromLinechartsRightYById(id) {
+  return {
+    type: REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID,
+    id,
+  }
+}
+
+
+function requestDataForRightY() {
+  return {
+    type: REQUEST_DATA_FOR_RIGHT_Y,
+  };
+}
+
+function receiveDataForRightY(chart, results) {
+  return {
+    type: RECEIVE_DATA_FOR_RIGHT_Y,
+    chart,
+    results,
+  };
+}
+
+export function addToLinechartsRightY(chart) {
+  return (dispatch, getState) => {
+    dispatch(requestDataForRightY());
+
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: `/api/lines/${chart.id}/`,
+      success: (data) => {
+        return data;
+      }
+    });
+
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveDataForRightY(chart, chartsResults));
+    });
+  }
+}
+
+
+
 
 export function removeFromLinechartsLeftYById(id) {
   return {

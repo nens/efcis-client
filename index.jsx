@@ -37,9 +37,6 @@ class App extends Component {
            <Route path='/' component={
              require('react-router?name=[name]!./components/TableApp.jsx')
            } />
-           <Route path='table' component={
-             require('react-router?name=[name]!./components/TableApp.jsx')
-           } />
            <Route path='map' component={
              require('react-router?name=[name]!./components/MapApp.jsx')
            } />

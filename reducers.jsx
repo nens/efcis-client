@@ -26,6 +26,8 @@ import {
   SET_SEASON,
   REQUEST_DATA_FOR_LEFT_Y,
   RECEIVE_DATA_FOR_LEFT_Y,
+  REQUEST_DATA_FOR_RIGHT_Y,
+  RECEIVE_DATA_FOR_RIGHT_Y,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -77,6 +79,8 @@ function opnames(state = {
       meetnets: [],
       features: [],
       charts: [],
+      linechartsLeftY: [],
+      linechartsRightY: [],
       season: undefined,
       color_by: undefined,
       map: {
@@ -198,6 +202,22 @@ function opnames(state = {
   case REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID:
     return Object.assign({}, state, {
       linechartsLeftY: state.linechartsLeftY.filter((chart) => {
+        if (chart.id === action.id) return false;
+        return chart;
+      }),
+    });
+  case REQUEST_DATA_FOR_RIGHT_Y:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_DATA_FOR_RIGHT_Y:
+    return Object.assign({}, state, {
+      isFetching: false,
+      linechartsRightY: [...state.linechartsRightY, action.results],
+    });
+  case REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID:
+    return Object.assign({}, state, {
+      linechartsRightY: state.linechartsRightY.filter((chart) => {
         if (chart.id === action.id) return false;
         return chart;
       }),

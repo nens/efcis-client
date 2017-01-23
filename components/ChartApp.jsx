@@ -13,7 +13,9 @@ import _ from 'lodash';
 import {
   fetchCharts,
   addToLinechartsLeftY,
+  addToLinechartsRightY,
   removeFromLinechartsLeftYById,
+  removeFromLinechartsRightYById,
 } from '../actions.jsx';
 
 
@@ -32,6 +34,10 @@ class LineChartComponent extends Component {
     this.renderChart();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  }
+
   renderChart() {
     const dateTimes = this.props.opnames.linechartsLeftY.map((chart) => {
       return chart.data.map((data) => {
@@ -40,18 +46,50 @@ class LineChartComponent extends Component {
     });
 
     let flatDateTimes = _.flatten(dateTimes);
+
+
+      const rightAxisDatetimes = this.props.opnames.linechartsLeftY.map((chart) => {
+        return chart.data.map((data) => {
+          return data.datetime;
+        });
+      });
+
+    flatDateTimes.concat(rightAxisDatetimes);
     flatDateTimes = _.uniq(flatDateTimes);
     flatDateTimes.sort();
+
+
+    const leftSeries = this.props.opnames.linechartsLeftY.map((linechart, i) => {
+      return {
+        name: linechart.location,
+        type: 'spline',
+        data: linechart.data.map((d) => d.value),
+        tooltip: {
+          valueSuffix: ` (${linechart.unit})`,
+        },
+      };
+    });
+
+    const rightSeries = this.props.opnames.linechartsRightY.map((linechart, i) => {
+      return {
+        name: linechart.location,
+        type: 'spline',
+        yAxis: 1,
+        data: linechart.data.map((d) => d.value),
+        tooltip: {
+          valueSuffix: ` (${linechart.unit})`,
+        },
+      };
+    });
+
+    const combinedSeries = [...leftSeries, ...rightSeries];
 
     Highcharts.chart(this.refs.linechartContainer, {
       chart: {
         zoomType: 'xy',
       },
       title: {
-        text: 'EFCIS',
-      },
-      subtitle: {
-        text: `Bron: ${window.location.href}`,
+        text: '',
       },
       xAxis: [{
         categories: flatDateTimes.map((fd) => moment(fd).locale('nl').format('L')),
@@ -99,16 +137,7 @@ class LineChartComponent extends Component {
           Highcharts.theme &&
           Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
       },
-      series: this.props.opnames.linechartsLeftY.map((linechart) => {
-        return {
-          name: linechart.location,
-          type: 'spline',
-          data: linechart.data.map((d) => d.value),
-          tooltip: {
-            valueSuffix: ` (${linechart.unit})`,
-          },
-        };
-      }),
+      series: combinedSeries,
     });
   }
 
@@ -155,22 +184,18 @@ class BoxplotChartComponent extends Component {
       chart: {
           type: 'boxplot'
       },
-
       title: {
-          text: 'EFCIS'
+          text: ''
       },
-
       legend: {
           enabled: false
       },
-
       xAxis: {
           categories: ['1', '2', '3', '4', '5'],
           title: {
               text: 'Experiment No.'
           }
       },
-
       yAxis: {
           title: {
               text: 'Observations'
@@ -180,7 +205,7 @@ class BoxplotChartComponent extends Component {
               color: 'red',
               width: 1,
               label: {
-                  text: 'Theoretical mean: 932',
+                  text: 'Referentiewaarde (932)',
                   align: 'center',
                   style: {
                       color: 'gray'
@@ -544,6 +569,8 @@ class ChartApp extends Component {
             </div>
           </div>
         </div>
+
+
         <Modal
           {...this.props}
           show={this.state.showLeftYAxisModal}
@@ -611,15 +638,20 @@ class ChartApp extends Component {
             }}>Toepassen</Button>
           </Modal.Footer>
         </Modal>
+
         <Modal
           {...this.props}
           show={this.state.showRightYAxisModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideRightYAxisModal}>
           <Modal.Header closeButton>
-            <Modal.Title id='rightYAxisModal'>Configureer rechter Y-as</Modal.Title>
+            <Modal.Title id='rightYAxisModal'>
+              Configureer rechter Y-as
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+          <div className='row'>
+          <div className='col-md-6'>
             <ul style={{
               height: 600,
               overflowY: 'scroll',
@@ -627,12 +659,46 @@ class ChartApp extends Component {
               {this.props.opnames.charts.map((chart, i) => {
                 return (
                   <li key={i}
-                      style={{ cursor: 'pointer' }}>
+                      onClick={() => {
+                        if (this.state.currentUnit === chart.unit ||
+                           !this.state.currentUnit) {
+                          this.setState({
+                            currentUnit: chart.unit,
+                          });
+                          this.props.dispatch(addToLinechartsRightY(chart));
+                        }
+                      }}
+                      style={{
+                        cursor: (this.state.currentUnit === chart.unit ||
+                                !this.state.currentUnit) ? 'pointer' : '',
+                        opacity: (this.state.currentUnit === chart.unit ||
+                                !this.state.currentUnit) ? 1 : 0.4,
+                      }}>
                       {chart.wns} - {chart.location}
                   </li>
                 );
               })}
             </ul>
+          </div>
+          <div className='col-md-6'>
+            <ul>
+              {this.props.opnames.linechartsRightY.map((chart, i) => {
+                return (
+                  <li
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      this.props.dispatch(
+                        removeFromLinechartsRightYById(chart.id)
+                      );
+                    }}
+                    key={i}>
+                    {chart.wns} - {chart.location}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          </div>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => {

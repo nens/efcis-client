@@ -14,6 +14,7 @@ var config = {
   entry: './index.jsx',
   output: {
     path: path.join(__dirname, 'dist'),
+    publicPath: '/static_media/efcis_client/',
     filename: 'bundle.js'
   },
   plugins: [

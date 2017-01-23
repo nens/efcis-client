@@ -49,7 +49,7 @@ class TopNav extends Component {
            </div>
            <div id='navbar' className='navbar-collapse collapse' style={{backgroundColor:'#fff'}}>
              <ul className='nav navbar-nav navbar-left'>
-               <li><Link to='table' activeClassName='active' activeStyle={{ backgroundColor: '#CCCCCC' }}><i className='fa fa-2x fa-table'></i></Link></li>
+               <li><Link to='/' activeClassName='active' activeStyle={{ backgroundColor: '#CCCCCC' }}><i className='fa fa-2x fa-table'></i></Link></li>
                <li><Link to='map' activeClassName='active' activeStyle={{ backgroundColor: '#CCCCCC' }}><i className='fa fa-2x fa-globe'></i></Link></li>
                <li><Link to='chart' activeClassName='active' activeStyle={{ backgroundColor: '#CCCCCC' }}><i className='fa fa-2x fa-line-chart'></i></Link></li>
              </ul>
