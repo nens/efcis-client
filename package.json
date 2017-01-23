@@ -1,6 +1,6 @@
 {
   "name": "efics-client",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "EFCIS client w/ Redux",
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "d3": "",
     "floatthead": "^1.4.5",
     "geojson-vt": "^2.4.0",
+    "highcharts-exporting": "^0.1.2",
     "highcharts-more": "^0.1.2",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "",
