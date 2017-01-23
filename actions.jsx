@@ -27,7 +27,6 @@ export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_
 export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
 
 
-
 export function setMapPosition(object) {
   return {
     type: SET_MAP_POSITION,
