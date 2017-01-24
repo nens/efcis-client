@@ -29,6 +29,24 @@ export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 
 
+function getCookie(c_name) {
+  if (document.cookie.length > 0)
+  {
+    let c_start = document.cookie.indexOf(c_name + '=');
+    if (c_start != -1)
+    {
+      c_start = c_start + c_name.length + 1;
+      let c_end = document.cookie.indexOf(';', c_start);
+      if (c_end == -1) c_end = document.cookie.length;
+      return unescape(document.cookie.substring(c_start, c_end));
+    }
+  }
+  return '';
+}
+$.ajaxSetup({
+  headers: { 'X-CSRFToken': getCookie('csrftoken') }
+});
+
 export function setMapPosition(object) {
   return {
     type: SET_MAP_POSITION,
@@ -345,6 +363,9 @@ export function fetchCharts() {
       season,
     };
     const mergedData = _.merge(dataObject, filtersObject);
+    $.ajaxSetup({
+      headers: { 'X-CSRFToken': getCookie("csrftoken") }
+    });
     const chartsEndpoint = $.ajax({
       url: '/api/graphs/',
       type: 'post',

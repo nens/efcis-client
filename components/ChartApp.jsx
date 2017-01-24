@@ -47,17 +47,16 @@ class LineChartComponent extends Component {
 
     let flatDateTimes = _.flatten(dateTimes);
 
-
-      const rightAxisDatetimes = this.props.opnames.linechartsLeftY.map((chart) => {
-        return chart.data.map((data) => {
-          return data.datetime;
-        });
+    const rightAxisDatetimes = this.props.opnames.linechartsRightY.map((chart) => {
+      return chart.data.map((data) => {
+        return data.datetime;
       });
+    });
 
-    flatDateTimes.concat(rightAxisDatetimes);
+    flatDateTimes = _.concat(flatDateTimes, rightAxisDatetimes[0]);
     flatDateTimes = _.uniq(flatDateTimes);
     flatDateTimes.sort();
-
+    console.log(flatDateTimes);
 
     const leftSeries = this.props.opnames.linechartsLeftY.map((linechart, i) => {
       return {

@@ -38,7 +38,6 @@ class SelectLocationsMeetnet extends Component {
         self.setState({
           meetnet: data,
         });
-
         $('#meetnet-tree').jstree({
           'core': {
             'data': self.state.meetnet,
