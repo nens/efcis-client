@@ -7,16 +7,32 @@ import {
   APPLY_FILTER,
   APPLY_SORTING,
   CLEAR_LOCATIONS_SELECTION,
+  RECEIVE_CHARTS,
+  RECEIVE_DATA_FOR_BOXPLOT,
+  RECEIVE_DATA_FOR_LEFT_Y,
+  RECEIVE_DATA_FOR_RIGHT_Y,
+  RECEIVE_DATA_FOR_SCATTERPLOT,
   RECEIVE_FEATURES,
   RECEIVE_OPNAMES,
-  REMOVE_LOCATION_FROM_SELECTION,
-  REQUEST_FEATURES,
-  REQUEST_OPNAMES,
-  REQUEST_CHARTS,
-  RECEIVE_CHARTS,
+  RECEIVE_SCATTERPLOT_DATA,
+  RECEIVE_SECOND_SCATTERPLOT_AXIS,
+  REMOVE_FROM_BOXPLOTCHARTS_BY_ID,
   REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID,
   REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID,
+  REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID,
+  REMOVE_LOCATION_FROM_SELECTION,
+  REQUEST_CHARTS,
+  REQUEST_DATA_FOR_BOXPLOT,
+  REQUEST_DATA_FOR_LEFT_Y,
+  REQUEST_DATA_FOR_RIGHT_Y,
+  REQUEST_DATA_FOR_SCATTERPLOT,
+  REQUEST_FEATURES,
+  REQUEST_OPNAMES,
+  REQUEST_SCATTERPLOT_DATA,
+  REQUEST_SECOND_SCATTERPLOT_AXIS,
   RESET_ALL_FILTERS,
+  SET_AS_SCATTERPLOTCHARTS_X,
+  SET_AS_SCATTERPLOTCHARTS_Y,
   SET_COLOR_BY,
   SET_LOCATIONS,
   SET_MAP_POSITION,
@@ -24,10 +40,6 @@ import {
   SET_MEETNETS,
   SET_PERIOD,
   SET_SEASON,
-  REQUEST_DATA_FOR_LEFT_Y,
-  RECEIVE_DATA_FOR_LEFT_Y,
-  REQUEST_DATA_FOR_RIGHT_Y,
-  RECEIVE_DATA_FOR_RIGHT_Y,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -48,10 +60,14 @@ function opnames(state = {
   meetnets: [],
   features: [],
   charts: [],
+  boxplotCharts: [],
+  scatterplotCharts: [],
+  scatterplotData: undefined,
   linechartsLeftY: [],
   linechartsRightY: [],
   boxplotCharts: [],
   scatterplotCharts: [],
+  secondScatterplotCharts: [],
   season: undefined,
   color_by: undefined,
   map: {
@@ -79,6 +95,10 @@ function opnames(state = {
       meetnets: [],
       features: [],
       charts: [],
+      boxplotCharts: [],
+      scatterplotCharts: [],
+      scatterplotData: undefined,
+      secondScatterplotCharts: [],
       linechartsLeftY: [],
       linechartsRightY: [],
       season: undefined,
@@ -190,6 +210,42 @@ function opnames(state = {
     return Object.assign({}, state, {
       locations: action.ids,
     });
+  case REMOVE_FROM_BOXPLOTCHARTS_BY_ID:
+    return Object.assign({}, state, {
+      boxplotCharts: state.boxplotCharts.filter((chart) => {
+        if (chart.id === action.id) {
+          return false;
+        }
+        return chart;
+      }),
+    });
+  case REQUEST_DATA_FOR_BOXPLOT:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_DATA_FOR_BOXPLOT:
+    return Object.assign({}, state, {
+      isFetching: false,
+      boxplotCharts: [...state.boxplotCharts, action.results],
+    });
+  case REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID:
+    return Object.assign({}, state, {
+      scatterplotCharts: state.scatterplotCharts.filter((chart) => {
+        if (chart.id === action.id) {
+          return false;
+        }
+        return chart;
+      }),
+    });
+  case REQUEST_DATA_FOR_SCATTERPLOT:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_DATA_FOR_SCATTERPLOT:
+    return Object.assign({}, state, {
+      isFetching: false,
+      scatterplotCharts: [...state.scatterplotCharts, action.results],
+    });
   case REQUEST_DATA_FOR_LEFT_Y:
     return Object.assign({}, state, {
       isFetching: true,
@@ -202,7 +258,9 @@ function opnames(state = {
   case REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID:
     return Object.assign({}, state, {
       linechartsLeftY: state.linechartsLeftY.filter((chart) => {
-        if (chart.id === action.id) return false;
+        if (chart.id === action.id) {
+          return false;
+        }
         return chart;
       }),
     });
@@ -218,9 +276,31 @@ function opnames(state = {
   case REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID:
     return Object.assign({}, state, {
       linechartsRightY: state.linechartsRightY.filter((chart) => {
-        if (chart.id === action.id) return false;
+        if (chart.id === action.id) {
+          return false;
+        }
         return chart;
       }),
+    });
+  case SET_AS_SCATTERPLOTCHARTS_X:
+  case SET_AS_SCATTERPLOTCHARTS_Y:
+  case REQUEST_SECOND_SCATTERPLOT_AXIS:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_SECOND_SCATTERPLOT_AXIS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      secondScatterplotCharts: action.result,
+    });
+  case REQUEST_SCATTERPLOT_DATA:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_SCATTERPLOT_DATA:
+    return Object.assign({}, state, {
+      isFetching: false,
+      scatterplotData: action.result,
     });
   default:
     return state;
