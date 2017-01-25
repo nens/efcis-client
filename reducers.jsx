@@ -39,6 +39,7 @@ import {
   SET_MAP_POSITION,
   SET_MAP_STATISTICS,
   SET_MEETNETS,
+  SET_PARAMETERGROUPS,
   SET_PERIOD,
   SET_SEASON,
   SET_TRESHOLD_FOR_LINECHART,
@@ -58,7 +59,7 @@ function opnames(state = {
   sorting: {},
   start_date: moment().subtract(29, 'days').format(dateFormat),
   end_date: moment().format(dateFormat),
-  parametergroeps: [],
+  parametergroups: [],
   parameters: [],
   locations: [],
   locationIds: [],
@@ -100,7 +101,7 @@ function opnames(state = {
       sorting: {},
       start_date: moment().subtract(29, 'days').format(dateFormat),
       end_date: moment().format(dateFormat),
-      parametergroeps: [],
+      parametergroups: [],
       parameters: [],
       locations: [],
       locationIds: [],
@@ -221,6 +222,10 @@ function opnames(state = {
   case SET_MEETNETS:
     return Object.assign({}, state, {
       meetnets: action.ids,
+    });
+  case SET_PARAMETERGROUPS:
+    return Object.assign({}, state, {
+      parametergroups: action.ids,
     });
   case SET_LOCATIONS:
     return Object.assign({}, state, {

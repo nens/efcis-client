@@ -38,6 +38,7 @@ export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
+export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
@@ -134,6 +135,13 @@ export function setMeetnets(ids) {
   };
 }
 
+export function setParameterGroups(ids) {
+  return {
+    type: SET_PARAMETERGROUPS,
+    ids,
+  };
+}
+
 export function setLocations(ids) {
   return {
     type: SET_LOCATIONS,
@@ -185,6 +193,8 @@ export function fetchOpnames(page) {
     const sort_fields = Object.keys(getState().opnames.sorting);
     const sort_dirs = Object.values(getState().opnames.sorting);
     const meetnetids = getState().opnames.meetnets;
+    const parametergroupids = getState().opnames.parametergroups;
+    const parameterids = getState().opnames.parameters;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
@@ -194,6 +204,7 @@ export function fetchOpnames(page) {
       page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      parametergroups: parametergroupids.join(','),
       start_date,
       end_date,
       season,
@@ -244,6 +255,7 @@ export function fetchFeatures() {
 
     const filtersObject = getState().opnames.filters;
     const meetnetids = getState().opnames.meetnets;
+    const parametergroupids = getState().opnames.parametergroups;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;

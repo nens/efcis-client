@@ -6484,6 +6484,10 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
+sweetalert@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/sweetalert/-/sweetalert-0.5.0.tgz#74817517b96ebb98fa2e542318f2f1d5286ffe23"
+
 symbol-observable@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
