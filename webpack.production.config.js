@@ -9,7 +9,7 @@ var definePlugin = new webpack.DefinePlugin({
 });
 
 var config = {
-  // We change to normal source mapping
+  // We disable all source mapping for production
   // devtool: 'source-map',
   entry: './index.jsx',
   output: {
@@ -18,6 +18,11 @@ var config = {
     filename: 'bundle.js'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"production"'
+      },
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       // sourceMap: false,

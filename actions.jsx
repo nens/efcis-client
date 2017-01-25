@@ -7,19 +7,31 @@ export const APPLY_FILTER = 'APPLY_FILTER';
 export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
 export const RECEIVE_CHARTS = 'RECEIVE_CHARTS';
+export const RECEIVE_DATA_FOR_BOXPLOT = 'RECEIVE_DATA_FOR_BOXPLOT';
 export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
 export const RECEIVE_DATA_FOR_RIGHT_Y = 'RECEIVE_DATA_FOR_RIGHT_Y';
+export const RECEIVE_DATA_FOR_SCATTERPLOT = 'RECEIVE_DATA_FOR_SCATTERPLOT';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
+export const RECEIVE_SCATTERPLOT_DATA = 'RECEIVE_SCATTERPLOT_DATA';
+export const RECEIVE_SECOND_SCATTERPLOT_AXIS = 'RECEIVE_SECOND_SCATTERPLOT_AXIS';
+export const REMOVE_FROM_BOXPLOTCHARTS_BY_ID = 'REMOVE_FROM_BOXPLOTCHARTS_BY_ID';
 export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID';
 export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
+export const REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID = 'REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
 export const REQUEST_CHARTS = 'REQUEST_CHARTS';
+export const REQUEST_DATA_FOR_BOXPLOT = 'REQUEST_DATA_FOR_BOXPLOT';
 export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
 export const REQUEST_DATA_FOR_RIGHT_Y = 'REQUEST_DATA_FOR_RIGHT_Y';
+export const REQUEST_DATA_FOR_SCATTERPLOT = 'REQUEST_DATA_FOR_SCATTERPLOT';
 export const REQUEST_FEATURES = 'REQUEST_FEATURES';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const REQUEST_SCATTERPLOT_DATA = 'REQUEST_SCATTERPLOT_DATA';
+export const REQUEST_SECOND_SCATTERPLOT_AXIS = 'REQUEST_SECOND_SCATTERPLOT_AXIS';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
+export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
+export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
@@ -29,17 +41,20 @@ export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 
+// The following makes sure that the XHR POST requests in this file get a
+// CRSFToken header with the contents of the crsftoken cookie that's set by
+// Django in production. It's doesn't affect the requests in development mode.
 
-function getCookie(c_name) {
-  if (document.cookie.length > 0)
-  {
-    let c_start = document.cookie.indexOf(c_name + '=');
-    if (c_start != -1)
-    {
-      c_start = c_start + c_name.length + 1;
-      let c_end = document.cookie.indexOf(';', c_start);
-      if (c_end == -1) c_end = document.cookie.length;
-      return unescape(document.cookie.substring(c_start, c_end));
+function getCookie(cName) {
+  if (document.cookie.length > 0) {
+    let cStart = document.cookie.indexOf(cName + '=');
+    if (cStart !== -1) {
+      cStart = cStart + cName.length + 1;
+      let cEnd = document.cookie.indexOf(';', cStart);
+      if (cEnd === -1) {
+        cEnd = document.cookie.length;
+      }
+      return unescape(document.cookie.substring(cStart, cEnd));
     }
   }
   return '';
@@ -47,6 +62,10 @@ function getCookie(c_name) {
 $.ajaxSetup({
   headers: { 'X-CSRFToken': getCookie('csrftoken') }
 });
+
+// End of XHR Header setup
+
+
 
 export function setMapPosition(object) {
   return {
@@ -375,9 +394,6 @@ export function fetchCharts() {
       season,
     };
     const mergedData = _.merge(dataObject, filtersObject);
-    $.ajaxSetup({
-      headers: { 'X-CSRFToken': getCookie("csrftoken") }
-    });
     const chartsEndpoint = $.ajax({
       url: '/api/graphs/',
       type: 'post',
@@ -391,4 +407,170 @@ export function fetchCharts() {
       return dispatch(receiveCharts(chartsResults));
     });
   }
+}
+
+
+
+
+
+
+function requestDataForBoxplot() {
+  return {
+    type: REQUEST_DATA_FOR_BOXPLOT,
+  };
+}
+
+function receiveDataForBoxplot(chart, results) {
+  return {
+    type: RECEIVE_DATA_FOR_BOXPLOT,
+    chart,
+    results,
+  };
+}
+
+export function addToBoxplotCharts(chart) {
+  return (dispatch, getState) => {
+    dispatch(requestDataForBoxplot());
+
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: `/api/boxplots/${chart.id}/`,
+      success: (data) => {
+        return data;
+      }
+    });
+
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveDataForBoxplot(chart, chartsResults));
+    });
+  }
+}
+
+export function removeFromBoxplotChartsById(id) {
+  return {
+    type: REMOVE_FROM_BOXPLOTCHARTS_BY_ID,
+    id,
+  }
+}
+
+
+
+
+function requestDataForScatterplot() {
+  return {
+    type: REQUEST_DATA_FOR_SCATTERPLOT,
+  };
+}
+
+function receiveDataForScatterplot(chart, results) {
+  return {
+    type: RECEIVE_DATA_FOR_SCATTERPLOT,
+    chart,
+    results,
+  };
+}
+
+export function addToScatterplotCharts(chart) {
+  return (dispatch, getState) => {
+    dispatch(requestDataForScatterplot());
+
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: `/api/scatterplots/${chart.id}/`,
+      success: (data) => {
+        return data;
+      }
+    });
+
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveDataForScatterplot(chart, chartsResults));
+    });
+  }
+}
+
+export function removeFromScatterplotChartsById(id) {
+  return {
+    type: REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID,
+    id,
+  }
+}
+
+
+
+function requestSecondScatterplotAxis() {
+  return {
+    type: REQUEST_SECOND_SCATTERPLOT_AXIS,
+  };
+}
+
+function receiveSecondScatterplotAxis(result) {
+  return {
+    type: RECEIVE_SECOND_SCATTERPLOT_AXIS,
+    result,
+  };
+}
+
+
+export function fetchSecondScatterplotAxis(chart) {
+
+  return (dispatch, getState) => {
+    dispatch(requestSecondScatterplotAxis());
+
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: chart['scatterplot-second-axis-url'].replace(
+        'https://efcis.staging.lizard.net', ''),
+      success: (data) => {
+        return data;
+      }
+    });
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      return dispatch(receiveSecondScatterplotAxis(chartsResults));
+    });
+  }
+
+}
+
+export function setAsScatterplotChartsY(chart) {
+  return {
+    type: SET_AS_SCATTERPLOTCHARTS_Y,
+    chart,
+  };
+}
+
+
+
+
+
+function requestScatterplotData() {
+  return {
+    type: REQUEST_SCATTERPLOT_DATA,
+  };
+}
+
+function receiveScatterplotData(result) {
+  return {
+    type: RECEIVE_SCATTERPLOT_DATA,
+    result,
+  };
+}
+
+
+export function fetchScatterplotDataByUrl(scatterplotUrl) {
+
+    return (dispatch, getState) => {
+      dispatch(requestScatterplotData());
+
+      const chartsEndpoint = $.ajax({
+        type: 'GET',
+        url: scatterplotUrl.replace(
+          'https://efcis.staging.lizard.net', ''),
+        success: (data) => {
+          return data;
+        }
+      });
+      Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+        return dispatch(receiveScatterplotData(chartsResults));
+      });
+    }
 }
