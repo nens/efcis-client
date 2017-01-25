@@ -20,9 +20,7 @@ import {
   removeFromBoxplotChartsById,
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
-  removeFromScatterplotChartsById,
-  setAsScatterplotChartsX,
-  setAsScatterplotChartsY,
+  setTresholdForLinechart,
 } from '../actions.jsx';
 
 
@@ -102,6 +100,7 @@ class LineChartComponent extends Component {
         crosshair: true,
       }],
       yAxis: [{ // Primary yAxis
+        min: 0,
         labels: {
           format: '{value}',
           style: {
@@ -114,6 +113,11 @@ class LineChartComponent extends Component {
             color: Highcharts.getOptions().colors[1],
           },
         },
+        plotLines: [{
+          color: 'red',
+          value: (this.props.opnames.lineChartSettings.treshold) ? this.props.opnames.lineChartSettings.treshold : 0,
+          width: (this.props.opnames.lineChartSettings.treshold) ? 2 : 0,
+        }]
       }, { // Secondary yAxis
         title: {
           text: '',
@@ -341,6 +345,7 @@ class ChartApp extends Component {
       height: window.innerHeight,
       showLeftYAxisModal: false,
       showRightYAxisModal: false,
+      showLinechartSettingsModal: false,
       showBoxplotModal: false,
       showScatterplotModal: false,
       currentUnit: undefined,
@@ -350,6 +355,7 @@ class ChartApp extends Component {
     this.hideRightYAxisModal = this.hideRightYAxisModal.bind(this);
     this.hideBoxplotModal = this.hideBoxplotModal.bind(this);
     this.hideScatterplotModal = this.hideScatterplotModal.bind(this);
+    this.hideLinechartSettingsModal = this.hideLinechartSettingsModal.bind(this);
   }
 
   componentDidMount() {
@@ -383,6 +389,10 @@ class ChartApp extends Component {
     this.setState({ showScatterplotModal: false });
   }
 
+  hideLinechartSettingsModal() {
+    this.setState({ showLinechartSettingsModal: false });
+  }
+
   updateDimensions() {
     this.setState({
       width: document.getElementById('chart').offsetWidth - 20,
@@ -402,6 +412,15 @@ class ChartApp extends Component {
             <div className='col-md-10' id='chart'>
             <Tabs activeKey={this.state.key} id='chart-tab'>
               <Tab eventKey={1} title='Tijdreeks'>
+                <Button
+                  bsSize='xsmall'
+                  style={{ margin: 5 }}
+                  onClick={() => this.setState({
+                    showLinechartSettingsModal: true
+                  })}
+                  className='pull-right'>
+                  <i className='fa fa-area-chart'></i>&nbsp;Instellingen
+                </Button>
                 <LineChartComponent
                   {...this.props}
                   width={this.state.width}
@@ -740,6 +759,40 @@ class ChartApp extends Component {
           <Modal.Footer>
             <Button onClick={() => {
               this.hideRightYAxisModal();
+            }}>Toepassen</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          {...this.props}
+          show={this.state.showLinechartSettingsModal}
+          dialogClassName={styles.WideModal}
+          onHide={this.hideLinechartSettingsModal}>
+          <Modal.Header closeButton>
+            <Modal.Title id='linechart-settings-modal'>
+              Configureer Lijngrafiek
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className='panel panel-default'>
+              <div className='panel-body'>
+                <div className='input-group'>
+                  <label htmlFor='rightMin'>Waarde normlijn o.b.v. linker Y-as</label>
+                  <input type='number'
+                         onChange={(e) => this.props.dispatch(
+                           setTresholdForLinechart(e.target.value)
+                         )}
+                         defaultValue={this.props.opnames.lineChartSettings.treshold}
+                         className='form-control'
+                         id='rightMin'
+                         placeholder='Min' />
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => {
+              this.hideLinechartSettingsModal();
             }}>Toepassen</Button>
           </Modal.Footer>
         </Modal>
