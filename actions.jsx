@@ -40,6 +40,7 @@ export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
+export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
 
 // The following makes sure that the XHR POST requests in this file get a
 // CRSFToken header with the contents of the crsftoken cookie that's set by
@@ -573,4 +574,11 @@ export function fetchScatterplotDataByUrl(scatterplotUrl) {
         return dispatch(receiveScatterplotData(chartsResults));
       });
     }
+}
+
+export function setTresholdForLinechart(value) {
+  return {
+    type: SET_TRESHOLD_FOR_LINECHART,
+    value,
+  };
 }

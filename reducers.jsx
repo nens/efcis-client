@@ -41,6 +41,7 @@ import {
   SET_PARAMETERGROUPS,
   SET_PERIOD,
   SET_SEASON,
+  SET_TRESHOLD_FOR_LINECHART,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -61,6 +62,9 @@ function opnames(state = {
   meetnets: [],
   features: [],
   charts: [],
+  lineChartSettings: {
+    treshold: undefined,
+  },
   boxplotCharts: [],
   scatterplotCharts: [],
   scatterplotData: undefined,
@@ -96,6 +100,9 @@ function opnames(state = {
       meetnets: [],
       features: [],
       charts: [],
+      lineChartSettings: {
+        treshold: undefined,
+      },
       boxplotCharts: [],
       scatterplotCharts: [],
       scatterplotData: undefined,
@@ -169,6 +176,12 @@ function opnames(state = {
     return Object.assign({}, state, {
       filters: {
         ...state.filters, [action.colName]: action.q,
+      },
+    });
+  case SET_TRESHOLD_FOR_LINECHART:
+    return Object.assign({}, state, {
+      lineChartSettings: {
+        treshold: parseInt(action.value),
       },
     });
   case APPLY_SORTING:
