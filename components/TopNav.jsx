@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
+import LoadingBar from 'react-redux-loading-bar';
 import { Router, Route, Link, browserHistory } from 'react-router'
 import logo from '../images/logo.png';
 
@@ -27,6 +28,7 @@ class TopNav extends Component {
   render() {
     return (
       <nav className='navbar navbar-fixed-top'>
+      <LoadingBar updateTime={100} maxProgress={95} progressIncrease={10} />
          <div className='container-fluid'>
            <div className='navbar-header'>
              <button type='button'

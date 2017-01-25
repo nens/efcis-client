@@ -4,6 +4,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import sharedStyles from './SharedStyles.css';
+import { Wave } from 'better-react-spinkit';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
@@ -21,6 +22,10 @@ import {
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
   setTresholdForLinechart,
+  setLeftAxisMinForLinechart,
+  setLeftAxisMaxForLinechart,
+  setRightAxisMinForLinechart,
+  setRightAxisMaxForLinechart,
 } from '../actions.jsx';
 
 
@@ -64,6 +69,7 @@ class LineChartComponent extends Component {
 
     const leftSeries = this.props.opnames.linechartsLeftY.map((linechart, i) => {
       return {
+        animation: false,
         name: linechart.location,
         type: 'spline',
         data: linechart.data.map((d) => d.value),
@@ -75,6 +81,7 @@ class LineChartComponent extends Component {
 
     const rightSeries = this.props.opnames.linechartsRightY.map((linechart, i) => {
       return {
+        animation: false,
         name: linechart.location,
         type: 'spline',
         yAxis: 1,
@@ -100,7 +107,8 @@ class LineChartComponent extends Component {
         crosshair: true,
       }],
       yAxis: [{ // Primary yAxis
-        min: 0,
+        min: (this.props.opnames.lineChartSettings.leftMin) ? this.props.opnames.lineChartSettings.leftMin : undefined,
+        max: (this.props.opnames.lineChartSettings.leftMax) ? this.props.opnames.lineChartSettings.leftMax : undefined,
         labels: {
           format: '{value}',
           style: {
@@ -125,6 +133,8 @@ class LineChartComponent extends Component {
             color: Highcharts.getOptions().colors[0],
           }
         },
+        min: (this.props.opnames.lineChartSettings.rightMin) ? this.props.opnames.lineChartSettings.rightMin : undefined,
+        max: (this.props.opnames.lineChartSettings.rightMax) ? this.props.opnames.lineChartSettings.rightMax : undefined,
         labels: {
           format: '{value}',
           style: {
@@ -529,26 +539,37 @@ class ChartApp extends Component {
           </div>
           <div className='col-md-6'>
           <h4>Y as</h4>
-            <ul style={{
-              height: 600,
-              overflowY: 'scroll',
-            }}>
-              {(this.props.opnames.secondScatterplotCharts.second_axis_lines) ?
-                this.props.opnames.secondScatterplotCharts.second_axis_lines.map((chart, i) => {
-                return (
-                  <li
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      this.props.dispatch(
-                        fetchScatterplotDataByUrl(chart.url)
-                      );
-                    }}
-                    key={i}>
-                    {chart.wns} - {chart.location}
-                  </li>
-                );
-              }) : ''}
-            </ul>
+            {(this.props.opnames.isFetching) ?
+              <div style={{
+                position: 'absolute',
+                left: 50,
+                top: 200,
+                zIndex: 9999,
+              }}>
+                <Wave size={50} />
+              </div>
+              :
+              <ul style={{
+                height: 600,
+                overflowY: 'scroll',
+              }}>
+                {(this.props.opnames.secondScatterplotCharts.second_axis_lines) ?
+                  this.props.opnames.secondScatterplotCharts.second_axis_lines.map((chart, i) => {
+                  return (
+                    <li
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        this.props.dispatch(
+                          fetchScatterplotDataByUrl(chart.url)
+                        );
+                      }}
+                      key={i}>
+                      {chart.wns} - {chart.location}
+                    </li>
+                  );
+                }) : ''}
+              </ul>
+            }
           </div>
           </div>
           </Modal.Body>
@@ -571,7 +592,7 @@ class ChartApp extends Component {
           </Modal.Header>
           <Modal.Body>
           <div className='row'>
-          <div className='col-md-6'>
+          <div className='col-md-6'>        
             <ul style={{
               height: 600,
               overflowY: 'scroll',
@@ -774,18 +795,67 @@ class ChartApp extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className='panel panel-default'>
-              <div className='panel-body'>
-                <div className='input-group'>
-                  <label htmlFor='rightMin'>Waarde normlijn o.b.v. linker Y-as</label>
-                  <input type='number'
-                         onChange={(e) => this.props.dispatch(
-                           setTresholdForLinechart(e.target.value)
-                         )}
-                         defaultValue={this.props.opnames.lineChartSettings.treshold}
-                         className='form-control'
-                         id='rightMin'
-                         placeholder='Min' />
+            <div>
+              <div className='panel panel-default'>
+                <div className='panel-body'>
+                  <div className='input-group'>
+                    <label htmlFor='leftMin'>Minimumwaarde linker Y-as</label>
+                    <input type='number'
+                           onChange={(e) => this.props.dispatch(
+                             setLeftAxisMinForLinechart(e.target.value)
+                           )}
+                           defaultValue={this.props.opnames.lineChartSettings.leftMin}
+                           className='form-control'
+                           id='leftMin' />
+                  </div>
+                  <div className='input-group'>
+                    <label htmlFor='leftMax'>Maximumwaarde linker Y-as</label>
+                    <input type='number'
+                           onChange={(e) => this.props.dispatch(
+                             setLeftAxisMaxForLinechart(e.target.value)
+                           )}
+                           defaultValue={this.props.opnames.lineChartSettings.leftMax}
+                           className='form-control'
+                           id='leftMax' />
+                  </div>
+                </div>
+              </div>
+              <div className='panel panel-default'>
+                <div className='panel-body'>
+                  <div className='input-group'>
+                    <label htmlFor='rightMin'>Minimumwaarde rechter Y-as</label>
+                    <input type='number'
+                           onChange={(e) => this.props.dispatch(
+                             setRightAxisMinForLinechart(e.target.value)
+                           )}
+                           defaultValue={this.props.opnames.lineChartSettings.rightMin}
+                           className='form-control'
+                           id='rightMin' />
+                  </div>
+                  <div className='input-group'>
+                    <label htmlFor='rightMin'>Maximumwaarde rechter Y-as</label>
+                    <input type='number'
+                           onChange={(e) => this.props.dispatch(
+                             setRightAxisMaxForLinechart(e.target.value)
+                           )}
+                           defaultValue={this.props.opnames.lineChartSettings.rightMax}
+                           className='form-control'
+                           id='rightMax' />
+                  </div>
+                </div>
+              </div>
+              <div className='panel panel-default'>
+                <div className='panel-body'>
+                  <div className='input-group'>
+                    <label htmlFor='tresholdValue'>Waarde normlijn o.b.v. linker Y-as</label>
+                    <input type='number'
+                           onChange={(e) => this.props.dispatch(
+                             setTresholdForLinechart(e.target.value)
+                           )}
+                           defaultValue={this.props.opnames.lineChartSettings.treshold}
+                           className='form-control'
+                           id='tresholdValue' />
+                  </div>
                 </div>
               </div>
             </div>

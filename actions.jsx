@@ -1,6 +1,7 @@
 /* globals Promise:true */
 import $ from 'jquery';
 import _ from 'lodash';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
@@ -40,6 +41,10 @@ export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
+export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART';
+export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
+export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHART';
+export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
 
 // The following makes sure that the XHR POST requests in this file get a
 // CRSFToken header with the contents of the crsftoken cookie that's set by
@@ -173,6 +178,7 @@ export function fetchOpnames(page) {
     //   // Page stayed the same, don't refetch!
     //   return Promise.resolve();
     // }
+    dispatch(showLoading());
     dispatch(requestOpnames());
 
     const filtersObject = getState().opnames.filters;
@@ -205,6 +211,7 @@ export function fetchOpnames(page) {
       },
     });
     Promise.all([opnamesEndpoint]).then(([opnamesResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveOpnames(opnamesResults, page));
     });
   };
@@ -232,6 +239,7 @@ function receiveFeatures(results) {
 
 export function fetchFeatures() {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestFeatures());
 
     const filtersObject = getState().opnames.filters;
@@ -261,6 +269,7 @@ export function fetchFeatures() {
       },
     });
     Promise.all([featuresEndpoint]).then(([featuresResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveFeatures(featuresResults));
     });
   }
@@ -290,6 +299,7 @@ function receiveDataForRightY(chart, results) {
 
 export function addToLinechartsRightY(chart) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestDataForRightY());
 
     const chartsEndpoint = $.ajax({
@@ -301,6 +311,7 @@ export function addToLinechartsRightY(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveDataForRightY(chart, chartsResults));
     });
   }
@@ -333,6 +344,7 @@ function receiveDataForLeftY(chart, results) {
 
 export function addToLinechartsLeftY(chart) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestDataForLeftY());
 
     const chartsEndpoint = $.ajax({
@@ -344,6 +356,7 @@ export function addToLinechartsLeftY(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveDataForLeftY(chart, chartsResults));
     });
   }
@@ -366,6 +379,7 @@ function receiveCharts(results) {
 
 export function fetchCharts() {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestCharts());
 
     const filtersObject = getState().opnames.filters;
@@ -393,6 +407,7 @@ export function fetchCharts() {
       },
     });
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveCharts(chartsResults));
     });
   }
@@ -419,6 +434,7 @@ function receiveDataForBoxplot(chart, results) {
 
 export function addToBoxplotCharts(chart) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestDataForBoxplot());
 
     const chartsEndpoint = $.ajax({
@@ -430,6 +446,7 @@ export function addToBoxplotCharts(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveDataForBoxplot(chart, chartsResults));
     });
   }
@@ -461,6 +478,7 @@ function receiveDataForScatterplot(chart, results) {
 
 export function addToScatterplotCharts(chart) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestDataForScatterplot());
 
     const chartsEndpoint = $.ajax({
@@ -472,6 +490,7 @@ export function addToScatterplotCharts(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveDataForScatterplot(chart, chartsResults));
     });
   }
@@ -503,6 +522,7 @@ function receiveSecondScatterplotAxis(result) {
 export function fetchSecondScatterplotAxis(chart) {
 
   return (dispatch, getState) => {
+    dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
 
     const chartsEndpoint = $.ajax({
@@ -514,6 +534,7 @@ export function fetchSecondScatterplotAxis(chart) {
       }
     });
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
       return dispatch(receiveSecondScatterplotAxis(chartsResults));
     });
   }
@@ -549,6 +570,7 @@ export function fetchScatterplotDataByUrl(scatterplotUrl) {
 
     return (dispatch, getState) => {
       dispatch(requestScatterplotData());
+      dispatch(showLoading());
 
       const chartsEndpoint = $.ajax({
         type: 'GET',
@@ -559,6 +581,7 @@ export function fetchScatterplotDataByUrl(scatterplotUrl) {
         }
       });
       Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+        dispatch(hideLoading());
         return dispatch(receiveScatterplotData(chartsResults));
       });
     }
@@ -567,6 +590,36 @@ export function fetchScatterplotDataByUrl(scatterplotUrl) {
 export function setTresholdForLinechart(value) {
   return {
     type: SET_TRESHOLD_FOR_LINECHART,
+    value,
+  };
+}
+
+
+
+export function setLeftAxisMinForLinechart(value) {
+  return {
+    type: SET_LEFT_AXIS_MIN_FOR_LINECHART,
+    value,
+  };
+}
+
+export function setLeftAxisMaxForLinechart(value) {
+  return {
+    type: SET_LEFT_AXIS_MAX_FOR_LINECHART,
+    value,
+  };
+}
+
+export function setRightAxisMinForLinechart(value) {
+  return {
+    type: SET_RIGHT_AXIS_MIN_FOR_LINECHART,
+    value,
+  };
+}
+
+export function setRightAxisMaxForLinechart(value) {
+  return {
+    type: SET_RIGHT_AXIS_MAX_FOR_LINECHART,
     value,
   };
 }

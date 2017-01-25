@@ -5521,6 +5521,10 @@ react-overlays@^0.6.10:
     react-prop-types "^0.4.0"
     warning "^3.0.0"
 
+react-progress@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/react-progress/-/react-progress-0.0.12.tgz#386194cdfebaa65b452494284a9677cea3980bba"
+
 react-prop-types@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
@@ -5533,6 +5537,10 @@ react-proxy@^1.1.7:
   dependencies:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
+
+react-redux-loading-bar@^2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/react-redux-loading-bar/-/react-redux-loading-bar-2.6.4.tgz#0c93770b72bc1dfc456e31a34ddc2cf5eaff89dd"
 
 react-redux@, react-redux@^4.0.0:
   version "4.4.6"

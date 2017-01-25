@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { combineReducers } from 'redux';
+import { loadingBarReducer } from 'react-redux-loading-bar';
 // import undoable, { distinctState } from 'redux-undo';
 import {
   ADD_LOCATION_TO_SELECTION,
@@ -41,6 +42,10 @@ import {
   SET_PERIOD,
   SET_SEASON,
   SET_TRESHOLD_FOR_LINECHART,
+  SET_LEFT_AXIS_MIN_FOR_LINECHART,
+  SET_LEFT_AXIS_MAX_FOR_LINECHART,
+  SET_RIGHT_AXIS_MIN_FOR_LINECHART,
+  SET_RIGHT_AXIS_MAX_FOR_LINECHART,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -63,6 +68,10 @@ function opnames(state = {
   charts: [],
   lineChartSettings: {
     treshold: undefined,
+    leftMin: undefined,
+    leftMax: undefined,
+    rightMin: undefined,
+    rightMax: undefined,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -175,12 +184,6 @@ function opnames(state = {
     return Object.assign({}, state, {
       filters: {
         ...state.filters, [action.colName]: action.q,
-      },
-    });
-  case SET_TRESHOLD_FOR_LINECHART:
-    return Object.assign({}, state, {
-      lineChartSettings: {
-        treshold: parseInt(action.value),
       },
     });
   case APPLY_SORTING:
@@ -315,6 +318,46 @@ function opnames(state = {
       isFetching: false,
       scatterplotData: action.result,
     });
+  case SET_TRESHOLD_FOR_LINECHART:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        treshold: parseInt(action.value),
+      }
+    }
+  case SET_LEFT_AXIS_MIN_FOR_LINECHART:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        leftMin: parseInt(action.value),
+      }
+    }
+  case SET_LEFT_AXIS_MAX_FOR_LINECHART:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        leftMax: parseInt(action.value),
+      }
+    }
+  case SET_RIGHT_AXIS_MIN_FOR_LINECHART:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        rightMin: parseInt(action.value),
+      }
+    }
+  case SET_RIGHT_AXIS_MAX_FOR_LINECHART:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        rightMax: parseInt(action.value),
+      }
+    }
   default:
     return state;
   }
@@ -322,6 +365,7 @@ function opnames(state = {
 
 const rootReducer = combineReducers({
   opnames,
+  loadingBar: loadingBarReducer,
 });
 
 export default rootReducer;
