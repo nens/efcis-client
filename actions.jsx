@@ -197,7 +197,7 @@ export function fetchOpnames(page) {
       page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
-      parametergoups: parametergroupids.join(','),
+      parametergroups: parametergroupids.join(','),
       start_date,
       end_date,
       season,
