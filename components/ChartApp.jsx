@@ -258,7 +258,7 @@ class ScatterChartComponent extends Component {
     const scatterData = this.props.opnames.scatterplotData;
 
     let data_formatted = [];
-    if (scatterData.points) {
+    if (scatterData && scatterData.points) {
       data_formatted = scatterData.points.map((point) => {
         return [point.x, point.y];
       });
@@ -276,7 +276,7 @@ class ScatterChartComponent extends Component {
       xAxis: {
         title: {
           enabled: true,
-          text: scatterData.x_location + ' (' + scatterData.x_wns + ')' || ''
+          text: (scatterData) ? `${scatterData.x_location} (${scatterData.x_wns}` : '',
         },
         startOnTick: true,
         endOnTick: true,
@@ -284,7 +284,7 @@ class ScatterChartComponent extends Component {
       },
       yAxis: {
         title: {
-          text: scatterData.y_location + ' (' + scatterData.y_wns + ')' || ''
+          text: (scatterData) ? `${scatterData.y_location} (${scatterData.y_wns}` : '',
         }
       },
       plotOptions: {
@@ -312,9 +312,10 @@ class ScatterChartComponent extends Component {
         }
       },
       series: [{
-        name: (scatterData.x_wns + ' vs. ' + scatterData.y_wns)  || '',
+        name: (scatterData) ? `${scatterData.x_wns} vs. ${scatterData.y_wns}` : '',
         color: '#337AB7',
         data: data_formatted,
+        animation: false,
       }],
     });
   }
@@ -513,7 +514,8 @@ class ChartApp extends Component {
               height: 600,
               overflowY: 'scroll',
             }}>
-              {this.props.opnames.secondScatterplotCharts.second_axis_lines.map((chart, i) => {
+              {(this.props.opnames.secondScatterplotCharts.second_axis_lines) ?
+                this.props.opnames.secondScatterplotCharts.second_axis_lines.map((chart, i) => {
                 return (
                   <li
                     style={{ cursor: 'pointer' }}
@@ -526,7 +528,7 @@ class ChartApp extends Component {
                     {chart.wns} - {chart.location}
                   </li>
                 );
-              })}
+              }) : ''}
             </ul>
           </div>
           </div>
