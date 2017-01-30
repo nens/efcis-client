@@ -8,7 +8,7 @@ import { Wave } from 'better-react-spinkit';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
-import {Button, Modal, Tabs, Tab} from 'react-bootstrap';
+import { Button, Modal, Tabs, Tab } from 'react-bootstrap';
 import _ from 'lodash';
 
 import {
@@ -21,11 +21,11 @@ import {
   removeFromBoxplotChartsById,
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
-  setTresholdForLinechart,
-  setLeftAxisMinForLinechart,
   setLeftAxisMaxForLinechart,
-  setRightAxisMinForLinechart,
+  setLeftAxisMinForLinechart,
   setRightAxisMaxForLinechart,
+  setRightAxisMinForLinechart,
+  setTresholdForLinechart,
 } from '../actions.jsx';
 
 
@@ -103,12 +103,15 @@ class LineChartComponent extends Component {
         text: '',
       },
       xAxis: [{
-        categories: flatDateTimes.map((fd) => moment(fd).locale('nl').format('L')),
+        categories: flatDateTimes.map((fd) =>
+          moment(fd).locale('nl').format('L')),
         crosshair: true,
       }],
       yAxis: [{ // Primary yAxis
-        min: (this.props.opnames.lineChartSettings.leftMin) ? this.props.opnames.lineChartSettings.leftMin : undefined,
-        max: (this.props.opnames.lineChartSettings.leftMax) ? this.props.opnames.lineChartSettings.leftMax : undefined,
+        min: (this.props.opnames.lineChartSettings.leftMin) ?
+              this.props.opnames.lineChartSettings.leftMin : undefined,
+        max: (this.props.opnames.lineChartSettings.leftMax) ?
+              this.props.opnames.lineChartSettings.leftMax : undefined,
         labels: {
           format: '{value}',
           style: {
@@ -123,7 +126,8 @@ class LineChartComponent extends Component {
         },
         plotLines: [{
           color: 'red',
-          value: (this.props.opnames.lineChartSettings.treshold) ? this.props.opnames.lineChartSettings.treshold : 0,
+          value: (this.props.opnames.lineChartSettings.treshold) ?
+                  this.props.opnames.lineChartSettings.treshold : 0,
           width: (this.props.opnames.lineChartSettings.treshold) ? 2 : 0,
         }]
       }, { // Secondary yAxis
@@ -133,8 +137,10 @@ class LineChartComponent extends Component {
             color: Highcharts.getOptions().colors[0],
           }
         },
-        min: (this.props.opnames.lineChartSettings.rightMin) ? this.props.opnames.lineChartSettings.rightMin : undefined,
-        max: (this.props.opnames.lineChartSettings.rightMax) ? this.props.opnames.lineChartSettings.rightMax : undefined,
+        min: (this.props.opnames.lineChartSettings.rightMin) ?
+              this.props.opnames.lineChartSettings.rightMin : undefined,
+        max: (this.props.opnames.lineChartSettings.rightMax) ?
+              this.props.opnames.lineChartSettings.rightMax : undefined,
         labels: {
           format: '{value}',
           style: {
@@ -196,8 +202,9 @@ class BoxplotChartComponent extends Component {
     let currYear = '';
 
     for (let i = 1; i < this.props.opnames.boxplotCharts.length + 1; i++) {
-      categories.push(boxplotCharts[i - 1].location + ' (' + boxplotCharts[i-1].wns + ') ' +
-                      boxplotCharts[i - 1].start_date + " - " + boxplotCharts[i-1].end_date);
+      categories.push(`${boxplotCharts[i - 1].location}
+        (${boxplotCharts[i-1].wns})
+        ${boxplotCharts[i - 1].start_date} - ${boxplotCharts[i-1].end_date}`);
       series.push([
           boxplotCharts[i-1].boxplot_data.min,
           boxplotCharts[i-1].boxplot_data.q1,
@@ -279,7 +286,6 @@ class ScatterChartComponent extends Component {
     }
 
     Highcharts.chart(this.refs.scatterchartContainer, {
-
       chart: {
         type: 'scatter',
         zoomType: 'xy',
@@ -290,7 +296,8 @@ class ScatterChartComponent extends Component {
       xAxis: {
         title: {
           enabled: true,
-          text: (scatterData) ? `${scatterData.x_location} (${scatterData.x_wns}` : '',
+          text: (scatterData) ?
+                `${scatterData.x_location} (${scatterData.x_wns}` : '',
         },
         startOnTick: true,
         endOnTick: true,
@@ -298,7 +305,8 @@ class ScatterChartComponent extends Component {
       },
       yAxis: {
         title: {
-          text: (scatterData) ? `${scatterData.y_location} (${scatterData.y_wns}` : '',
+          text: (scatterData) ?
+                `${scatterData.y_location} (${scatterData.y_wns}` : '',
         }
       },
       plotOptions: {
@@ -326,7 +334,8 @@ class ScatterChartComponent extends Component {
         }
       },
       series: [{
-        name: (scatterData) ? `${scatterData.x_wns} vs. ${scatterData.y_wns}` : '',
+        name: (scatterData) ?
+              `${scatterData.x_wns} vs. ${scatterData.y_wns}` : '',
         color: '#337AB7',
         data: data_formatted,
         animation: false,
@@ -351,14 +360,18 @@ class ChartApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      showLeftYAxisModal: false,
-      showRightYAxisModal: false,
-      showLinechartSettingsModal: false,
-      showBoxplotModal: false,
-      showScatterplotModal: false,
+      boxplotSeriesFilter: '',
       currentUnit: undefined,
+      height: window.innerHeight,
+      linechartSeriesLeftYFilter: '',
+      linechartSeriesRightYFilter: '',
+      scatterplotSeriesFilter: '',
+      showBoxplotModal: false,
+      showLeftYAxisModal: false,
+      showLinechartSettingsModal: false,
+      showRightYAxisModal: false,
+      showScatterplotModal: false,
+      width: window.innerWidth,
     };
     this.updateDimensions = this.updateDimensions.bind(this);
     this.hideLeftYAxisModal = this.hideLeftYAxisModal.bind(this);
@@ -411,6 +424,95 @@ class ChartApp extends Component {
   }
 
   render() {
+
+    let filteredScatterplotSeries = this.props.opnames.charts.filter((location) => {
+      if (location.wns.toLowerCase().indexOf(this.state.scatterplotSeriesFilter.toLowerCase()) != -1 ||
+          location.wns.toLowerCase().indexOf(this.state.scatterplotSeriesFilter.toLowerCase()) != -1) {
+        return location;
+      }
+      else if (location.location.toLowerCase().indexOf(this.state.scatterplotSeriesFilter.toLowerCase()) != -1 ||
+          location.location.toLowerCase().indexOf(this.state.scatterplotSeriesFilter.toLowerCase()) != -1) {
+        return location;
+      }
+    });
+
+    filteredScatterplotSeries = filteredScatterplotSeries.sort((a, b) => {
+      if(a.wns < b.wns) {
+        return -1;
+      }
+      if(a.wns > b.wns) {
+        return 1;
+      }
+      return 0;
+    });
+
+    let filteredBoxplotSeries = this.props.opnames.charts.filter((location) => {
+      if (location.wns.toLowerCase().indexOf(this.state.boxplotSeriesFilter.toLowerCase()) != -1 ||
+          location.wns.toLowerCase().indexOf(this.state.boxplotSeriesFilter.toLowerCase()) != -1) {
+        return location;
+      }
+      else if (location.location.toLowerCase().indexOf(this.state.boxplotSeriesFilter.toLowerCase()) != -1 ||
+          location.location.toLowerCase().indexOf(this.state.boxplotSeriesFilter.toLowerCase()) != -1) {
+        return location;
+      }
+    });
+
+    filteredBoxplotSeries = filteredBoxplotSeries.sort((a, b) => {
+      if(a.wns < b.wns) {
+        return -1;
+      }
+      if(a.wns > b.wns) {
+        return 1;
+      }
+      return 0;
+    });
+
+
+
+    let filteredLinechartSeriesLeftY = this.props.opnames.charts.filter((location) => {
+      if (location.wns.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1 ||
+          location.wns.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1) {
+        return location;
+      }
+      else if (location.location.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1 ||
+          location.location.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1) {
+        return location;
+      }
+    });
+
+    filteredLinechartSeriesLeftY = filteredLinechartSeriesLeftY.sort((a, b) => {
+      if(a.wns < b.wns) {
+        return -1;
+      }
+      if(a.wns > b.wns) {
+        return 1;
+      }
+      return 0;
+    });
+
+
+
+    let filteredLinechartSeriesRightY = this.props.opnames.charts.filter((location) => {
+      if (location.wns.toLowerCase().indexOf(this.state.linechartSeriesRightYFilter.toLowerCase()) != -1 ||
+          location.wns.toLowerCase().indexOf(this.state.linechartSeriesRightYFilter.toLowerCase()) != -1) {
+        return location;
+      }
+      else if (location.location.toLowerCase().indexOf(this.state.linechartSeriesRightYFilter.toLowerCase()) != -1 ||
+          location.location.toLowerCase().indexOf(this.state.linechartSeriesRightYFilter.toLowerCase()) != -1) {
+        return location;
+      }
+    });
+
+    filteredLinechartSeriesRightY = filteredLinechartSeriesRightY.sort((a, b) => {
+      if(a.wns < b.wns) {
+        return -1;
+      }
+      if(a.wns > b.wns) {
+        return 1;
+      }
+      return 0;
+    });
+
     return (
       <div>
         <div className='container-fluid'>
@@ -509,11 +611,22 @@ class ChartApp extends Component {
           <div className='row'>
           <div className='col-md-6'>
           <h4>X as</h4>
+            <input
+              type='text'
+              ref='filterText'
+              style={{ margin: 5 }}
+              className='form-control'
+              autoFocus='autofocus'
+              placeholder='Filter tijdseries'
+              onChange={(e) => this.setState({
+                scatterplotSeriesFilter: e.target.value,
+              })}
+            />
             <ul style={{
               height: 600,
               overflowY: 'scroll',
             }}>
-              {this.props.opnames.charts.map((chart, i) => {
+              {filteredScatterplotSeries.map((chart, i) => {
                 return (
                   <li key={i}
                       onClick={() => {
@@ -592,12 +705,23 @@ class ChartApp extends Component {
           </Modal.Header>
           <Modal.Body>
           <div className='row'>
-          <div className='col-md-6'>        
+          <div className='col-md-6'>
+            <input
+              type='text'
+              ref='filterText'
+              style={{ margin: 5 }}
+              className='form-control'
+              autoFocus='autofocus'
+              placeholder='Filter tijdseries'
+              onChange={(e) => this.setState({
+                boxplotSeriesFilter: e.target.value,
+              })}
+            />
             <ul style={{
               height: 600,
               overflowY: 'scroll',
             }}>
-              {this.props.opnames.charts.map((chart, i) => {
+              {filteredBoxplotSeries.map((chart, i) => {
                 return (
                   <li key={i}
                       onClick={() => {
@@ -661,11 +785,22 @@ class ChartApp extends Component {
           <Modal.Body>
           <div className='row'>
           <div className='col-md-6'>
+            <input
+              type='text'
+              ref='filterText'
+              style={{ margin: 5 }}
+              className='form-control'
+              autoFocus='autofocus'
+              placeholder='Filter tijdseries'
+              onChange={(e) => this.setState({
+                linechartSeriesLeftYFilter: e.target.value,
+              })}
+            />
             <ul style={{
               height: 600,
               overflowY: 'scroll',
             }}>
-              {this.props.opnames.charts.map((chart, i) => {
+              {filteredLinechartSeriesLeftY.map((chart, i) => {
                 return (
                   <li key={i}
                       onClick={() => {
@@ -729,11 +864,22 @@ class ChartApp extends Component {
           <Modal.Body>
           <div className='row'>
           <div className='col-md-6'>
+            <input
+              type='text'
+              ref='filterText'
+              style={{ margin: 5 }}
+              className='form-control'
+              autoFocus='autofocus'
+              placeholder='Filter tijdseries'
+              onChange={(e) => this.setState({
+                linechartSeriesRightYFilter: e.target.value,
+              })}
+            />
             <ul style={{
               height: 600,
               overflowY: 'scroll',
             }}>
-              {this.props.opnames.charts.map((chart, i) => {
+              {filteredLinechartSeriesRightY.map((chart, i) => {
                 return (
                   <li key={i}
                       onClick={() => {
