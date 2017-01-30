@@ -4,11 +4,12 @@ import $ from 'jquery';
 import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
 import sharedStyles from './SharedStyles.css';
+import { CompactPicker } from 'react-color';
 import { Wave } from 'better-react-spinkit';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
-import { Button, Modal, Tabs, Tab } from 'react-bootstrap';
+import { Button, Modal, Tabs, Tab, Table, OverlayTrigger, Popover } from 'react-bootstrap';
 import _ from 'lodash';
 
 import {
@@ -22,6 +23,8 @@ import {
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
   setLeftAxisMaxForLinechart,
+  setLeftLineColorById,
+  setRightLineColorById,
   setLeftAxisMinForLinechart,
   setRightAxisMaxForLinechart,
   setRightAxisMinForLinechart,
@@ -44,9 +47,9 @@ class LineChartComponent extends Component {
     this.renderChart();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   renderChart() {
     const dateTimes = this.props.opnames.linechartsLeftY.map((chart) => {
@@ -71,7 +74,8 @@ class LineChartComponent extends Component {
       return {
         animation: false,
         name: linechart.location,
-        type: 'spline',
+        type: 'line',
+        color: linechart.lineColor,
         data: linechart.data.map((d) => d.value),
         tooltip: {
           valueSuffix: ` (${linechart.unit})`,
@@ -83,7 +87,8 @@ class LineChartComponent extends Component {
       return {
         animation: false,
         name: linechart.location,
-        type: 'spline',
+        type: 'line',
+        color: linechart.lineColor,
         yAxis: 1,
         data: linechart.data.map((d) => d.value),
         tooltip: {
@@ -103,6 +108,12 @@ class LineChartComponent extends Component {
         text: '',
       },
       xAxis: [{
+        type: 'datetime',
+        // min: moment('2010').unix(),
+        // max: moment('2016').unix(),
+        // dateTimeLabelFormats: {
+            // day: '%e of %b'
+        // },
         categories: flatDateTimes.map((fd) =>
           moment(fd).locale('nl').format('L')),
         crosshair: true,
@@ -171,7 +182,7 @@ class LineChartComponent extends Component {
     return (
       <div
         ref='linechartContainer'
-        style={{width: '100%', height: 600}}
+        style={{ width: '100%', height: 600 }}
         id='linechart-container'>
       </div>
     );
@@ -390,9 +401,9 @@ class ChartApp extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -546,6 +557,47 @@ class ChartApp extends Component {
                   }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>
+
+                  <div style={{
+                    position: 'absolute',
+                    top: 50,
+                    borderTop: '1px solid #ccc',
+                    width: '90%',
+                    padding: 10,
+                    margin: '0 10px 0 0' }}>
+                  {this.props.opnames.linechartsLeftY.map((linechart, i) => {
+                    return (
+                      <div key={i} style={{ marginTop: 5 }}>
+                        <span className={styles.LinesList}>
+                          {linechart.wns} - {linechart.location}
+                        </span>
+                        <OverlayTrigger
+                          trigger='click'
+                          placement='top'
+                          rootClose={true}
+                          overlay={
+                            <Popover id='filter-popover' title='Kies lijnkleur'>
+                              <CompactPicker
+                                color={(linechart.lineColor) ?
+                                  linechart.lineColor : '#fff'}
+                                onChangeComplete={(e) => this.props.dispatch(
+                                  setLeftLineColorById({
+                                    color: e.hex, id: linechart.id,
+                                  })
+                                )} />
+                            </Popover>
+                          }>
+                          <span
+                            style={{
+                              backgroundColor: (linechart.lineColor) ?
+                              linechart.lineColor : '#fff',
+                            }}
+                            className={`${styles.ColorPickerButton} pull-right`} />
+                        </OverlayTrigger>
+                      </div>
+                    );
+                  })}
+                  </div>
                 </div>
                 <div className='col-md-6'>
                   <Button
@@ -557,6 +609,42 @@ class ChartApp extends Component {
                     }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>
+                  <div style={{
+                    position: 'absolute',
+                    top: 50,
+                    borderTop: '1px solid #ccc',
+                    width: '90%',
+                    padding: 10,
+                    margin: '0 0 0 10px' }}>
+                    {this.props.opnames.linechartsRightY.map((linechart, i) => {
+                      return (
+                        <div key={i} style={{ marginTop: 5 }}>
+                          <span className={styles.LinesList}>
+                            {linechart.wns} - {linechart.location}
+                          </span>
+                          <OverlayTrigger
+                            trigger='click'
+                            placement='top'
+                            rootClose={true}
+                            overlay={
+                              <Popover id='filter-popover' title='Kies lijnkleur'>
+                                <CompactPicker
+                                  color={(linechart.lineColor) ? linechart.lineColor : '#fff'}
+                                  onChangeComplete={(e) => this.props.dispatch(
+                                    setRightLineColorById({ color: e.hex, id: linechart.id })
+                                  )} />
+                              </Popover>
+                            }>
+                            <span
+                              style={{
+                                backgroundColor: (linechart.lineColor) ? linechart.lineColor : '#fff',
+                              }}
+                              className={`${styles.ColorPickerButton} pull-right`} />
+                          </OverlayTrigger>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
@@ -564,7 +652,7 @@ class ChartApp extends Component {
                   {...this.props}
                   width={this.state.width} />
                   <hr/>
-                  <div className='col-md-6'>
+                  <div className='col-md-12'>
                     <Button onClick={() => {
                       this.setState({ currentUnit: undefined });
                       this.props.dispatch(fetchCharts());
@@ -572,6 +660,47 @@ class ChartApp extends Component {
                     }}>
                       <i className='fa fa-plus-circle'></i>
                     </Button>
+                    <hr/>
+                    <Table striped bordered hover>
+                      <thead>
+                        <th>Periode</th>
+                        <th>Locatie code</th>
+                        <th>Tijdreeks</th>
+                        <th>Eenheid</th>
+                        <th>Aantal</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>SD</th>
+                        <th>Mediaan</th>
+                        <th>Gemiddelde</th>
+                        <th>Q1</th>
+                        <th>Q3</th>
+                        <th>P10</th>
+                        <th>P90</th>
+                      </thead>
+                      <tbody>
+                        {this.props.opnames.boxplotCharts.map((s, i) => {
+                          return (
+                            <tr key={i}>
+                              <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
+                              <td style={{width:'100px'}}>{s.location_id}</td>
+                              <td style={{width:'100px'}}>{s.location} ({s.wns})</td>
+                              <td style={{width:'15px'}}>({s.unit})</td>
+                              <td style={{width:'10px'}}>{s.boxplot_data.num_values}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.min.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.max.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.std.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.median.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.mean.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.q1.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.q3.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.p10.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s.boxplot_data.p90.toFixed(2)}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </Table>
                   </div>
               </Tab>
               <Tab eventKey={3} title='Scatterplot'>
@@ -942,6 +1071,34 @@ class ChartApp extends Component {
           </Modal.Header>
           <Modal.Body>
             <div>
+              <div className='panel panel-default'>
+                <div className='panel-body'>
+                  <div className='input-group'>
+                    <form>
+                      <div className='form-group'>
+                        <div className='checkbox'>
+                          <label>
+                          <input type='checkbox'
+                                 onClick={() => console.log('Toggle global datetime range')}
+                                 value={false}
+                                 defaultChecked={false} />
+                                 Gebruik periode uit selectie
+                          </label>
+                        </div>
+                        <div className='checkbox'>
+                          <label>
+                          <input type='checkbox'
+                                 onClick={() => console.log('Toggle symbols')}
+                                 value={false}
+                                 defaultChecked={false} />
+                                 Toon symbolen
+                          </label>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
               <div className='panel panel-default'>
                 <div className='panel-body'>
                   <div className='input-group'>

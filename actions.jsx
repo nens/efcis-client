@@ -34,6 +34,8 @@ export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
 export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
+export const SET_LEFT_LINECOLOR_BY_ID = 'SET_LEFT_LINECOLOR_BY_ID';
+export const SET_RIGHT_LINECOLOR_BY_ID = 'SET_RIGHT_LINECOLOR_BY_ID';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
@@ -633,5 +635,20 @@ export function setRightAxisMaxForLinechart(value) {
   return {
     type: SET_RIGHT_AXIS_MAX_FOR_LINECHART,
     value,
+  };
+}
+
+
+export function setLeftLineColorById(config) {
+  return {
+    type: SET_LEFT_LINECOLOR_BY_ID,
+    config,
+  };
+}
+
+export function setRightLineColorById(config) {
+  return {
+    type: SET_RIGHT_LINECOLOR_BY_ID,
+    config,
   };
 }

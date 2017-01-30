@@ -35,6 +35,8 @@ import {
   SET_AS_SCATTERPLOTCHARTS_X,
   SET_AS_SCATTERPLOTCHARTS_Y,
   SET_COLOR_BY,
+  SET_LEFT_LINECOLOR_BY_ID,
+  SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
   SET_MAP_POSITION,
   SET_MAP_STATISTICS,
@@ -362,6 +364,28 @@ function opnames(state = {
         ...state.lineChartSettings,
         rightMax: parseInt(action.value),
       }
+    }
+  case SET_LEFT_LINECOLOR_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.lineColor = action.config.color;
+          return lcly;
+        }
+        return lcly;
+      }),
+    }
+  case SET_RIGHT_LINECOLOR_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineColor = action.config.color;
+          return lcry;
+        }
+        return lcry;
+      }),
     }
   default:
     return state;
