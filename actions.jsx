@@ -48,6 +48,7 @@ export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART'
 export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
 export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHART';
 export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
+export const TOGGLE_REVERSE_LEGEND = 'TOGGLE_REVERSE_LEGEND';
 export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
 
 // The following makes sure that the XHR POST requests in this file get a
@@ -660,5 +661,11 @@ export function setRightLineColorById(config) {
 export function toggleUserDaterange() {
   return {
     type: TOGGLE_USER_DATERANGE,
+  };
+}
+
+export function toggleReverseLegend() {
+  return {
+    type: TOGGLE_REVERSE_LEGEND,
   };
 }

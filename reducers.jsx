@@ -49,6 +49,7 @@ import {
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
   SET_RIGHT_AXIS_MIN_FOR_LINECHART,
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
+  TOGGLE_REVERSE_LEGEND,
   TOGGLE_USER_DATERANGE,
 } from './actions.jsx';
 
@@ -77,6 +78,9 @@ function opnames(state = {
     rightMin: undefined,
     rightMax: undefined,
     userDefinedDaterange: false,
+  },
+  mapSettings: {
+    reverseLegend: false,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -120,6 +124,9 @@ function opnames(state = {
         rightMin: undefined,
         rightMax: undefined,
         userDefinedDaterange: false,
+      },
+      mapSettings: {
+        reverseLegend: false,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -336,40 +343,40 @@ function opnames(state = {
       lineChartSettings: {
         ...state.lineChartSettings,
         treshold: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_AXIS_MIN_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         leftMin: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_AXIS_MAX_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         leftMax: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_RIGHT_AXIS_MIN_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         rightMin: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_RIGHT_AXIS_MAX_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         rightMax: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -380,7 +387,7 @@ function opnames(state = {
         }
         return lcly;
       }),
-    }
+    };
   case SET_RIGHT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -391,15 +398,23 @@ function opnames(state = {
         }
         return lcry;
       }),
-    }
+    };
   case TOGGLE_USER_DATERANGE:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
-      }
-    }
+      },
+    };
+  case TOGGLE_REVERSE_LEGEND:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        reverseLegend: !state.mapSettings.reverseLegend,
+      },
+    };
   default:
     return state;
   }
