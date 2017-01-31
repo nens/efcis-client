@@ -4,7 +4,9 @@ import styles from './Legend.css';
 import { scaleQuantize } from 'd3';
 import _ from 'lodash';
 
-// import {} from '../actions.jsx';
+import {
+  toggleReverseLegend,
+} from '../actions.jsx';
 
 class Legend extends Component {
 
@@ -25,7 +27,8 @@ class Legend extends Component {
 
   render() {
     const opnames = this.props.opnames;
-    const scaleVariant = [
+
+    let scaleVariant = [
       '#006837',
       '#1a9850',
       '#66bd63',
@@ -38,13 +41,19 @@ class Legend extends Component {
       '#d73027',
       '#a50026',
     ];
-    const scaleVariantKrw = [
+    let scaleVariantKrw = [
       '#0000FF',
       '#1ECA22',
       '#FFFD37',
       '#FF9900',
       '#FF0000',
     ];
+
+    if (this.props.opnames.mapSettings.reverseLegend) {
+      scaleVariant.reverse();
+      scaleVariantKrw.reverse();
+    }
+
     const colors = scaleQuantize()
           .domain([
             opnames.features.min_value,
@@ -54,7 +63,7 @@ class Legend extends Component {
 
     return (
       <div
-        onClick={() => console.log('Toggle legend')}
+        onClick={() => this.props.dispatch(toggleReverseLegend())}
         className={`${styles.Legend} pull-right`}>
         <ul>
           <li className={styles.LegendList}
