@@ -49,6 +49,7 @@ import {
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
   SET_RIGHT_AXIS_MIN_FOR_LINECHART,
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
+  TOGGLE_USER_DATERANGE,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -75,6 +76,7 @@ function opnames(state = {
     leftMax: undefined,
     rightMin: undefined,
     rightMax: undefined,
+    userDefinedDaterange: false,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -113,6 +115,11 @@ function opnames(state = {
       charts: [],
       lineChartSettings: {
         treshold: undefined,
+        leftMin: undefined,
+        leftMax: undefined,
+        rightMin: undefined,
+        rightMax: undefined,
+        userDefinedDaterange: false,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -305,8 +312,6 @@ function opnames(state = {
         return chart;
       }),
     });
-  case SET_AS_SCATTERPLOTCHARTS_X:
-  case SET_AS_SCATTERPLOTCHARTS_Y:
   case REQUEST_SECOND_SCATTERPLOT_AXIS:
     return Object.assign({}, state, {
       isFetching: true,
@@ -386,6 +391,14 @@ function opnames(state = {
         }
         return lcry;
       }),
+    }
+  case TOGGLE_USER_DATERANGE:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
+      }
     }
   default:
     return state;

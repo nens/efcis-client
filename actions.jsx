@@ -48,6 +48,7 @@ export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART'
 export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
 export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHART';
 export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
+export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
 
 // The following makes sure that the XHR POST requests in this file get a
 // CRSFToken header with the contents of the crsftoken cookie that's set by
@@ -650,5 +651,11 @@ export function setRightLineColorById(config) {
   return {
     type: SET_RIGHT_LINECOLOR_BY_ID,
     config,
+  };
+}
+
+export function toggleUserDaterange() {
+  return {
+    type: TOGGLE_USER_DATERANGE,
   };
 }
