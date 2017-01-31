@@ -613,7 +613,7 @@ class ChartApp extends Component {
                         linechartSeriesLeftYFilter: '',
                         linechartSeriesRightYFilter: '',
                         scatterplotSeriesFilter: '',
-                        boxplotSeriesFilter: '',                        
+                        boxplotSeriesFilter: '',
                       });
                     }}>
                     <i className='fa fa-plus-circle'></i>
@@ -1102,15 +1102,6 @@ class ChartApp extends Component {
                                  )}
                                  defaultChecked={this.props.opnames.lineChartSettings.userDefinedDaterange} />
                                  Gebruik periode uit selectie
-                          </label>
-                        </div>
-                        <div className='checkbox'>
-                          <label>
-                          <input type='checkbox'
-                                 onClick={() => console.log('Toggle symbols')}
-                                 value={false}
-                                 defaultChecked={false} />
-                                 Toon symbolen
                           </label>
                         </div>
                       </div>
