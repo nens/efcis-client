@@ -100,14 +100,14 @@ class ExportDialog extends Component {
                 exportButton = (
                   <form method='post' action={`${format.url}?${$.param(selectionParams)}`}>
                     <input type='hidden' name='csrfmiddlewaretoken' id='csrftoken' value={cookie} />
-                    <input type='submit' className='btn btn-xs btn-default' value='Exporteer' />
+                    <input type='submit' className='pull-right btn btn-xs btn-default' value='Exporteer' />
                   </form>
                 );
               } else {
                 exportButton = (
                   <button
                     onClick={() => self.handleExportClick(format)}
-                    className='btn btn-xs btn-default'>Exporteer</button>
+                    className='pull-right btn btn-xs btn-default'>Exporteer</button>
                 );
               }
 
