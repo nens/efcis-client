@@ -35,6 +35,8 @@ import {
   SET_AS_SCATTERPLOTCHARTS_X,
   SET_AS_SCATTERPLOTCHARTS_Y,
   SET_COLOR_BY,
+  SET_LEFT_LINECOLOR_BY_ID,
+  SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
   SET_MAP_POSITION,
   SET_MAP_STATISTICS,
@@ -47,6 +49,7 @@ import {
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
   SET_RIGHT_AXIS_MIN_FOR_LINECHART,
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
+  TOGGLE_USER_DATERANGE,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -73,6 +76,7 @@ function opnames(state = {
     leftMax: undefined,
     rightMin: undefined,
     rightMax: undefined,
+    userDefinedDaterange: false,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -111,6 +115,11 @@ function opnames(state = {
       charts: [],
       lineChartSettings: {
         treshold: undefined,
+        leftMin: undefined,
+        leftMax: undefined,
+        rightMin: undefined,
+        rightMax: undefined,
+        userDefinedDaterange: false,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -303,8 +312,6 @@ function opnames(state = {
         return chart;
       }),
     });
-  case SET_AS_SCATTERPLOTCHARTS_X:
-  case SET_AS_SCATTERPLOTCHARTS_Y:
   case REQUEST_SECOND_SCATTERPLOT_AXIS:
     return Object.assign({}, state, {
       isFetching: true,
@@ -361,6 +368,36 @@ function opnames(state = {
       lineChartSettings: {
         ...state.lineChartSettings,
         rightMax: parseInt(action.value),
+      }
+    }
+  case SET_LEFT_LINECOLOR_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.lineColor = action.config.color;
+          return lcly;
+        }
+        return lcly;
+      }),
+    }
+  case SET_RIGHT_LINECOLOR_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineColor = action.config.color;
+          return lcry;
+        }
+        return lcry;
+      }),
+    }
+  case TOGGLE_USER_DATERANGE:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
       }
     }
   default:

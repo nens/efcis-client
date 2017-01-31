@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import {persistStore} from 'redux-persist';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory } from 'react-router';
+import { Router, Route, hashHistory, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import configureStore from './configureStore.jsx';
 import * as localForage from 'localforage';

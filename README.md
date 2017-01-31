@@ -66,3 +66,13 @@ Configure ansible variables, then run:
 ```
 $ ansible-playbook ...
 ```
+
+
+
+
+
+
+Todo
+----
+
+- Switch react-router [from hashHistory to browserHistory](https://github.com/ReactTraining/react-router/blob/master/docs/guides/Histories.md) and configure nginx to support this.
