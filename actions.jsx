@@ -68,6 +68,7 @@ function getCookie(cName) {
   }
   return '';
 }
+
 $.ajaxSetup({
   headers: { 'X-CSRFToken': getCookie('csrftoken') }
 });
@@ -250,6 +251,8 @@ function receiveFeatures(results) {
     results,
   };
 }
+
+
 
 export function fetchFeatures() {
   return (dispatch, getState) => {

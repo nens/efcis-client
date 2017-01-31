@@ -529,7 +529,7 @@ class ChartApp extends Component {
                   bsSize='xsmall'
                   style={{ margin: 5 }}
                   onClick={() => this.setState({
-                    showLinechartSettingsModal: true
+                    showLinechartSettingsModal: true,
                   })}
                   className='pull-right'>
                   <i className='fa fa-area-chart'></i>&nbsp;Instellingen
@@ -543,7 +543,13 @@ class ChartApp extends Component {
                   <Button onClick={() => {
                     this.setState({ currentUnit: undefined });
                     this.props.dispatch(fetchCharts());
-                    this.setState({ showLeftYAxisModal: true });
+                    this.setState({
+                      showLeftYAxisModal: true,
+                      linechartSeriesLeftYFilter: '',
+                      linechartSeriesRightYFilter: '',
+                      scatterplotSeriesFilter: '',
+                      boxplotSeriesFilter: '',
+                    });
                   }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>
@@ -602,7 +608,13 @@ class ChartApp extends Component {
                     onClick={() => {
                       this.setState({ currentUnit: undefined });
                       this.props.dispatch(fetchCharts());
-                      this.setState({ showRightYAxisModal: true });
+                      this.setState({
+                        showRightYAxisModal: true,
+                        linechartSeriesLeftYFilter: '',
+                        linechartSeriesRightYFilter: '',
+                        scatterplotSeriesFilter: '',
+                        boxplotSeriesFilter: '',                        
+                      });
                     }}>
                     <i className='fa fa-plus-circle'></i>
                   </Button>

@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import TopNav from './TopNav.jsx';
 import Sidebar from './Sidebar.jsx';
+import ExportDialog from './ExportDialog.jsx';
 import { Wave } from 'better-react-spinkit';
 import { Button, Popover, OverlayTrigger, Modal } from 'react-bootstrap';
 import Highlighter from 'react-highlight-words';
@@ -669,8 +670,7 @@ class TableApp extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-
-
+            <ExportDialog {...this.props} />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.hideExportModal}>Sluiten</Button>

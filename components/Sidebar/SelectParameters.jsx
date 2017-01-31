@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Modal } from 'react-bootstrap';
 import styles from './SelectParameters.css';
 import SelectParameterGroup from './SelectParameterGroup.jsx'
 import $ from 'jquery';
-// import {} from '../actions.jsx';
+
 
 import {
   fetchFeatures,
