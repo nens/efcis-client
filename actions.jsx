@@ -40,6 +40,7 @@ export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
+export const SET_LEGEND_INTERVALS = 'SET_LEGEND_INTERVALS';
 export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
@@ -50,6 +51,7 @@ export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHAR
 export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
 export const TOGGLE_REVERSE_LEGEND = 'TOGGLE_REVERSE_LEGEND';
 export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
+export const USE_DATA_DOMAIN = 'USE_DATA_DOMAIN';
 
 // The following makes sure that the XHR POST requests in this file get a
 // CRSFToken header with the contents of the crsftoken cookie that's set by
@@ -667,5 +669,18 @@ export function toggleUserDaterange() {
 export function toggleReverseLegend() {
   return {
     type: TOGGLE_REVERSE_LEGEND,
+  };
+}
+
+export function useDataDomain() {
+  return {
+    type: USE_DATA_DOMAIN,
+  };
+}
+
+export function setLegendIntervals(numberOfIntervals) {
+  return {
+    type: SET_LEGEND_INTERVALS,
+    numberOfIntervals: parseInt(numberOfIntervals),
   };
 }

@@ -36,6 +36,7 @@ import {
   SET_AS_SCATTERPLOTCHARTS_Y,
   SET_COLOR_BY,
   SET_LEFT_LINECOLOR_BY_ID,
+  SET_LEGEND_INTERVALS,
   SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
   SET_MAP_POSITION,
@@ -51,6 +52,7 @@ import {
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
   TOGGLE_REVERSE_LEGEND,
   TOGGLE_USER_DATERANGE,
+  USE_DATA_DOMAIN,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -81,6 +83,8 @@ function opnames(state = {
   },
   mapSettings: {
     reverseLegend: false,
+    numLegendIntervals: 11,
+    dataDomain: false,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -127,6 +131,8 @@ function opnames(state = {
       },
       mapSettings: {
         reverseLegend: false,
+        numLegendIntervals: 11,
+        dataDomain: false,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -413,6 +419,26 @@ function opnames(state = {
       mapSettings: {
         ...state.mapSettings,
         reverseLegend: !state.mapSettings.reverseLegend,
+      },
+    };
+  case USE_DATA_DOMAIN:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        dataDomain: !state.mapSettings.dataDomain,
+      },
+    };
+  case SET_LEGEND_INTERVALS:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        numLegendIntervals:
+          (action.numberOfIntervals >= 3 &&
+          action.numberOfIntervals <= 11) ?
+            action.numberOfIntervals :
+            state.mapSettings.numLegendIntervals,
       },
     };
   default:
