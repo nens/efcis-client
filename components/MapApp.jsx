@@ -21,6 +21,9 @@ import {
 	fetchFeatures,
 	setColorBy,
 	setMapPosition,
+  toggleReverseLegend,
+  useDataDomain,
+  setLegendIntervals,
 } from '../actions.jsx';
 
 class MapApp extends Component {
@@ -85,8 +88,11 @@ class MapApp extends Component {
 	}
 
   popupContent(result) {
-    let latest_value_formatted, median_formatted, num_values_formatted, min_formatted, max_formatted, q1_formatted, q3_formatted, photo_url_div, onbekend_1, onbekend_2;
-    let summer_formatted, winter_formatted, mean_formatted, date_formatted, std_formatted, p10_formatted, p90_formatted;
+    let latest_value_formatted, median_formatted, num_values_formatted,
+        min_formatted, max_formatted, q1_formatted, q3_formatted,
+        photo_url_div, onbekend_1, onbekend_2;
+    let summer_formatted, winter_formatted, mean_formatted, date_formatted,
+    std_formatted, p10_formatted, p90_formatted;
       onbekend_1 = 'Niet bemeten';
       onbekend_2 = 'Niet te bepalen';
     if (result.properties.latest_value === null) {
@@ -95,7 +101,9 @@ class MapApp extends Component {
     latest_value_formatted = result.properties.latest_value;
 
     if (result.properties.photo_url) {
-      photo_url_div = `<div><a href="${result.properties.photo_url}" target="_blank"><img width="200" src="${result.properties.photo_url}"></div>`;
+      photo_url_div = `<div><a href="${result.properties.photo_url}"
+        target="_blank"><img width="200" src="${result.properties.photo_url}">
+        </div>`;
     }
     else {
       photo_url_div = '<div><p><em>Geen afbeelding beschikbaar</em></p></div>';
@@ -261,23 +269,15 @@ class MapApp extends Component {
 		const colorBy = this.props.opnames.color_by;
 		const selectedParameter = _.find(
 			this.props.opnames.features.color_by_fields, (field) => {
-				return field.id === colorBy;
+			  return field.id === colorBy;
 			}
 		);
 
 		const parameterButtonText = (selectedParameter) ?
-			selectedParameter.wns_oms :
-			'Selecteer';
+			selectedParameter.wns_oms : 'Selecteer';
 
 		const position = [this.props.opnames.map.lat,
 											this.props.opnames.map.lng];
-		const scaleVariant = colorbrewer.RdYlGn[11];
-		const mapColors = scaleQuantize()
-					.domain([
-							this.props.opnames.features.abs_min_value,
-							this.props.opnames.features.abs_max_value,
-					])
-					.range(scaleVariant);
 
 		return (
 			<div>
@@ -310,7 +310,32 @@ class MapApp extends Component {
                 }}
 								pointToLayer={(feature, latlng) => {
 
-                  // console.log('------->', mapColors(feature.properties.latest_value));
+                  let scaleVariant = (this.props.opnames.features.is_krw_score) ?
+                    colorbrewer.RdYlGn[this.props.opnames.mapSettings.numLegendIntervals]
+                    :
+                    ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
+
+                  const domain = (this.props.opnames.mapSettings.reverseLegend) ? [
+                    (this.props.opnames.mapSettings.dataDomain) ?
+                    this.props.opnames.features.max_value :
+                    this.props.opnames.features.abs_max_value,
+                    (this.props.opnames.mapSettings.dataDomain) ?
+                    this.props.opnames.features.min_value :
+                    this.props.opnames.features.abs_min_value,
+                  ] : [
+                    (this.props.opnames.mapSettings.dataDomain) ?
+                    this.props.opnames.features.min_value :
+                    this.props.opnames.features.abs_min_value,
+                    (this.props.opnames.mapSettings.dataDomain) ?
+                    this.props.opnames.features.max_value :
+                    this.props.opnames.features.abs_max_value,
+                  ];
+
+                  const mapColors = scaleQuantize()
+              					.domain(domain)
+                        .range((this.props.opnames.mapSettings.reverseLegend) ?
+                        scaleVariant.reverse() : scaleVariant);
+
 									let geojsonMarkerOptions = {
 										radius: 8,
 										fillColor: '#999',
@@ -322,8 +347,6 @@ class MapApp extends Component {
 
 									if (feature.properties.is_krw_area &&
 											!this.props.opnames.features.isKrwScore) {
-
-                    console.log('------->', mapColors(feature.properties.latest_value));
 
 										geojsonMarkerOptions = {
 											radius: 8,
@@ -339,8 +362,6 @@ class MapApp extends Component {
 											!this.props.opnames.features.isKrwScore &&
 											feature.properties.latest_value === null) {
 
-                    console.log('------->', mapColors(feature.properties.latest_value));
-
 										geojsonMarkerOptions = {
 											weight: 1,
 											color: '#999',
@@ -352,8 +373,6 @@ class MapApp extends Component {
 
 									if (feature.properties.is_krw_area &&
 											this.props.opnames.features.isKrwScore) {
-
-										console.log('------->', mapColors(feature.properties.latest_value));
 
 										geojsonMarkerOptions = {
 											weight: 1,
@@ -416,7 +435,6 @@ class MapApp extends Component {
 									if (myFillColor === '#bbccff') {
 										opacity = 0;
 									}
-
 									if (!feature.properties.is_krw_area) {
 										geojsonMarkerOptions = {
 											radius: (feature.properties.photo_url) ? 8 : 7,
@@ -428,7 +446,6 @@ class MapApp extends Component {
 										};
 										return L.circleMarker(latlng, geojsonMarkerOptions);
 									}
-
 									return L.circleMarker(latlng, geojsonMarkerOptions);
 								}}
 								filter={(f) => {
@@ -471,7 +488,6 @@ class MapApp extends Component {
 							<MapStatisticsPicker {...this.props} />
 						</div>
 					</div>
-
 				</div>
 
 				<Modal
@@ -540,19 +556,41 @@ class MapApp extends Component {
 									<div className='form-group'>
 										<div className='checkbox'>
 											<label>
-												<input type='checkbox' value='true' />Omgekeerd kleurverloop
+												<input
+                          onClick={() => {
+                            this.props.dispatch(
+                              toggleReverseLegend()
+                            );
+                            this.props.dispatch(
+                              fetchFeatures()
+                            );
+                          }}
+                          type='checkbox'
+                          defaultChecked={this.props.opnames.mapSettings.reverseLegend} />
+                          Omgekeerd kleurverloop
 											</label>
 										</div>
 									</div>
 									<div className='form-group'>
 										<div className='checkbox'>
 											<label>
-												<input type='checkbox' value='false' />Schakel tussen alle data / geselecteerde data
+												<input
+                          onClick={() => {
+                            this.props.dispatch(
+                              useDataDomain()
+                            );
+                            this.props.dispatch(
+                              fetchFeatures()
+                            );
+                          }}
+                          type='checkbox'
+                          defaultChecked={this.props.opnames.mapSettings.dataDomain} />
+                          Schakel tussen alle data / geselecteerde data
 											</label>
 										</div>
 									</div>
 									<div className='form-group'>
-										<label labelFor='legendMin'>
+										<label htmlFor='legendMin'>
 											Minimumwaarde
 										</label>
 										<input type='number'
@@ -561,14 +599,16 @@ class MapApp extends Component {
 													 placeholder='Minimumwaarde' />
 								 </div>
 								 <div className='form-group'>
-									 <label labelFor='legendMax'>Maximumwaarde</label>
-									 <input type='number'
+									 <label htmlFor='legendMax'>
+                    Maximumwaarde
+                  </label>
+								  <input type='number'
 													className='form-control'
 													id='legendMax'
 													placeholder='Maximumwaarde' />
 								</div>
 								<div className='form-group'>
-									<label labelFor='legendLength'>
+									<label htmlFor='legendLength'>
 										Aantal legenda-intervallen
 									</label>
 									<input type='number'
@@ -576,11 +616,17 @@ class MapApp extends Component {
 												 id='legendLength'
 												 min='3'
 												 max='11'
+                         onChange={(e) => {
+                           this.props.dispatch(setLegendIntervals(e.target.value));
+                           this.props.dispatch(
+                             fetchFeatures()
+                           );
+                         }}
+                         defaultValue={this.props.opnames.mapSettings.numLegendIntervals}
 												 placeholder='Het aantal legenda-intervallen 3 en 11.' />
 							 </div>
 							</div>
 						</div>
-
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={() => {

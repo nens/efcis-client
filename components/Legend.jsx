@@ -1,11 +1,13 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
+import colorbrewer from 'colorbrewer';
 import styles from './Legend.css';
 import { scaleQuantize } from 'd3';
 import _ from 'lodash';
 
 import {
   toggleReverseLegend,
+  fetchFeatures,
 } from '../actions.jsx';
 
 class Legend extends Component {
@@ -28,19 +30,8 @@ class Legend extends Component {
   render() {
     const opnames = this.props.opnames;
 
-    let scaleVariant = [
-      '#006837',
-      '#1a9850',
-      '#66bd63',
-      '#a6d96a',
-      '#d9ef8b',
-      '#ffffbf',
-      '#fee08b',
-      '#fdae61',
-      '#f46d43',
-      '#d73027',
-      '#a50026',
-    ];
+    let scaleVariant = colorbrewer.RdYlGn[this.props.opnames.mapSettings.numLegendIntervals];
+
     let scaleVariantKrw = [
       '#0000FF',
       '#1ECA22',
@@ -54,16 +45,29 @@ class Legend extends Component {
       scaleVariantKrw.reverse();
     }
 
+    const domain = [
+      (this.props.opnames.mapSettings.dataDomain) ?
+        this.props.opnames.features.min_value :
+        this.props.opnames.features.abs_min_value,
+      (this.props.opnames.mapSettings.dataDomain) ?
+        this.props.opnames.features.max_value :
+        this.props.opnames.features.abs_max_value,
+    ];
+
     const colors = scaleQuantize()
-          .domain([
-            opnames.features.min_value,
-            opnames.features.max_value,
-          ])
+          .domain(domain)
           .range(scaleVariant);
 
     return (
       <div
-        onClick={() => this.props.dispatch(toggleReverseLegend())}
+        onClick={() => {
+          this.props.dispatch(
+            toggleReverseLegend()
+          );
+          this.props.dispatch(
+            fetchFeatures()
+          );
+        }}
         className={`${styles.Legend} pull-right`}>
         <ul>
           <li className={styles.LegendList}
