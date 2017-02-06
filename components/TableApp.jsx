@@ -544,7 +544,7 @@ class TableApp extends Component {
                 onClick={() => this.setState({ showExportModal: true })}
                 role='button'
                 className='btn btn-default btn-xm pull-right'>
-                Exporteren
+                Exporteren&nbsp;<i className='fa fa-share'></i>
               </a>
             </div>
           </div>

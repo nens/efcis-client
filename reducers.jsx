@@ -36,6 +36,7 @@ import {
   SET_AS_SCATTERPLOTCHARTS_Y,
   SET_COLOR_BY,
   SET_LEFT_LINECOLOR_BY_ID,
+  SET_LEGEND_INTERVALS,
   SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
   SET_MAP_POSITION,
@@ -50,7 +51,9 @@ import {
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
   SET_RIGHT_AXIS_MIN_FOR_LINECHART,
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
+  TOGGLE_REVERSE_LEGEND,
   TOGGLE_USER_DATERANGE,
+  USE_DATA_DOMAIN,
 } from './actions.jsx';
 
 const dateFormat = 'DD-MM-YYYY';
@@ -78,6 +81,11 @@ function opnames(state = {
     rightMin: undefined,
     rightMax: undefined,
     userDefinedDaterange: false,
+  },
+  mapSettings: {
+    reverseLegend: false,
+    numLegendIntervals: 11,
+    dataDomain: false,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -121,6 +129,11 @@ function opnames(state = {
         rightMin: undefined,
         rightMax: undefined,
         userDefinedDaterange: false,
+      },
+      mapSettings: {
+        reverseLegend: false,
+        numLegendIntervals: 11,
+        dataDomain: false,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -341,40 +354,40 @@ function opnames(state = {
       lineChartSettings: {
         ...state.lineChartSettings,
         treshold: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_AXIS_MIN_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         leftMin: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_AXIS_MAX_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         leftMax: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_RIGHT_AXIS_MIN_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         rightMin: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_RIGHT_AXIS_MAX_FOR_LINECHART:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         rightMax: parseInt(action.value),
-      }
-    }
+      },
+    };
   case SET_LEFT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -385,7 +398,7 @@ function opnames(state = {
         }
         return lcly;
       }),
-    }
+    };
   case SET_RIGHT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -396,15 +409,43 @@ function opnames(state = {
         }
         return lcry;
       }),
-    }
+    };
   case TOGGLE_USER_DATERANGE:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
-      }
-    }
+      },
+    };
+  case TOGGLE_REVERSE_LEGEND:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        reverseLegend: !state.mapSettings.reverseLegend,
+      },
+    };
+  case USE_DATA_DOMAIN:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        dataDomain: !state.mapSettings.dataDomain,
+      },
+    };
+  case SET_LEGEND_INTERVALS:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        numLegendIntervals:
+          (action.numberOfIntervals >= 3 &&
+          action.numberOfIntervals <= 11) ?
+            action.numberOfIntervals :
+            state.mapSettings.numLegendIntervals,
+      },
+    };
   default:
     return state;
   }
