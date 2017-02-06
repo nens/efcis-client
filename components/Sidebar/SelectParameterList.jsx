@@ -9,6 +9,11 @@ require('jstree');
 require("!style!css!../../node_modules/sweetalert/lib/sweet-alert.css");
 require("!style!css!./SelectParameters.css");
 
+import {
+  addParameterToSelection,
+  removeParameterFromSelection,
+ } from '../../actions.jsx';
+
 
 var ParameterList = React.createClass({
     render: function() {
@@ -80,25 +85,27 @@ class SelectParameterList extends Component {
       height: window.innerHeight,
       parametergroups: [],
       parameters: [],
-      filterString: ''
-      //selectedParameters: JSON.parse(localStorage.getItem('selectedParameters')) || {},
-    }
+      filterString: '',
+      //selectedParameters: this.props.opnames.parameters || {}
+    };
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.loadParameters = this.loadParameters.bind(this);
+    this.filterParametersByGroup = this.filterParametersByGroup.bind(this);
+    this.selectTreeNodesFromStorage = this.selectTreeNodesFromStorage.bind(this);
+
+    
   }
 
-  selectTreeNodesFromLocalStorage() {
-    try {
-      var ids = localStorage.getItem('parameterNodeIds').split(',');
-      _.each(ids, function(id) {
-        $('#parameter-group-tree').jstree('select_node', id);
-      });
-    } catch (e) {}
+  selectTreeNodesFromStorage() {
+    this.props.opnames.parametergroups.map((id) => {
+      $('#parameter-group-tree').jstree('select_node', id);
+    });
   }
 
   componentDidMount() {
-
-    // console.log('comp didmount');
+    window.addEventListener('resize', this.updateDimensions);
     const self = this;
-    console.log("RUN MOUNT");
+
     $.ajax({
       type: "GET",
       url: config.parameterGroupTreeUrl,
@@ -114,12 +121,23 @@ class SelectParameterList extends Component {
 	})
 	.on('loaded.jstree', function() {
 	  $(".jstree").jstree('open_all');
-	  self.selectTreeNodesFromLocalStorage();
+	  self.selectTreeNodesFromStorage();
 	})
 	.on('select_node.jstree', self.filterParametersByGroup);
       }
     });
-    // self.loadParameters();
+    //self.loadParameters();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions() {
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
   }
 
   removeSelectedParameter(par_id) {
@@ -160,12 +178,8 @@ class SelectParameterList extends Component {
   }
 
   loadParameters(groups) {
-    // console.log('load');
-    var self = this;
-    self.setState({
-      loading: true
-    });
-    var param = "";
+    const self = this;
+    let param = "";
     if (groups !== 'undefined' && groups != null) {
       param = "&parametergroups=" + groups.toString();
     }
@@ -174,10 +188,8 @@ class SelectParameterList extends Component {
       url: config.parametersUrl + param,
       dataType: 'json',
       success: function(data) {
-        // console.log('groups', groups);
         self.setState({
           parameters: data.results,
-          loading: false
         });
       }
     });
@@ -218,30 +230,30 @@ class SelectParameterList extends Component {
   }
 
   render() {
-    var self = this;
-    if(self.state.loading === true) {
-      var parameterlist = (
-        <Spinner spinnerName='three-bounce' noFadeIn />
-      );
-    } else {
-      var parameterlist = <ParameterList
-                              filterString={this.state.filterString}
-                              parameters={this.state.parameters}
-                              addSelectedParameter={this.addSelectedParameter} />;
-    }
     
-    
+    let self = this;
+    let parameterlist = <ParameterList
+                         filterString={this.state.filterString}
+                         parameters={this.state.parameters}
+                         addSelectedParameter={this.addSelectedParameter} />;
 
-        return (
-            <div>
+      return (
+        <div>
           <div className="row">
             <div className="col-md-4" style={{height:50}}>
               <div>Parametergroepen</div>
             </div>
             <div className="col-md-4" style={{height:50}}>
-              <input type="text" ref="filterText"
-                           className="form-control" placeholder="Filter resultaten"
-                           onChange={this.filterParametersList} />
+	      <input
+                type='text'
+                ref='filterText'
+                style={{ margin: 5 }}
+                className='form-control'
+                autoFocus='autofocus'
+                placeholder='Filter parameters'
+                onChange={(e) => this.setState({
+                    filterString: e.target.value,
+                })} />
             </div>
             <div className="col-md-4" style={{height:50}}>
               <div>Geselecteerde Parameters ({_.size(this.state.selectedParameters)})</div>

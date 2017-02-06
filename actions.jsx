@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 export const ADD_LOCATION_TO_SELECTION = 'ADD_LOCATION_TO_SELECTION';
+export const ADD_PARAMETER_TO_SELECTION = 'ADD_PARAMETER_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
 export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
@@ -21,6 +22,7 @@ export const REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_LEFT_
 export const REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID = 'REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID';
 export const REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID = 'REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID';
 export const REMOVE_LOCATION_FROM_SELECTION = 'REMOVE_LOCATION_FROM_SELECTION';
+export const REMOVE_PARAMETER_FROM_SELECTION = 'REMOVE_PARAMETER_FROM_SELECTION';
 export const REQUEST_CHARTS = 'REQUEST_CHARTS';
 export const REQUEST_DATA_FOR_BOXPLOT = 'REQUEST_DATA_FOR_BOXPLOT';
 export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
@@ -41,6 +43,7 @@ export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
+export const SET_PARAMETER = 'SET_PARAMETERS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
@@ -125,10 +128,24 @@ export function removeLocationFromSelection(id) {
   };
 }
 
+export function removeParameterFromSelection(id) {
+  return {
+    type: REMOVE_PARAMETER_FROM_SELECTION,
+    id,
+  };
+}
+
 export function addLocationToSelection(locationObject) {
   return {
     type: ADD_LOCATION_TO_SELECTION,
     locationObject,
+  };
+}
+
+export function addParameterToSelection(parameterObject) {
+  return {
+    type: ADD_PARAMETER_TO_SELECTION,
+    parameterObject,
   };
 }
 
@@ -142,6 +159,13 @@ export function setMeetnets(ids) {
 export function setParameterGroups(ids) {
   return {
     type: SET_PARAMETERGROUPS,
+    ids,
+  };
+}
+
+export function setParameters(ids) {
+  return {
+    type: SET_PARAMETERS,
     ids,
   };
 }
@@ -209,6 +233,7 @@ export function fetchOpnames(page) {
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
       parametergroups: parametergroupids.join(','),
+      parameters: parameterids.join(','),
       start_date,
       end_date,
       season,
@@ -261,7 +286,8 @@ export function fetchFeatures() {
 
     const filtersObject = getState().opnames.filters;
     const meetnetids = getState().opnames.meetnets;
-    const parametergroupids = getState().opnames.parametergroups;
+    //const parametergroupids = getState().opnames.parametergroups;
+    //const parameterids = getState().opnames.parameters;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;

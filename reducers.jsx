@@ -42,6 +42,7 @@ import {
   SET_MAP_STATISTICS,
   SET_MEETNETS,
   SET_PARAMETERGROUPS,
+  SET_PARAMETERS,
   SET_PERIOD,
   SET_SEASON,
   SET_TRESHOLD_FOR_LINECHART,
@@ -235,6 +236,10 @@ function opnames(state = {
   case SET_PARAMETERGROUPS:
     return Object.assign({}, state, {
       parametergroups: action.ids,
+    });
+  case SET_PARAMETERS:
+    return Object.assign({}, state, {
+      parameters: action.ids,
     });
   case SET_LOCATIONS:
     return Object.assign({}, state, {

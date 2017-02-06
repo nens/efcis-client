@@ -12,6 +12,7 @@ import {
   fetchFeatures,
   fetchOpnames,
   setParameterGroups,
+  setParameters,
 } from '../../actions.jsx';
 
 
@@ -129,7 +130,17 @@ class SelectParameters extends Component {
 	    <SelectParameterList {...this.props} />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.hideParametersModal}>Sluiten</Button>
+	    <Button onClick={this.hideParametersModal}>Sluiten</Button>
+	    <Button onClick={() => {
+		this.props.dispatch(
+		  setParameters(
+                    $('#parameter-tree').jstree().get_selected()
+		  )
+		);
+		this.props.dispatch(fetchOpnames());
+		this.props.dispatch(fetchFeatures());
+		this.hideParametersModal();
+            }}>Selecteren &amp; sluiten</Button>
           </Modal.Footer>
         </Modal>
 
