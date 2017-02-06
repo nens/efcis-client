@@ -31,13 +31,17 @@ export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
 export const REQUEST_SCATTERPLOT_DATA = 'REQUEST_SCATTERPLOT_DATA';
 export const REQUEST_SECOND_SCATTERPLOT_AXIS = 'REQUEST_SECOND_SCATTERPLOT_AXIS';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
+export const SET_LEFT_LINEWIDTH_BY_ID = 'SET_LEFT_LINEWIDTH_BY_ID';
+export const SET_RIGHT_LINEWIDTH_BY_ID = 'SET_RIGHT_LINEWIDTH_BY_ID';
 export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
 export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
 export const SET_LEGEND_MIN = 'SET_LEGEND_MIN';
 export const SET_LEGEND_MAX = 'SET_LEGEND_MAX';
 export const SET_LEFT_LINECOLOR_BY_ID = 'SET_LEFT_LINECOLOR_BY_ID';
+export const SET_LEFT_LINESTYLE_BY_ID = 'SET_LEFT_LINESTYLE_BY_ID';
 export const SET_RIGHT_LINECOLOR_BY_ID = 'SET_RIGHT_LINECOLOR_BY_ID';
+export const SET_RIGHT_LINESTYLE_BY_ID = 'SET_RIGHT_LINESTYLE_BY_ID';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
@@ -53,6 +57,7 @@ export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHAR
 export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
 export const TOGGLE_REVERSE_LEGEND = 'TOGGLE_REVERSE_LEGEND';
 export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
+export const TOGGLE_SYMBOLS = 'TOGGLE_SYMBOLS';
 export const USE_DATA_DOMAIN = 'USE_DATA_DOMAIN';
 
 // The following makes sure that the XHR POST requests in this file get a
@@ -660,6 +665,42 @@ export function setRightLineColorById(config) {
     config,
   };
 }
+
+export function setLeftLineStyleById(config) {
+  return {
+    type: SET_LEFT_LINESTYLE_BY_ID,
+    config,
+  };
+}
+
+export function setRightLineStyleById(config) {
+  return {
+    type: SET_RIGHT_LINESTYLE_BY_ID,
+    config,
+  };
+}
+
+
+export function setLeftLineWidthById(config) {
+  return {
+    type: SET_LEFT_LINEWIDTH_BY_ID,
+    config,
+  };
+}
+
+export function setRightLineWidthById(config) {
+  return {
+    type: SET_RIGHT_LINEWIDTH_BY_ID,
+    config,
+  };
+}
+
+export function toggleSymbols() {
+  return {
+    type: TOGGLE_SYMBOLS,
+  };
+}
+
 
 export function toggleUserDaterange() {
   return {

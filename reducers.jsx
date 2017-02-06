@@ -36,6 +36,10 @@ import {
   SET_LEGEND_MAX,
   SET_COLOR_BY,
   SET_LEFT_LINECOLOR_BY_ID,
+  SET_LEFT_LINESTYLE_BY_ID,
+  SET_LEFT_LINEWIDTH_BY_ID,
+  SET_RIGHT_LINEWIDTH_BY_ID,
+  SET_RIGHT_LINESTYLE_BY_ID,
   SET_LEGEND_INTERVALS,
   SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
@@ -52,6 +56,7 @@ import {
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
   TOGGLE_REVERSE_LEGEND,
   TOGGLE_USER_DATERANGE,
+  TOGGLE_SYMBOLS,
   USE_DATA_DOMAIN,
 } from './actions.jsx';
 
@@ -80,6 +85,7 @@ function opnames(state = {
     rightMin: undefined,
     rightMax: undefined,
     userDefinedDaterange: false,
+    showSymbols: true,
   },
   mapSettings: {
     reverseLegend: false,
@@ -130,6 +136,7 @@ function opnames(state = {
         rightMin: undefined,
         rightMax: undefined,
         userDefinedDaterange: false,
+        showSymbols: true,
       },
       mapSettings: {
         reverseLegend: false,
@@ -387,6 +394,28 @@ function opnames(state = {
         rightMax: parseInt(action.value),
       },
     };
+  case SET_LEFT_LINESTYLE_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.style = action.config.style;
+          return lcly;
+        }
+        return lcly;
+      }),
+    };
+  case SET_RIGHT_LINESTYLE_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.style = action.config.style;
+          return lcly;
+        }
+        return lcly;
+      }),
+    };
   case SET_LEFT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -409,12 +438,42 @@ function opnames(state = {
         return lcry;
       }),
     };
+  case SET_LEFT_LINEWIDTH_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineWidth = action.config.width;
+          return lcry;
+        }
+        return lcry;
+      }),
+    };
+  case SET_RIGHT_LINEWIDTH_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineWidth = action.config.width;
+          return lcry;
+        }
+        return lcry;
+      }),
+    };
   case TOGGLE_USER_DATERANGE:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
+      },
+    };
+  case TOGGLE_SYMBOLS:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        showSymbols: !state.lineChartSettings.showSymbols,
       },
     };
   case TOGGLE_REVERSE_LEGEND:

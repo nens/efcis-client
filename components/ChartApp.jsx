@@ -9,7 +9,7 @@ import { Wave } from 'better-react-spinkit';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
-import { Button, Modal, Tabs, Tab, Table, OverlayTrigger, Popover } from 'react-bootstrap';
+import { ButtonGroup, Button, Modal, Tabs, Tab, Table, OverlayTrigger, Popover } from 'react-bootstrap';
 import _ from 'lodash';
 
 import {
@@ -24,12 +24,17 @@ import {
   removeFromLinechartsRightYById,
   setLeftAxisMaxForLinechart,
   setLeftLineColorById,
+  setLeftLineStyleById,
+  setLeftLineWidthById,
   setRightLineColorById,
+  setRightLineStyleById,
+  setRightLineWidthById,
   setLeftAxisMinForLinechart,
   setRightAxisMaxForLinechart,
   setRightAxisMinForLinechart,
   setTresholdForLinechart,
   toggleUserDaterange,
+  toggleSymbols,
 } from '../actions.jsx';
 
 
@@ -55,10 +60,48 @@ class LineChartComponent extends Component {
   renderChart() {
 
     const leftSeries = this.props.opnames.linechartsLeftY.map((linechart, i) => {
+      let dashStyle = undefined;
+      let lineWidth = 1;
+
+      switch (linechart.style) {
+        case 1:
+          dashStyle = undefined;
+        break;
+        case 2:
+          dashStyle = 'shortdot';
+        break;
+        case 3:
+          dashStyle = 'dot';
+        break;
+        case 4:
+          dashStyle = 'longdash';
+        break;
+      }
+
+      switch (linechart.lineWidth) {
+        case 1:
+          lineWidth = 1;
+        break;
+        case 2:
+          lineWidth = 2;
+        break;
+        case 3:
+          lineWidth = 3;
+        break;
+        case 4:
+          lineWidth = 4;
+        break;
+        case 5:
+          lineWidth = 5;
+        break;
+      }
+
       return {
         animation: false,
-        name: linechart.location,
+        name: `${linechart.location} (${linechart.unit})`,
         type: 'line',
+        dashStyle,
+        lineWidth,
         color: linechart.lineColor,
         data: linechart.data.map((d) =>
           [moment(d.datetime).valueOf(), d.value]),
@@ -69,10 +112,48 @@ class LineChartComponent extends Component {
     });
 
     const rightSeries = this.props.opnames.linechartsRightY.map((linechart, i) => {
+      let dashStyle = undefined;
+      let lineWidth = 1;
+
+      switch (linechart.style) {
+        case 1:
+          dashStyle = undefined;
+        break;
+        case 2:
+          dashStyle = 'shortdot';
+        break;
+        case 3:
+          dashStyle = 'dot';
+        break;
+        case 4:
+          dashStyle = 'longdash';
+        break;
+      }
+
+      switch (linechart.lineWidth) {
+        case 1:
+          lineWidth = 1;
+        break;
+        case 2:
+          lineWidth = 2;
+        break;
+        case 3:
+          lineWidth = 3;
+        break;
+        case 4:
+          lineWidth = 4;
+        break;
+        case 5:
+          lineWidth = 5;
+        break;
+      }
+
       return {
         animation: false,
-        name: linechart.location,
+        name: `${linechart.location} (${linechart.unit})`,
         type: 'line',
+        dashStyle,
+        lineWidth,
         color: linechart.lineColor,
         yAxis: 1,
         data: linechart.data.map((d) =>
@@ -104,8 +185,10 @@ class LineChartComponent extends Component {
           year: '%Y'
         },
         type: 'datetime',
-        min: (this.props.opnames.lineChartSettings.userDefinedDaterange) ? moment(this.props.opnames.start_date, 'DD-MM-YYYY').valueOf() : undefined,
-        max: (this.props.opnames.lineChartSettings.userDefinedDaterange) ? moment(this.props.opnames.end_date, 'DD-MM-YYYY').valueOf() : undefined,
+        min: (this.props.opnames.lineChartSettings.userDefinedDaterange) ?
+          moment(this.props.opnames.start_date, 'DD-MM-YYYY').valueOf() : undefined,
+        max: (this.props.opnames.lineChartSettings.userDefinedDaterange) ?
+          moment(this.props.opnames.end_date, 'DD-MM-YYYY').valueOf() : undefined,
         crosshair: true,
       }],
       yAxis: [{ // Primary yAxis
@@ -120,7 +203,8 @@ class LineChartComponent extends Component {
           },
         },
         title: {
-          text: '',
+          text: (this.props.opnames.linechartsLeftY.length > 0) ?
+            this.props.opnames.linechartsLeftY[0].unit : '',
           style: {
             color: Highcharts.getOptions().colors[1],
           },
@@ -133,7 +217,8 @@ class LineChartComponent extends Component {
         }]
       }, { // Secondary yAxis
         title: {
-          text: '',
+          text: (this.props.opnames.linechartsRightY.length > 0) ?
+            this.props.opnames.linechartsRightY[0].unit : '',
           style: {
             color: Highcharts.getOptions().colors[0],
           }
@@ -153,16 +238,12 @@ class LineChartComponent extends Component {
       tooltip: {
         shared: true,
       },
-      legend: {
-        layout: 'vertical',
-        align: 'left',
-        x: 120,
-        verticalAlign: 'top',
-        y: 100,
-        floating: true,
-        backgroundColor: (
-          Highcharts.theme &&
-          Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+      plotOptions: {
+        line: {
+          marker: {
+            enabled: (this.props.opnames.lineChartSettings.showSymbols) ? true : false,
+          },
+        },
       },
       series: combinedSeries,
     });
@@ -571,14 +652,15 @@ class ChartApp extends Component {
                             textOverflow: 'ellipsis',
                             width: '80%',
                           }}>
-                            {linechart.wns} - {linechart.location}
+                            {linechart.wns} - {linechart.location} ({linechart.unit})
                           </div>
                           <OverlayTrigger
                             trigger='click'
                             placement='top'
                             rootClose={true}
                             overlay={
-                              <Popover id='filter-popover' title='Kies lijnkleur'>
+                              <Popover id='filter-popover' title='Lijnstijl'>
+                                <h4>Lijnkleur</h4>
                                 <CompactPicker
                                   color={(linechart.lineColor) ?
                                     linechart.lineColor : '#fff'}
@@ -587,6 +669,96 @@ class ChartApp extends Component {
                                       color: e.hex, id: linechart.id,
                                     })
                                   )} />
+                                <h4>Lijnstijl</h4>
+                                <ButtonGroup bsSize='small'>
+                                  <Button
+                                    active={(linechart.style === 1) ? true : false}
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineStyleById({
+                                          style: 1, id: linechart.id,
+                                        })
+                                      )
+                                    }}>
+                                    -
+                                  </Button>
+                                  <Button
+                                    active={(linechart.style === 2) ? true : false}
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineStyleById({
+                                          style: 2, id: linechart.id,
+                                        })
+                                      )
+                                    }}>
+                                    -----
+                                  </Button>
+                                  <Button
+                                    active={(linechart.style === 3) ? true : false}
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineStyleById({
+                                          style: 3, id: linechart.id,
+                                        })
+                                      )
+                                    }}>
+                                    - - - -
+                                  </Button>
+                                  <Button
+                                    active={(linechart.style === 4) ? true : false}
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineStyleById({
+                                          style: 4, id: linechart.id,
+                                        })
+                                      )
+                                    }}>
+                                    -  -  -  -  -
+                                  </Button>
+                                </ButtonGroup>
+                                <h4>Lijndikte</h4>
+                                <ButtonGroup bsSize='xsmall'>
+                                  <Button
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineWidthById({
+                                          width: 1, id: linechart.id,
+                                        })
+                                      )
+                                    }}
+                                    active={(linechart.lineWidth === 1) ? true : false}>1 punts
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineWidthById({
+                                          width: 2, id: linechart.id,
+                                        })
+                                      )
+                                    }}
+                                    active={(linechart.lineWidth === 2) ? true : false}>2 punts
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineWidthById({
+                                          width: 3, id: linechart.id,
+                                        })
+                                      )
+                                    }}
+                                    active={(linechart.lineWidth === 3) ? true : false}>3 punts
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.props.dispatch(
+                                        setLeftLineWidthById({
+                                          width: 4, id: linechart.id,
+                                        })
+                                      )
+                                    }}
+                                    active={(linechart.lineWidth === 4) ? true : false}>4 punts
+                                  </Button>
+                                </ButtonGroup>
                               </Popover>
                             }>
                             <span
@@ -635,19 +807,113 @@ class ChartApp extends Component {
                               textOverflow: 'ellipsis',
                               width: '80%',
                             }}>
-                              {linechart.wns} - {linechart.location}
+                              {linechart.wns} - {linechart.location} ({linechart.unit})
                             </div>
                             <OverlayTrigger
                               trigger='click'
                               placement='top'
                               rootClose={true}
                               overlay={
-                                <Popover id='filter-popover' title='Kies lijnkleur'>
+                                <Popover id='filter-popover' title='Lijnstijl'>
+                                  <h4>Lijnkleur</h4>
                                   <CompactPicker
-                                    color={(linechart.lineColor) ? linechart.lineColor : '#fff'}
+                                    color={(linechart.lineColor) ?
+                                      linechart.lineColor : '#fff'}
                                     onChangeComplete={(e) => this.props.dispatch(
-                                      setRightLineColorById({ color: e.hex, id: linechart.id })
+                                      setRightLineColorById({
+                                        color: e.hex, id: linechart.id,
+                                      })
                                     )} />
+                                  <h4>Lijnstijl</h4>
+                                  <ButtonGroup bsSize='small'>
+                                    <Button
+                                      active={(linechart.style === 1) ? true : false}
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineStyleById({
+                                            style: 1, id: linechart.id,
+                                          })
+                                        )
+                                      }}>
+                                      -
+                                    </Button>
+                                    <Button
+                                      active={(linechart.style === 2) ? true : false}
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineStyleById({
+                                            style: 2, id: linechart.id,
+                                          })
+                                        )
+                                      }}>
+                                      -----
+                                    </Button>
+                                    <Button
+                                      active={(linechart.style === 3) ? true : false}
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineStyleById({
+                                            style: 3, id: linechart.id,
+                                          })
+                                        )
+                                      }}>
+                                      - - - -
+                                    </Button>
+                                    <Button
+                                      active={(linechart.style === 4) ? true : false}
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineStyleById({
+                                            style: 4, id: linechart.id,
+                                          })
+                                        )
+                                      }}>
+                                      -  -  -  -  -
+                                    </Button>
+                                  </ButtonGroup>
+                                  <h4>Lijndikte</h4>
+                                  <ButtonGroup bsSize='xsmall'>
+                                    <Button
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineWidthById({
+                                            width: 1, id: linechart.id,
+                                          })
+                                        )
+                                      }}
+                                      active={(linechart.lineWidth === 1) ? true : false}>1 punts
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineWidthById({
+                                            width: 2, id: linechart.id,
+                                          })
+                                        )
+                                      }}
+                                      active={(linechart.lineWidth === 2) ? true : false}>2 punts
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineWidthById({
+                                            width: 3, id: linechart.id,
+                                          })
+                                        )
+                                      }}
+                                      active={(linechart.lineWidth === 3) ? true : false}>3 punts
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        this.props.dispatch(
+                                          setRightLineWidthById({
+                                            width: 4, id: linechart.id,
+                                          })
+                                        )
+                                      }}
+                                      active={(linechart.lineWidth === 4) ? true : false}>4 punts
+                                    </Button>
+                                  </ButtonGroup>
                                 </Popover>
                               }>
                               <div
@@ -1102,6 +1368,18 @@ class ChartApp extends Component {
                                  )}
                                  defaultChecked={this.props.opnames.lineChartSettings.userDefinedDaterange} />
                                  Gebruik periode uit selectie
+                          </label>
+                        </div>
+                      </div>
+                      <div className='form-group'>
+                        <div className='checkbox'>
+                          <label>
+                          <input type='checkbox'
+                                 onClick={() => this.props.dispatch(
+                                   toggleSymbols()
+                                 )}
+                                 defaultChecked={this.props.opnames.lineChartSettings.showSymbols} />
+                                 Toon symbolen
                           </label>
                         </div>
                       </div>
