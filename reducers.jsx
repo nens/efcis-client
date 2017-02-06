@@ -32,8 +32,8 @@ import {
   REQUEST_SCATTERPLOT_DATA,
   REQUEST_SECOND_SCATTERPLOT_AXIS,
   RESET_ALL_FILTERS,
-  SET_AS_SCATTERPLOTCHARTS_X,
-  SET_AS_SCATTERPLOTCHARTS_Y,
+  SET_LEGEND_MIN,
+  SET_LEGEND_MAX,
   SET_COLOR_BY,
   SET_LEFT_LINECOLOR_BY_ID,
   SET_LEGEND_INTERVALS,
@@ -85,6 +85,8 @@ function opnames(state = {
     reverseLegend: false,
     numLegendIntervals: 11,
     dataDomain: false,
+    legendMin: undefined,
+    legendMax: undefined,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -133,6 +135,8 @@ function opnames(state = {
         reverseLegend: false,
         numLegendIntervals: 11,
         dataDomain: false,
+        legendMin: undefined,
+        legendMax: undefined,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -439,6 +443,22 @@ function opnames(state = {
           action.numberOfIntervals <= 11) ?
             action.numberOfIntervals :
             state.mapSettings.numLegendIntervals,
+      },
+    };
+  case SET_LEGEND_MIN:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        legendMin: action.value,
+      },
+    };
+  case SET_LEGEND_MAX:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        legendMax: action.value,
       },
     };
   default:

@@ -34,6 +34,8 @@ export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
 export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
 export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
+export const SET_LEGEND_MIN = 'SET_LEGEND_MIN';
+export const SET_LEGEND_MAX = 'SET_LEGEND_MAX';
 export const SET_LEFT_LINECOLOR_BY_ID = 'SET_LEFT_LINECOLOR_BY_ID';
 export const SET_RIGHT_LINECOLOR_BY_ID = 'SET_RIGHT_LINECOLOR_BY_ID';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
@@ -588,24 +590,23 @@ function receiveScatterplotData(result) {
 
 
 export function fetchScatterplotDataByUrl(scatterplotUrl) {
+  return (dispatch, getState) => {
+    dispatch(requestScatterplotData());
+    dispatch(showLoading());
 
-    return (dispatch, getState) => {
-      dispatch(requestScatterplotData());
-      dispatch(showLoading());
-
-      const chartsEndpoint = $.ajax({
-        type: 'GET',
-        url: scatterplotUrl.replace(
-          'https://efcis.staging.lizard.net', ''),
-        success: (data) => {
-          return data;
-        }
-      });
-      Promise.all([chartsEndpoint]).then(([chartsResults]) => {
-        dispatch(hideLoading());
-        return dispatch(receiveScatterplotData(chartsResults));
-      });
-    }
+    const chartsEndpoint = $.ajax({
+      type: 'GET',
+      url: scatterplotUrl.replace(
+        'https://efcis.staging.lizard.net', ''),
+      success: (data) => {
+        return data;
+      }
+    });
+    Promise.all([chartsEndpoint]).then(([chartsResults]) => {
+      dispatch(hideLoading());
+      return dispatch(receiveScatterplotData(chartsResults));
+    });
+  }
 }
 
 export function setTresholdForLinechart(value) {
@@ -682,5 +683,19 @@ export function setLegendIntervals(numberOfIntervals) {
   return {
     type: SET_LEGEND_INTERVALS,
     numberOfIntervals: parseInt(numberOfIntervals),
+  };
+}
+
+export function setLegendMin(value) {
+  return {
+    type: SET_LEGEND_MIN,
+    value: parseFloat(value),
+  };
+}
+
+export function setLegendMax(value) {
+  return {
+    type: SET_LEGEND_MAX,
+    value: parseFloat(value),
   };
 }
