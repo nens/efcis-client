@@ -17,6 +17,7 @@ import {
 
 var ParameterList = React.createClass({
     render: function() {
+      const dispatch = this.props.dispatch;
       var self = this;
       var filteredParameters = self.props.parameters.filter(function(obj) {
           if (obj.par_oms.toLowerCase().indexOf(self.props.filterString.toLowerCase()) != -1) {
@@ -39,7 +40,7 @@ var ParameterList = React.createClass({
 	  var itemLabel = d.par_oms;
 	  if (d.par_oms_nl) { itemLabel = itemLabel + ' - ' + d.par_oms_nl }
 
-          return <li key={i} onClick={self.props.addSelectedParameter.bind(null, d)}>
+          return <li key={i} onClick={(e) => dispatch(addParameterToSelection(d))}>
                    <a ref="parameter" id={d.id} style={{cursor:'pointer'}}>
                      {itemLabel}
                    </a>
@@ -55,13 +56,14 @@ var ParameterList = React.createClass({
 var SelectedParameterList = React.createClass({
     render: function() {
         var self = this
+        const dispatch = this.props.dispatch;
         var parametersList = []
         var i = 0;
         for (var item in self.props.data) {
 	    var itemLabel = self.props.data[item].par_oms;
 	    if (self.props.data[item].par_oms_nl) { itemLabel = itemLabel + ' - ' + self.props.data[item].par_oms_nl }
             i = i + 1;
-            parametersList.push( <li key={i} onClick={self.props.removeSelectedParameter.bind(null, item)}>
+            parametersList.push( <li key={i} onClick={(e) => dispatch(removeParameterFromSelection(self.props.data[item].id))}>
                     <a ref="parameter" id={self.props.data[item].id} style={{cursor:'pointer'}}>
                      {itemLabel}
                           </a>
@@ -85,8 +87,7 @@ class SelectParameterList extends Component {
       height: window.innerHeight,
       parametergroups: [],
       parameters: [],
-      filterString: '',
-      //selectedParameters: this.props.opnames.parameters || {}
+      filterString: ''
     };
     this.updateDimensions = this.updateDimensions.bind(this);
     this.loadParameters = this.loadParameters.bind(this);
@@ -137,21 +138,6 @@ class SelectParameterList extends Component {
     this.setState({
       width: window.innerWidth,
       height: window.innerHeight,
-    });
-  }
-
-  removeSelectedParameter(par_id) {
-    var params = _.omit(this.state.selectedParameters, par_id);
-    this.setState({
-      selectedParameters: params
-    });
-  }
-
-  addSelectedParameter(par) {
-    var params = this.state.selectedParameters;
-    params[par.id] = par
-    this.setState({
-      selectedParameters: params
     });
   }
 
@@ -233,9 +219,9 @@ class SelectParameterList extends Component {
     
     let self = this;
     let parameterlist = <ParameterList
+			 {...this.props}
                          filterString={this.state.filterString}
-                         parameters={this.state.parameters}
-                         addSelectedParameter={this.addSelectedParameter} />;
+                         parameters={this.state.parameters} />;
 
       return (
         <div>
@@ -256,7 +242,7 @@ class SelectParameterList extends Component {
                 })} />
             </div>
             <div className="col-md-4" style={{height:50}}>
-              <div>Geselecteerde Parameters ({_.size(this.state.selectedParameters)})</div>
+              <div>Geselecteerde Parameters ({this.props.opnames.parameterIds.length})</div>
             </div>
           </div>
           <div className="row">
@@ -267,21 +253,10 @@ class SelectParameterList extends Component {
               {parameterlist}
             </div>
             <div className="col-md-4" style={{overflowY:'scroll', height:600}}>
-              <SelectedParameterList
-                      data={this.state.selectedParameters}
-                removeSelectedParameter={this.removeSelectedParameter}/>
+              <SelectedParameterList {...this.props} data={this.props.opnames.parameters}/>
             </div>
-          </div>
-              <div className="row">
-
-                  <div className="modal-footer btn-group" role="group" aria-label="..." style={{float:'right',paddingRight:10}}>
-                    <div className="btn-group" role="group" aria-label="..." style={{float:'right',paddingRight:10}}>
-                      <button type="button" className="btn btn-default" onClick={this.handleClearSelection}>Leegmaken</button>
-                      <button type="button" className="btn btn-default" onClick={this.handleSaveState}>Toepassen</button>
-                    </div>
-                  </div>
-              </div>
-           </div>
+          </div> 
+        </div>
         );
       }
 

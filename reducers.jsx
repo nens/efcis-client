@@ -6,8 +6,10 @@ import { loadingBarReducer } from 'react-redux-loading-bar';
 import {
   ADD_LOCATION_TO_SELECTION,
   APPLY_FILTER,
+  ADD_PARAMETER_TO_SELECTION,
   APPLY_SORTING,
   CLEAR_LOCATIONS_SELECTION,
+  CLEAR_PARAMETERS_SELECTION,
   RECEIVE_CHARTS,
   RECEIVE_DATA_FOR_BOXPLOT,
   RECEIVE_DATA_FOR_LEFT_Y,
@@ -22,6 +24,7 @@ import {
   REMOVE_FROM_LINECHARTS_RIGHT_Y_BY_ID,
   REMOVE_FROM_SCATTERPLOTCHARTS_BY_ID,
   REMOVE_LOCATION_FROM_SELECTION,
+  REMOVE_PARAMETER_FROM_SELECTION,
   REQUEST_CHARTS,
   REQUEST_DATA_FOR_BOXPLOT,
   REQUEST_DATA_FOR_LEFT_Y,
@@ -68,6 +71,7 @@ function opnames(state = {
   end_date: moment().format(dateFormat),
   parametergroups: [],
   parameters: [],
+  parameterIds: [],
   locations: [],
   locationIds: [],
   map_statistics: 'lastval',
@@ -116,6 +120,7 @@ function opnames(state = {
       end_date: moment().format(dateFormat),
       parametergroups: [],
       parameters: [],
+      parameterIds: [],
       locations: [],
       locationIds: [],
       map_statistics: 'lastval',
@@ -175,6 +180,26 @@ function opnames(state = {
       locations: [],
       locationIds: [],
     });
+  case CLEAR_PARAMETERS_SELECTION:
+    return Object.assign({}, state, {
+      parameters: [],
+      parameterIds: [],
+    });
+
+  case ADD_PARAMETER_TO_SELECTION:
+    const parametersById = state.parameters.filter((p) => {
+      if (p.id === action.parameterObject.id) {
+        return p;
+      }
+      return false;
+    });
+    if (parametersById.length === 0) {
+      return Object.assign({}, state, {
+        parameters: [...state.parameters, action.parameterObject],
+        parameterIds: [...state.parameterIds, action.parameterObject.id],
+      });
+    }
+    return state;
   case ADD_LOCATION_TO_SELECTION:
     const locationsById = state.locations.filter((l) => {
       if (l.id === action.locationObject.id) {
@@ -199,6 +224,21 @@ function opnames(state = {
       }),
       locationIds: state.locationIds.filter((l) => {
         if (l === action.id) {
+          return false;
+        }
+        return true;
+      }),
+    });
+  case REMOVE_PARAMETER_FROM_SELECTION:
+    return Object.assign({}, state, {
+      parameters: state.parameters.filter((p) => {
+        if (p.id === action.id) {
+          return false;
+        }
+        return true;
+      }),
+      parameterIds: state.parameterIds.filter((p) => {
+        if (p === action.id) {
           return false;
         }
         return true;

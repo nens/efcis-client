@@ -13,6 +13,7 @@ import {
   fetchOpnames,
   setParameterGroups,
   setParameters,
+  clearParametersSelection
 } from '../../actions.jsx';
 
 
@@ -57,7 +58,7 @@ class SelectParameters extends Component {
           <h3 className='panel-title'><i className='fa fa-sitemap'></i>&nbsp;Parameters</h3>
         </div>
         <div className='panel-body'>
-	  <p id='location-name'>
+	  <p>
             {(this.props.opnames && this.props.opnames.parametergroups.length > 0) ?
              <span>
                <span style={{
@@ -82,7 +83,23 @@ class SelectParameters extends Component {
               <i className='fa fa-search'></i>&nbsp;Per groep
           </Button>
           <br/><br/>
-          <p id="location-name">Geen filter</p>
+          <p>
+            {(this.props.opnames && this.props.opnames.parameterIds.length > 0) ?
+             <span>
+               <span style={{
+                 borderBottom: '1px dashed #000',
+               }}>{`${this.props.opnames.parameterIds.length} parameter(s)`}
+               </span>
+               <span
+                   style={{ cursor: 'pointer' }}
+                   onClick={() => {
+                       this.props.dispatch(clearParametersSelection());
+                       this.props.dispatch(fetchOpnames());
+                       this.props.dispatch(fetchFeatures());
+                     }}>&nbsp;<i className='fa fa-times'></i></span>
+             </span> :
+             'Geen filter'}
+	</p>
           <Button
             onClick={
               () => this.setState({
@@ -104,7 +121,7 @@ class SelectParameters extends Component {
 	    <SelectParameterGroup {...this.props} />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.hideParameterGroupsModal}>Sluiten</Button>
+            <Button onClick={this.hideParameterGroupsModal()}>Sluiten</Button>
 	    <Button onClick={() => {
 		this.props.dispatch(
 		  setParameterGroups(
@@ -132,11 +149,6 @@ class SelectParameters extends Component {
           <Modal.Footer>
 	    <Button onClick={this.hideParametersModal}>Sluiten</Button>
 	    <Button onClick={() => {
-		this.props.dispatch(
-		  setParameters(
-                    $('#parameter-tree').jstree().get_selected()
-		  )
-		);
 		this.props.dispatch(fetchOpnames());
 		this.props.dispatch(fetchFeatures());
 		this.hideParametersModal();

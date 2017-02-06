@@ -8,6 +8,7 @@ export const ADD_PARAMETER_TO_SELECTION = 'ADD_PARAMETER_TO_SELECTION';
 export const APPLY_FILTER = 'APPLY_FILTER';
 export const APPLY_SORTING = 'APPLY_SORTING';
 export const CLEAR_LOCATIONS_SELECTION = 'CLEAR_LOCATIONS_SELECTION';
+export const CLEAR_PARAMETERS_SELECTION = 'CLEAR_PARAMETERS_SELECTION';
 export const RECEIVE_CHARTS = 'RECEIVE_CHARTS';
 export const RECEIVE_DATA_FOR_BOXPLOT = 'RECEIVE_DATA_FOR_BOXPLOT';
 export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
@@ -44,7 +45,7 @@ export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
 export const SET_LEGEND_INTERVALS = 'SET_LEGEND_INTERVALS';
 export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
-export const SET_PARAMETER = 'SET_PARAMETERS';
+export const SET_PARAMETERS = 'SET_PARAMETERS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
@@ -124,6 +125,11 @@ export function clearLocationsSelection() {
   };
 }
 
+export function clearParametersSelection() {
+  return {
+    type: CLEAR_PARAMETERS_SELECTION,
+  };
+}
 export function removeLocationFromSelection(id) {
   return {
     type: REMOVE_LOCATION_FROM_SELECTION,
@@ -225,7 +231,7 @@ export function fetchOpnames(page) {
     const sort_dirs = Object.values(getState().opnames.sorting);
     const meetnetids = getState().opnames.meetnets;
     const parametergroupids = getState().opnames.parametergroups;
-    const parameterids = getState().opnames.parameters;
+    const parameterids = getState().opnames.parameterIds;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
@@ -289,8 +295,8 @@ export function fetchFeatures() {
 
     const filtersObject = getState().opnames.filters;
     const meetnetids = getState().opnames.meetnets;
-    //const parametergroupids = getState().opnames.parametergroups;
-    //const parameterids = getState().opnames.parameters;
+    const parametergroupids = getState().opnames.parametergroups;
+    const parameterids = getState().opnames.parameterIds;
     const locationids = getState().opnames.locationIds;
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
