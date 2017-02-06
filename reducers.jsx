@@ -35,10 +35,14 @@ import {
   REQUEST_SCATTERPLOT_DATA,
   REQUEST_SECOND_SCATTERPLOT_AXIS,
   RESET_ALL_FILTERS,
-  SET_AS_SCATTERPLOTCHARTS_X,
-  SET_AS_SCATTERPLOTCHARTS_Y,
+  SET_LEGEND_MIN,
+  SET_LEGEND_MAX,
   SET_COLOR_BY,
   SET_LEFT_LINECOLOR_BY_ID,
+  SET_LEFT_LINESTYLE_BY_ID,
+  SET_LEFT_LINEWIDTH_BY_ID,
+  SET_RIGHT_LINEWIDTH_BY_ID,
+  SET_RIGHT_LINESTYLE_BY_ID,
   SET_LEGEND_INTERVALS,
   SET_RIGHT_LINECOLOR_BY_ID,
   SET_LOCATIONS,
@@ -56,6 +60,7 @@ import {
   SET_RIGHT_AXIS_MAX_FOR_LINECHART,
   TOGGLE_REVERSE_LEGEND,
   TOGGLE_USER_DATERANGE,
+  TOGGLE_SYMBOLS,
   USE_DATA_DOMAIN,
 } from './actions.jsx';
 
@@ -85,11 +90,14 @@ function opnames(state = {
     rightMin: undefined,
     rightMax: undefined,
     userDefinedDaterange: false,
+    showSymbols: true,
   },
   mapSettings: {
     reverseLegend: false,
     numLegendIntervals: 11,
     dataDomain: false,
+    legendMin: undefined,
+    legendMax: undefined,
   },
   boxplotCharts: [],
   scatterplotCharts: [],
@@ -134,11 +142,14 @@ function opnames(state = {
         rightMin: undefined,
         rightMax: undefined,
         userDefinedDaterange: false,
+        showSymbols: true,
       },
       mapSettings: {
         reverseLegend: false,
         numLegendIntervals: 11,
         dataDomain: false,
+        legendMin: undefined,
+        legendMax: undefined,
       },
       boxplotCharts: [],
       scatterplotCharts: [],
@@ -428,6 +439,28 @@ function opnames(state = {
         rightMax: parseInt(action.value),
       },
     };
+  case SET_LEFT_LINESTYLE_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.style = action.config.style;
+          return lcly;
+        }
+        return lcly;
+      }),
+    };
+  case SET_RIGHT_LINESTYLE_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcly) => {
+        if (lcly.id === action.config.id) {
+          lcly.style = action.config.style;
+          return lcly;
+        }
+        return lcly;
+      }),
+    };
   case SET_LEFT_LINECOLOR_BY_ID:
     return {
       ...state,
@@ -450,12 +483,42 @@ function opnames(state = {
         return lcry;
       }),
     };
+  case SET_LEFT_LINEWIDTH_BY_ID:
+    return {
+      ...state,
+      linechartsLeftY: state.linechartsLeftY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineWidth = action.config.width;
+          return lcry;
+        }
+        return lcry;
+      }),
+    };
+  case SET_RIGHT_LINEWIDTH_BY_ID:
+    return {
+      ...state,
+      linechartsRightY: state.linechartsRightY.filter((lcry) => {
+        if (lcry.id === action.config.id) {
+          lcry.lineWidth = action.config.width;
+          return lcry;
+        }
+        return lcry;
+      }),
+    };
   case TOGGLE_USER_DATERANGE:
     return {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
         userDefinedDaterange: !state.lineChartSettings.userDefinedDaterange,
+      },
+    };
+  case TOGGLE_SYMBOLS:
+    return {
+      ...state,
+      lineChartSettings: {
+        ...state.lineChartSettings,
+        showSymbols: !state.lineChartSettings.showSymbols,
       },
     };
   case TOGGLE_REVERSE_LEGEND:
@@ -484,6 +547,22 @@ function opnames(state = {
           action.numberOfIntervals <= 11) ?
             action.numberOfIntervals :
             state.mapSettings.numLegendIntervals,
+      },
+    };
+  case SET_LEGEND_MIN:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        legendMin: action.value,
+      },
+    };
+  case SET_LEGEND_MAX:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        legendMax: action.value,
       },
     };
   default:
