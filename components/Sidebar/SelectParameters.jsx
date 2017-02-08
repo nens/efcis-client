@@ -55,7 +55,7 @@ class SelectParameters extends Component {
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>
-          <h3 className='panel-title'><i className='fa fa-sitemap'></i>&nbsp;Parameters</h3>
+          <h3 className='panel-title'><i className='fa fa-sitemap'></i>&nbsp;<strong>Parameters</strong></h3>
         </div>
         <div className='panel-body'>
 	  <p>

@@ -104,7 +104,7 @@ class SelectPeriod extends Component {
       <div className='panel panel-default'>
         <div className='panel-heading'>
           <h3 className='panel-title'>
-            <i className='fa fa-clock-o'></i>&nbsp;Periode
+            <i className='fa fa-clock-o'></i>&nbsp;<strong>Periode</strong>
           </h3>
         </div>
         <div className='panel-body'>

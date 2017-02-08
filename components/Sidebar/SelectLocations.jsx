@@ -77,7 +77,7 @@ class SelectLocations extends Component {
       <div className='panel panel-default'>
         <div className='panel-heading'>
           <h3 className='panel-title'><i className='fa fa-map-marker'></i>
-            &nbsp;Locaties
+            &nbsp;<strong>Locaties</strong>
           </h3>
         </div>
         <div className='panel-body'>
