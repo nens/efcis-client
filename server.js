@@ -20,6 +20,18 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use('/media', (req, res) => {
+  const url = 'https://efcis.staging.lizard.net/media' + req.url;
+  // const url = 'https://hdsr-efcis.lizard.net/media' + req.url;
+  const headers = {
+    'username': process.env.sso_user,
+    'password': process.env.sso_pass,
+  };
+  req.pipe(request({
+    url,
+    headers,
+  })).pipe(res);
+});
 
 app.use('/api', (req, res) => {
   const url = 'https://efcis.staging.lizard.net/api' + req.url;
