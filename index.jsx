@@ -25,6 +25,7 @@ class App extends Component {
   componentWillMount() {
     persistStore(store, {
       storage: localForage,
+      blacklist: ['loadingBarReducer'],
       keyPrefix: 'efcis:',
     }, () => {
       this.setState({ rehydrated: true });
