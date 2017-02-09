@@ -24,9 +24,11 @@ class SelectParameters extends Component {
     this.state = {
       showParameterGroupsModal: false,
       showParametersModal: false,
+      showMapModal: false,
     };
     this.hideParameterGroupsModal = this.hideParameterGroupsModal.bind(this);
     this.hideParametersModal = this.hideParametersModal.bind(this);
+    this.hideMapModal = this.hideMapModal.bind(this);
   }
 
   componentDidMount() {}
@@ -55,112 +57,114 @@ class SelectParameters extends Component {
     return (
       <div className='panel panel-default'>
         <div className='panel-heading'>
-          <h3 className='panel-title'><i className='fa fa-sitemap'></i>&nbsp;<strong>Parameters</strong></h3>
+          <h3 className='panel-title'><i className='fa fa-sitemap'>
+            </i>&nbsp;<strong>Parameters</strong>
+          </h3>
         </div>
         <div className='panel-body'>
-	  <p>
-            {(this.props.opnames && this.props.opnames.parametergroups.length > 0) ?
-             <span>
-               <span style={{
-                 borderBottom: '1px dashed #000',
-               }}>{`${this.props.opnames.parametergroups.length} parametergroep(en)`}
-               </span>
-               <span
-                   style={{ cursor: 'pointer' }}
-                   onClick={() => {
-                       this.props.dispatch(setParameterGroups([]));
-                       this.props.dispatch(fetchOpnames());
-                       this.props.dispatch(fetchFeatures());
-                     }}>&nbsp;<i className='fa fa-times'></i></span>
-             </span> :
-             'Geen filter'}
-	</p>
-        <Button
-            onClick={
-              () => this.setState({
-                showParameterGroupsModal: true
-              })}>
-              <i className='fa fa-search'></i>&nbsp;Per groep
-          </Button>
+          <p>
+          {(this.props.opnames && this.props.opnames.parametergroups.length > 0) ?
+            <span>
+            <span style={{
+              borderBottom: '1px dashed #000',
+            }}>{`${this.props.opnames.parametergroups.length} parametergroep(en)`}
+            </span>
+            <span
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              this.props.dispatch(setParameterGroups([]));
+              this.props.dispatch(fetchOpnames());
+              this.props.dispatch(fetchFeatures());
+            }}>&nbsp;<i className='fa fa-times'></i></span>
+            </span> :
+            'Geen filter'}
+            </p>
+            <Button
+              onClick={
+                () => this.setState({
+                  showParameterGroupsModal: true
+                })}>
+                <i className='fa fa-search'></i>&nbsp;Per groep
+            </Button>
           <br/><br/>
           <p>
-            {(this.props.opnames && this.props.opnames.parameterIds.length > 0) ?
-             <span>
-               <span style={{
-                 borderBottom: '1px dashed #000',
-               }}>{`${this.props.opnames.parameterIds.length} parameter(s)`}
-               </span>
-               <span
-                   style={{ cursor: 'pointer' }}
-                   onClick={() => {
-                       this.props.dispatch(clearParametersSelection());
-                       this.props.dispatch(fetchOpnames());
-                       this.props.dispatch(fetchFeatures());
-                     }}>&nbsp;<i className='fa fa-times'></i></span>
-             </span> :
-             'Geen filter'}
-	</p>
-          <Button
+          {(this.props.opnames && this.props.opnames.parameterIds.length > 0) ?
+            <span>
+            <span style={{
+              borderBottom: '1px dashed #000',
+            }}>{`${this.props.opnames.parameterIds.length} parameter(s)`}
+            </span>
+            <span
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              this.props.dispatch(clearParametersSelection());
+              this.props.dispatch(fetchOpnames());
+              this.props.dispatch(fetchFeatures());
+            }}>&nbsp;<i className='fa fa-times'></i></span>
+            </span> :
+            'Geen filter'}
+            </p>
+            <Button
             onClick={
               () => this.setState({
                 showParametersModal: true
               })}>
               <i className='fa fa-search'></i>&nbsp;Parameters
-          </Button>
-        </div>
+              </Button>
+              </div>
 
-        <Modal
-          {...this.props}
-          show={this.state.showParameterGroupsModal}
-          onHide={this.hideParameterGroupsModal}
-          dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
-            <Modal.Title id='parameters-selectie'>Parametergroep selectie</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-	    <SelectParameterGroup {...this.props} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.hideParameterGroupsModal()}>Sluiten</Button>
-	    <Button onClick={() => {
-		this.props.dispatch(
-		  setParameterGroups(
+              <Modal
+              {...this.props}
+              show={this.state.showParameterGroupsModal}
+              onHide={this.hideParameterGroupsModal}
+              dialogClassName={styles.WideModal}>
+              <Modal.Header closeButton>
+              <Modal.Title id='parameters-selectie'>Parametergroep selectie</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+              <SelectParameterGroup {...this.props} />
+              </Modal.Body>
+              <Modal.Footer>
+              <Button onClick={this.hideParameterGroupsModal()}>Sluiten</Button>
+              <Button onClick={() => {
+                this.props.dispatch(
+                  setParameterGroups(
                     $('#parametergroup-tree').jstree().get_selected()
-		  )
-		);
-		this.props.dispatch(fetchOpnames());
-		this.props.dispatch(fetchFeatures());
-		this.hideParameterGroupsModal();
-            }}>Selecteren &amp; sluiten</Button>
-          </Modal.Footer>
-        </Modal>
+                  )
+                );
+                this.props.dispatch(fetchOpnames());
+                this.props.dispatch(fetchFeatures());
+                this.hideParameterGroupsModal();
+              }}>Selecteren &amp; sluiten</Button>
+              </Modal.Footer>
+              </Modal>
 
-        <Modal
-          {...this.props}
-          show={this.state.showParametersModal}
-          onHide={this.hideParametersModal}
-          dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
-            <Modal.Title id='parameters'>Parameters selectie</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-	    <SelectParameterList {...this.props} />
-          </Modal.Body>
-          <Modal.Footer>
-	    <Button onClick={this.hideParametersModal}>Sluiten</Button>
-	    <Button onClick={() => {
-		this.props.dispatch(fetchOpnames());
-		this.props.dispatch(fetchFeatures());
-		this.hideParametersModal();
-            }}>Selecteren &amp; sluiten</Button>
-          </Modal.Footer>
-        </Modal>
+              <Modal
+              {...this.props}
+              show={this.state.showParametersModal}
+              onHide={this.hideParametersModal}
+              dialogClassName={styles.WideModal}>
+              <Modal.Header closeButton>
+              <Modal.Title id='parameters'>Parameters selectie</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+              <SelectParameterList {...this.props} />
+              </Modal.Body>
+              <Modal.Footer>
+              <Button onClick={this.hideParametersModal}>Sluiten</Button>
+              <Button onClick={() => {
+                this.props.dispatch(fetchOpnames());
+                this.props.dispatch(fetchFeatures());
+                this.hideParametersModal();
+              }}>Selecteren &amp; sluiten</Button>
+              </Modal.Footer>
+              </Modal>
 
-      </div>
-    );
-  }
-}
+              </div>
+            );
+          }
+        }
 
-SelectParameters.propTypes = {};
+        SelectParameters.propTypes = {};
 
-export default SelectParameters;
+        export default SelectParameters;

@@ -25,7 +25,34 @@ class SelectParameterGroup extends Component {
     this.filterParametersByGroup = this.filterParametersByGroup.bind(this);
     this.selectTreeNodesFromStore = this.selectTreeNodesFromStore.bind(this);
   }
-  
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+    const self = this;
+    $.ajax({
+      type: "GET",
+      url: config.parameterGroupTreeUrl,
+      dataType: 'json',
+      success: function(data) {
+        self.setState({
+          parametergroups: data,
+        });
+        // console.log('parameter tree');
+        $('#parametergroup-tree').jstree({
+          'core': {
+            'data': self.state.parametergroups
+          }
+        })
+        .on('loaded.jstree', function() {
+          $(".jstree").jstree('open_all');
+          self.selectTreeNodesFromStore();
+        })
+        .on('deselect_node.jstree', self.filterParametersByGroup)
+        .on('select_node.jstree', self.filterParametersByGroup);
+      }
+    });
+  }
+
   selectTreeNodesFromStore() {
     this.props.opnames.parametergroups.map((id) => {
       $('#parametergroup-tree').jstree('select_node', id);
@@ -36,33 +63,6 @@ class SelectParameterGroup extends Component {
     this.setState({
       width: window.innerWidth,
       height: window.innerHeight,
-    });
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
-    const self = this;
-    $.ajax({
-      type: "GET",
-      url: config.parameterGroupTreeUrl,
-      dataType: 'json',
-      success: function(data) {
-	self.setState({
-	  parametergroups: data,
-	});
-	// console.log('parameter tree');
-	$('#parametergroup-tree').jstree({
-	  'core': {
-	    'data': self.state.parametergroups
-	  }
-	})
-	.on('loaded.jstree', function() {
-	  $(".jstree").jstree('open_all');
-	  self.selectTreeNodesFromStore();
-	})
-	.on('deselect_node.jstree', self.filterParametersByGroup)
-	.on('select_node.jstree', self.filterParametersByGroup);
-      }
     });
   }
 
@@ -118,9 +118,9 @@ class SelectParameterGroup extends Component {
       url: config.parametersUrl + param,
       dataType: 'json',
       success: function(data) {
-	self.setState({
-	  parameters: data.results,
-	});
+        self.setState({
+          parameters: data.results,
+        });
       }
     });
   }
@@ -154,7 +154,7 @@ class SelectParameterGroup extends Component {
   }
 
   render() {
-      
+
     let filteredParameters = this.state.parameters;
     filteredParameters = filteredParameters.sort(function(a, b){
       if(a.par_oms < b.par_oms) return -1;
@@ -166,34 +166,34 @@ class SelectParameterGroup extends Component {
       var itemLabel = d.par_oms;
       if (d.par_oms_nl) { itemLabel = itemLabel + ' - ' + d.par_oms_nl }
       return (
-	<li key={i}>
-          {itemLabel}
-	</li>);
+        <li key={i}>
+        {itemLabel}
+        </li>);
       });
-      
-    return (
-      <div>
-	<div className='row'>
-          <div className='col-md-6' style={{ overflowY: 'scroll', height: 600 }}>
-            <div id='parametergroup-tree' />
-          </div>
-          <div className='col-md-6' style={{ overflowY: 'scroll', height: 600 }}>
-            {(parametersList.length > 0) ?
-             parametersList :
-             <div style={{
-	       position: 'absolute',
-	       top: 100,
-               left: '20%',
-               color: '#ccc',
-               fontSize: '1.5em',
-             }}>Geen resultaten...</div>}
-            </div>
+
+      return (
+        <div>
+        <div className='row'>
+        <div className='col-md-6' style={{ overflowY: 'scroll', height: 600 }}>
+        <div id='parametergroup-tree' />
         </div>
-      </div>
-    );
-  }
+        <div className='col-md-6' style={{ overflowY: 'scroll', height: 600 }}>
+        {(parametersList.length > 0) ?
+          parametersList :
+          <div style={{
+            position: 'absolute',
+            top: 100,
+            left: '20%',
+            color: '#ccc',
+            fontSize: '1.5em',
+          }}>Geen resultaten...</div>}
+          </div>
+          </div>
+          </div>
+        );
+      }
 }
 
 SelectParameterGroup.propTypes = {};
 
-module.exports = SelectParameterGroup;
+export default SelectParameterGroup;
