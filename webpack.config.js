@@ -3,7 +3,7 @@ var IgnorePlugin =  require("webpack").IgnorePlugin;
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './index'
