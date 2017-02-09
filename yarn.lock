@@ -3941,6 +3941,10 @@ leaflet-draw@^0.4.9:
   version "0.4.9"
   resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-0.4.9.tgz#44105088310f47e4856d5ede37d47ecfad0cf2d5"
 
+leaflet-engine@>=0.4.2:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/leaflet-engine/-/leaflet-engine-0.4.5.tgz#5692a83921814f9087eca24857540747458d4a24"
+
 leaflet-geodesy@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/leaflet-geodesy/-/leaflet-geodesy-0.2.1.tgz#d849a8add16b5d9b37f9c5f214e6fe7422bb737b"
@@ -3955,15 +3959,21 @@ leaflet-geometryutil:
   dependencies:
     leaflet ">=0.7.0"
 
+leaflet-markercluster@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet-markercluster/-/leaflet-markercluster-0.2.0.tgz#ef3417244d9eac680176d807f55e27287a72de30"
+  dependencies:
+    leaflet-engine ">=0.4.2"
+
 leaflet-utfgrid:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/leaflet-utfgrid/-/leaflet-utfgrid-0.2.1.tgz#cb035d1c66d93a3ee041b09801074a4c238e7e96"
   dependencies:
     corslite "0.0.7"
 
-leaflet.markercluster@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.0.tgz#1976c96c29b18b2d79d519dc24b2ab6a315a6b04"
+leaflet.markercluster@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.3.tgz#64c779365c0951f4885c3414024a994f3effc708"
 
 leaflet@, leaflet@>=0.7.0:
   version "1.0.2"
