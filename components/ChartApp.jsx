@@ -448,6 +448,7 @@ class ChartApp extends Component {
       linechartSeriesLeftYFilter: '',
       linechartSeriesRightYFilter: '',
       scatterplotSeriesFilter: '',
+      scatterplotSeriesYAxisFilter: '',
       showBoxplotModal: false,
       showLeftYAxisModal: false,
       showLinechartSettingsModal: false,
@@ -594,6 +595,15 @@ class ChartApp extends Component {
       }
       return 0;
     });
+
+
+    const secondAxisScatterplots = (this.props.opnames.secondScatterplotCharts.second_axis_lines) ?
+      this.props.opnames.secondScatterplotCharts.second_axis_lines.filter((chart, i) => {
+        if (chart.location.toLowerCase().indexOf(this.state.scatterplotSeriesYAxisFilter.toLowerCase()) !== -1 ||
+            chart.wns.toLowerCase().indexOf(this.state.scatterplotSeriesYAxisFilter.toLowerCase()) !== -1) {
+          return chart;
+        }
+    }) : [];
 
     return (
       <div>
@@ -1065,6 +1075,16 @@ class ChartApp extends Component {
           </div>
           <div className='col-md-6'>
           <h4>Y as</h4>
+            <input
+              type='text'
+              ref='filterText'
+              style={{ margin: 5 }}
+              className='form-control'
+              placeholder='Filter tijdseries'
+              onChange={(e) => this.setState({
+                scatterplotSeriesYAxisFilter: e.target.value,
+              })}
+            />
             {(this.props.opnames.isFetching) ?
               <div style={{
                 position: 'absolute',
@@ -1079,8 +1099,7 @@ class ChartApp extends Component {
                 height: 600,
                 overflowY: 'scroll',
               }}>
-                {(this.props.opnames.secondScatterplotCharts.second_axis_lines) ?
-                  this.props.opnames.secondScatterplotCharts.second_axis_lines.map((chart, i) => {
+                {secondAxisScatterplots.map((chart, i) => {
                   return (
                     <li
                       style={{ cursor: 'pointer' }}
@@ -1092,8 +1111,8 @@ class ChartApp extends Component {
                       key={i}>
                       {chart.wns} - {chart.location}
                     </li>
-                  );
-                }) : ''}
+                  )
+                })}
               </ul>
             }
           </div>
