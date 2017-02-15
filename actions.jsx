@@ -186,10 +186,10 @@ export function setParameters(ids) {
   };
 }
 
-export function setLocations(ids) {
+export function setLocations(locations) {
   return {
     type: SET_LOCATIONS,
-    ids,
+    locations,
   };
 }
 

@@ -307,7 +307,8 @@ function opnames(state = {
     });
   case SET_LOCATIONS:
     return Object.assign({}, state, {
-      locations: action.ids,
+      locations: action.locations,
+      locationIds: action.locations.map((location) => location.id),
     });
   case REMOVE_FROM_BOXPLOTCHARTS_BY_ID:
     return Object.assign({}, state, {
