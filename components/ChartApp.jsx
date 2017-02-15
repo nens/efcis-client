@@ -629,8 +629,8 @@ class ChartApp extends Component {
                   onPaste={(e) => e.preventDefault()}
                   onInput={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
                   onBlur={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
-                  contentEditable>
-                  {this.props.opnames.tijdreeksTitle}
+                  contentEditable
+                  dangerouslySetInnerHTML={{__html: this.props.opnames.tijdreeksTitle}}>
                 </h1>
                 <Button
                   bsSize='xsmall'
@@ -965,8 +965,8 @@ class ChartApp extends Component {
                   onPaste={(e) => e.preventDefault()}
                   onInput={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
                   onBlur={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
-                  contentEditable>
-                  {this.props.opnames.boxplotTitle}
+                  contentEditable
+                  dangerouslySetInnerHTML={{__html: this.props.opnames.boxplotTitle}}>
                 </h1>
                 <Button bsSize='xsmall' className='pull-right'>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
@@ -1038,8 +1038,8 @@ class ChartApp extends Component {
                   onPaste={(e) => e.preventDefault()}
                   onInput={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
                   onBlur={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
-                  contentEditable>
-                  {this.props.opnames.scatterplotTitle}
+                  contentEditable
+                  dangerouslySetInnerHTML={{__html: this.props.opnames.scatterplotTitle}}>
                 </h1>
                 <ScatterChartComponent
                   {...this.props}
