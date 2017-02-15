@@ -50,6 +50,7 @@
     "react-bootstrap": "",
     "react-bootstrap-daterangepicker": "^3.2.2",
     "react-color": "^2.11.1",
+    "react-contenteditable": "^2.0.2",
     "react-datagrid": "^2.1.2",
     "react-datepicker": "^0.39.0",
     "react-dom": "",

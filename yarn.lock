@@ -5392,6 +5392,10 @@ react-color@^2.11.1:
     reactcss "^1.1.1"
     tinycolor2 "^1.1.2"
 
+react-contenteditable@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-contenteditable/-/react-contenteditable-2.0.2.tgz#0acf68920931c227d1c9c85ae429981920f8fd92"
+
 react-datagrid@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/react-datagrid/-/react-datagrid-2.1.2.tgz#0b715c7f5ea663d90c5907d6e2b5b0d0f7f4526c"

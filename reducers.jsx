@@ -54,6 +54,9 @@ import {
   SET_PERIOD,
   SET_SEASON,
   SET_SPLIT_BY_YEAR,
+  SET_TITLE_FOR_TIJDREEKS,
+  SET_TITLE_FOR_BOXPLOT,
+  SET_TITLE_FOR_SCATTERPLOT,
   SET_TRESHOLD_FOR_LINECHART,
   SET_LEFT_AXIS_MIN_FOR_LINECHART,
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
@@ -70,6 +73,9 @@ const dateFormat = 'DD-MM-YYYY';
 function opnames(state = {
   isFetching: false,
   results: {},
+  tijdreeksTitle: 'Tijdreeks',
+  boxplotTitle: 'Boxplot',
+  scatterplotTitle: 'Scatterplot',
   page: 1,
   filters: {},
   sorting: {},
@@ -123,6 +129,9 @@ function opnames(state = {
     return Object.assign({}, state, {
       isFetching: false,
       results: {},
+      tijdreeksTitle: 'Tijdreeks',
+      boxplotTitle: 'Boxplot',
+      scatterplotTitle: 'Scatterplot',      
       page: 1,
       filters: {},
       sorting: {},
@@ -572,6 +581,21 @@ function opnames(state = {
         ...state.mapSettings,
         legendMax: action.value,
       },
+    };
+  case SET_TITLE_FOR_TIJDREEKS:
+    return {
+      ...state,
+      tijdreeksTitle: action.title,
+    };
+  case SET_TITLE_FOR_BOXPLOT:
+    return {
+      ...state,
+      boxplotTitle: action.title,
+    };
+  case SET_TITLE_FOR_SCATTERPLOT:
+    return {
+      ...state,
+      scatterplotTitle: action.title,
     };
   default:
     return state;
