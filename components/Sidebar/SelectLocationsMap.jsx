@@ -10,10 +10,18 @@ import 'leaflet.markercluster';
 import hdsrMaskData from '../../lib/hdsr-mask.json';
 import krwAreas from '../../lib/kwr-areas.json';
 import afvoergebieden from '../../lib/afvoergebieden.json';
+import within from 'turf-within';
 
 require("!style!css!../../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
 require("!style!css!../../node_modules/leaflet.markercluster/dist/MarkerCluster.css");
 require("!style!css!../../node_modules/leaflet-draw/dist/leaflet.draw.css");
+
+
+import {
+  addLocationToSelection,
+  removeLocationFromSelection,
+  setLocations,
+ } from '../../actions.jsx';
 
 
 class SelectLocationsMap extends Component {
@@ -273,11 +281,36 @@ reloadMap(meetStatusIds) {
                   'fillOpacity': 0.3,
                 });
                 layer.on('click', (e) => {
-                  console.log('click', e);
-
-                  // console.log('layer', layer);
-                  // console.log('feature', feature);
-                })
+                  const locationResults = {
+                    'type': 'FeatureCollection',
+                    'features': this.state.mapLocations.filter((location) => {
+                      if (_.has(location.geometry, 'coordinates')) {
+                        return location;
+                      }
+                      return false;
+                    }),
+                  };
+                  var withinFilter = {
+                    'type': 'FeatureCollection',
+                    'features': [
+                      {
+                        'type': 'Feature',
+                        'properties': '',
+                        'geometry': {
+                          'type': 'Polygon',
+                          'coordinates': feature.geometry.coordinates,
+                        },
+                      },
+                    ],
+                  };
+                  const result = within(locationResults, withinFilter);
+                  console.log('result', result);
+                  const selectedLocations = result.features;
+                  const selectedLocationIds = result.features.map((location) => {
+                    return location.id;
+                  });
+                  this.props.dispatch(setLocations(selectedLocations));
+                });
                 layer.on('mouseover', function(e) {
                   this.setStyle({
                     'fillColor': 'purple',
