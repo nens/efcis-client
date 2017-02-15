@@ -125,7 +125,7 @@ class SelectParameters extends Component {
               <SelectParameterGroup {...this.props} />
               </Modal.Body>
               <Modal.Footer>
-              <Button onClick={this.hideParameterGroupsModal()}>Sluiten</Button>
+              <Button onClick={this.hideParameterGroupsModal}>Sluiten</Button>
               <Button onClick={() => {
                 this.props.dispatch(
                   setParameterGroups(

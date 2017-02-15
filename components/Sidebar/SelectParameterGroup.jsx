@@ -66,21 +66,6 @@ class SelectParameterGroup extends Component {
     });
   }
 
-  removeSelectedParameter(par_id) {
-    var params = _.omit(this.state.selectedParameters, par_id);
-    this.setState({
-      selectedParameters: params
-    });
-  }
-
-  addSelectedParameter(par) {
-    var params = this.state.selectedParameters;
-    params[par.id] = par
-    this.setState({
-      selectedParameters: params
-    });
-  }
-
   filterParametersList() {
     var self = this;
     var filterString = ReactDOM.findDOMNode(this.refs.filterText).value;
