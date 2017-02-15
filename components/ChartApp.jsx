@@ -6,6 +6,7 @@ import React, { Component, PropTypes } from 'react';
 import sharedStyles from './SharedStyles.css';
 import { CompactPicker } from 'react-color';
 import { Wave } from 'better-react-spinkit';
+import ContentEditable from 'react-contenteditable';
 import TopNav from './TopNav.jsx';
 import styles from './ChartApp.css';
 import Sidebar from './Sidebar.jsx';
@@ -29,6 +30,9 @@ import {
   setRightLineColorById,
   setRightLineStyleById,
   setRightLineWidthById,
+  setTitleForTijdreeks,
+  setTitleForBoxplot,
+  setTitleForScatterplot,
   setLeftAxisMinForLinechart,
   setRightAxisMaxForLinechart,
   setRightAxisMinForLinechart,
@@ -286,7 +290,7 @@ class BoxplotChartComponent extends Component {
     for (let i = 1; i < this.props.opnames.boxplotCharts.length + 1; i++) {
       categories.push(`${boxplotCharts[i - 1].location}
         (${boxplotCharts[i-1].wns})
-        ${this.props.opnames.start_date} - ${this.props.opnames.end_date}`);
+        ${boxplotCharts[i-1].start_date} - ${boxplotCharts[i-1].end_date}`);
       series.push([
           boxplotCharts[i-1].boxplot_data.min,
           boxplotCharts[i-1].boxplot_data.q1,
@@ -616,6 +620,18 @@ class ChartApp extends Component {
             <div className='col-md-10' id='chart'>
             <Tabs activeKey={this.state.key} id='chart-tab'>
               <Tab eventKey={1} title='Tijdreeks'>
+                <h1
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => e.preventDefault()}
+                  onInput={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
+                  onBlur={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
+                  contentEditable>
+                  {this.props.opnames.tijdreeksTitle}
+                </h1>
                 <Button
                   bsSize='xsmall'
                   style={{ margin: 5 }}
@@ -940,6 +956,18 @@ class ChartApp extends Component {
                 </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
+                <h1
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => e.preventDefault()}
+                  onInput={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
+                  onBlur={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
+                  contentEditable>
+                  {this.props.opnames.boxplotTitle}
+                </h1>
                 <Button bsSize='xsmall' className='pull-right'>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
                 </Button>
@@ -979,7 +1007,7 @@ class ChartApp extends Component {
                         {this.props.opnames.boxplotCharts.map((s, i) => {
                           return (
                             <tr key={i}>
-                              <td style={{width:'100px'}}>{this.props.opnames.start_date} - {this.props.opnames.end_date}</td>
+                              <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
                               <td style={{width:'100px'}}>{s.location_id}</td>
                               <td style={{width:'100px'}}>{s.location} ({s.wns})</td>
                               <td style={{width:'15px'}}>({s.unit})</td>
@@ -1001,6 +1029,18 @@ class ChartApp extends Component {
                   </div>
               </Tab>
               <Tab eventKey={3} title='Scatterplot'>
+                <h1
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => e.preventDefault()}
+                  onInput={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
+                  onBlur={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
+                  contentEditable>
+                  {this.props.opnames.scatterplotTitle}
+                </h1>
                 <ScatterChartComponent
                   {...this.props}
                   width={this.state.width} />

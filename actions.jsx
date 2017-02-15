@@ -54,6 +54,9 @@ export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PARAMETERS = 'SET_PARAMETERS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
+export const SET_TITLE_FOR_TIJDREEKS = 'SET_TITLE_FOR_TIJDREEKS';
+export const SET_TITLE_FOR_BOXPLOT = 'SET_TITLE_FOR_BOXPLOT';
+export const SET_TITLE_FOR_SCATTERPLOT = 'SET_TITLE_FOR_SCATTERPLOT';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
 export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART';
 export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
@@ -497,9 +500,12 @@ export function addToBoxplotCharts(chart) {
     dispatch(showLoading());
     dispatch(requestDataForBoxplot());
 
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/boxplots/${chart.id}/`,
+      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
       success: (data) => {
         return data;
       }
@@ -770,5 +776,28 @@ export function setLegendMax(value) {
   return {
     type: SET_LEGEND_MAX,
     value: parseFloat(value),
+  };
+}
+
+
+
+export function setTitleForTijdreeks(title) {
+  return {
+    type: SET_TITLE_FOR_TIJDREEKS,
+    title,
+  };
+}
+
+export function setTitleForBoxplot(title) {
+  return {
+    type: SET_TITLE_FOR_BOXPLOT,
+    title,
+  };
+}
+
+export function setTitleForScatterplot(title) {
+  return {
+    type: SET_TITLE_FOR_SCATTERPLOT,
+    title,
   };
 }
