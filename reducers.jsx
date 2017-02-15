@@ -405,7 +405,7 @@ function opnames(state = {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
-        treshold: parseInt(action.value),
+        treshold: parseFloat(action.value),
       },
     };
   case SET_LEFT_AXIS_MIN_FOR_LINECHART:

@@ -286,7 +286,7 @@ class BoxplotChartComponent extends Component {
     for (let i = 1; i < this.props.opnames.boxplotCharts.length + 1; i++) {
       categories.push(`${boxplotCharts[i - 1].location}
         (${boxplotCharts[i-1].wns})
-        ${boxplotCharts[i - 1].start_date} - ${boxplotCharts[i-1].end_date}`);
+        ${this.props.opnames.start_date} - ${this.props.opnames.end_date}`);
       series.push([
           boxplotCharts[i-1].boxplot_data.min,
           boxplotCharts[i-1].boxplot_data.q1,
@@ -940,6 +940,9 @@ class ChartApp extends Component {
                 </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
+                <Button bsSize='xsmall' className='pull-right'>
+                  <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
+                </Button>
                 <BoxplotChartComponent
                   {...this.props}
                   width={this.state.width} />
@@ -976,7 +979,7 @@ class ChartApp extends Component {
                         {this.props.opnames.boxplotCharts.map((s, i) => {
                           return (
                             <tr key={i}>
-                              <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
+                              <td style={{width:'100px'}}>{this.props.opnames.start_date} - {this.props.opnames.end_date}</td>
                               <td style={{width:'100px'}}>{s.location_id}</td>
                               <td style={{width:'100px'}}>{s.location} ({s.wns})</td>
                               <td style={{width:'15px'}}>({s.unit})</td>
@@ -1457,8 +1460,8 @@ class ChartApp extends Component {
               <div className='panel panel-default'>
                 <div className='panel-body'>
                   <div className='input-group'>
-                    <label htmlFor='tresholdValue'>Waarde normlijn o.b.v. linker Y-as</label>
-                    <input type='number'
+                    <label htmlFor='tresholdValue'>Waarde normlijn o.b.v. linker Y-as (punt als decimaalteken)</label>
+                    <input type='text'
                            onChange={(e) => this.props.dispatch(
                              setTresholdForLinechart(e.target.value)
                            )}
