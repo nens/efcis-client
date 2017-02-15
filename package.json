@@ -82,6 +82,7 @@
     "sweetalert": "0.5.0",
     "transform-loader": "^0.2.3",
     "turf-along": "^3.0.12",
+    "turf-within": "^3.0.12",
     "velocity-animate": "^1.3.1",
     "velocity-react": "^1.1.11",
     "victory": "^0.14.0",
