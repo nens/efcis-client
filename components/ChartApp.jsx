@@ -210,7 +210,7 @@ class LineChartComponent extends Component {
           },
         },
         plotLines: [{
-          color: 'red',
+          color: '#5A5859',
           value: (this.props.opnames.lineChartSettings.treshold) ?
                   this.props.opnames.lineChartSettings.treshold : 0,
           width: (this.props.opnames.lineChartSettings.treshold) ? 2 : 0,
@@ -1065,6 +1065,9 @@ class ChartApp extends Component {
                         }
                       }}
                       style={{
+                        textDecoration: (
+                          this.props.opnames.secondScatterplotCharts.id &&
+                          chart.id === this.props.opnames.secondScatterplotCharts.id) ? 'underline' : '',
                         cursor: (this.state.currentUnit === chart.unit ||
                                 !this.state.currentUnit) ? 'pointer' : '',
                         opacity: (this.state.currentUnit === chart.unit ||
@@ -1105,7 +1108,11 @@ class ChartApp extends Component {
                 {secondAxisScatterplots.map((chart, i) => {
                   return (
                     <li
-                      style={{ cursor: 'pointer' }}
+                      style={{
+                        cursor: 'pointer',
+                        textDecoration: (this.props.opnames.scatterplotData) ?
+                          (chart.id === this.props.opnames.scatterplotData.y_id) ? 'underline' : '' : '',
+                      }}
                       onClick={() => {
                         this.props.dispatch(
                           fetchScatterplotDataByUrl(chart.url)
