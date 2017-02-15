@@ -33,6 +33,7 @@ import {
   setRightAxisMaxForLinechart,
   setRightAxisMinForLinechart,
   setTresholdForLinechart,
+  setSplitByYear,
   toggleUserDaterange,
   toggleSymbols,
 } from '../actions.jsx';
@@ -940,7 +941,9 @@ class ChartApp extends Component {
                 </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
-                <Button bsSize='xsmall' className='pull-right'>
+                <Button bsSize='xsmall' className='pull-right'  onClick={() => {
+                  this.props.dispatch(setSplitByYear(!this.props.opnames.splitByYear));
+                }}>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
                 </Button>
                 <BoxplotChartComponent

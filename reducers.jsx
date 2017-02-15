@@ -53,6 +53,7 @@ import {
   SET_PARAMETERS,
   SET_PERIOD,
   SET_SEASON,
+  SET_SPLIT_BY_YEAR,
   SET_TRESHOLD_FOR_LINECHART,
   SET_LEFT_AXIS_MIN_FOR_LINECHART,
   SET_LEFT_AXIS_MAX_FOR_LINECHART,
@@ -100,6 +101,7 @@ function opnames(state = {
     legendMax: undefined,
   },
   boxplotCharts: [],
+  splitByYear: false,
   scatterplotCharts: [],
   scatterplotData: undefined,
   linechartsLeftY: [],
@@ -152,6 +154,7 @@ function opnames(state = {
         legendMax: undefined,
       },
       boxplotCharts: [],
+      splitByYear: false,
       scatterplotCharts: [],
       scatterplotData: undefined,
       secondScatterplotCharts: [],
@@ -185,6 +188,10 @@ function opnames(state = {
   case SET_MAP_STATISTICS:
     return Object.assign({}, state, {
       map_statistics: action.statisticsType,
+    });
+  case SET_SPLIT_BY_YEAR:
+    return Object.assign({}, state, {
+      splitByYear: action.splitByYear,
     });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {

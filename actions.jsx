@@ -54,6 +54,7 @@ export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PARAMETERS = 'SET_PARAMETERS';
 export const SET_PERIOD = 'SET_PERIOD';
 export const SET_SEASON = 'SET_SEASON';
+export const SET_SPLIT_BY_YEAR = 'SET_SPLIT_BY_YEAR';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
 export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART';
 export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
@@ -190,6 +191,13 @@ export function setLocations(locations) {
   return {
     type: SET_LOCATIONS,
     locations,
+  };
+}
+
+export function setSplitByYear(splitByYear) {
+  return {
+    type: SET_SPLIT_BY_YEAR,
+    splitByYear,
   };
 }
 
