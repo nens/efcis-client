@@ -112,8 +112,6 @@ function opnames(state = {
   scatterplotData: undefined,
   linechartsLeftY: [],
   linechartsRightY: [],
-  boxplotCharts: [],
-  scatterplotCharts: [],
   secondScatterplotCharts: [],
   season: undefined,
   color_by: undefined,
@@ -340,6 +338,7 @@ function opnames(state = {
       isFetching: true,
     });
   case RECEIVE_DATA_FOR_BOXPLOT:
+    debugger;
     return Object.assign({}, state, {
       isFetching: false,
       boxplotCharts: [...state.boxplotCharts, action.results],

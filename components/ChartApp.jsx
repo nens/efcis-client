@@ -287,18 +287,21 @@ class BoxplotChartComponent extends Component {
     let categories = [];
     let series = [];
     let currYear = '';
-
-    for (let i = 1; i < this.props.opnames.boxplotCharts.length + 1; i++) {
-      categories.push(`${boxplotCharts[i - 1].location}
-        (${boxplotCharts[i-1].wns})
-        ${boxplotCharts[i-1].start_date} - ${boxplotCharts[i-1].end_date}`);
-      series.push([
-          boxplotCharts[i-1].boxplot_data.min,
-          boxplotCharts[i-1].boxplot_data.q1,
-          boxplotCharts[i-1].boxplot_data.median,
-          boxplotCharts[i-1].boxplot_data.q3,
-          boxplotCharts[i-1].boxplot_data.max,
-      ]);
+    debugger;
+    for (let i = 0; i < this.props.opnames.boxplotCharts.length; i++) {
+      for (let j = 0; j < this.props.opnames.boxplotCharts[i].length; j++) {
+	let bD = this.props.opnames.boxplotCharts[i][j]
+	categories.push(`${bD.location}
+        (${bD.wns})
+        ${bD.start_date} - ${bD.end_date}`);
+	series.push([
+          boxplotCharts.boxplot_data.min,
+          boxplotCharts.boxplot_data.q1,
+          boxplotCharts.boxplot_data.median,
+          boxplotCharts.boxplot_data.q3,
+          boxplotCharts.boxplot_data.max,
+	]);
+      }
     }
 
     Highcharts.chart(this.refs.boxplotchartContainer, {
@@ -1010,20 +1013,20 @@ class ChartApp extends Component {
                         {this.props.opnames.boxplotCharts.map((s, i) => {
                           return (
                             <tr key={i}>
-                              <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
-                              <td style={{width:'100px'}}>{s.location_id}</td>
-                              <td style={{width:'100px'}}>{s.location} ({s.wns})</td>
-                              <td style={{width:'15px'}}>({s.unit})</td>
-                              <td style={{width:'10px'}}>{s.boxplot_data.num_values}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.min.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.max.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.std.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.median.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.mean.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.q1.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.q3.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.p10.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s.boxplot_data.p90.toFixed(2)}</td>
+                              <td style={{width:'100px'}}>{s[0].start_date} - {s[0].end_date}</td>
+                              <td style={{width:'100px'}}>{s[0].location_id}</td>
+                              <td style={{width:'100px'}}>{s[0].location} ({s[0].wns})</td>
+                              <td style={{width:'15px'}}>({s[0].unit})</td>
+                              <td style={{width:'10px'}}>{s[0].boxplot_data.num_values}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.min.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.max.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.std.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.median.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.mean.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.q1.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.q3.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.p10.toFixed(2)}</td>
+                              <td style={{width:'15px'}}>{s[0].boxplot_data.p90.toFixed(2)}</td>
                             </tr>
                           );
                         })}
