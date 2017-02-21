@@ -28,7 +28,7 @@ class TopNav extends Component {
   render() {
     return (
       <nav className='navbar navbar-fixed-top'>
-      <LoadingBar updateTime={100} maxProgress={95} progressIncrease={10} />
+      <LoadingBar updateTime={100} maxProgress={100} progressIncrease={10} />
          <div className='container-fluid'>
            <div className='navbar-header'>
              <button type='button'
