@@ -27,6 +27,7 @@ class MapStatisticsPicker extends Component {
   componentWillReceiveProps(newProps) {}
 
   render() {
+    const { dispatch, opnames } = this.props;
     const krwOptions = [
       {
         label: 'Laatste',
@@ -77,14 +78,14 @@ class MapStatisticsPicker extends Component {
             key={i}
             ref='item'
             onClick={() => {
-              this.props.dispatch(setMapStatistics(item.name));
-              this.props.dispatch(fetchFeatures());
+              dispatch(setMapStatistics(item.name));
+              dispatch(fetchFeatures());
             }}
             style={{
               marginRight: 0,
-              fontWeight: (item.name === this.props.opnames.map_statistics) ?
+              fontWeight: (item.name === opnames.map_statistics) ?
                 'bold' : '',
-              borderBottom: (item.name === this.props.opnames.map_statistics) ?
+              borderBottom: (item.name === opnames.map_statistics) ?
                 '1px dashed #46f' : '',
             }}>
             {item.label} {(i !== (listSize - 1)) ? '/ ' : ''}
@@ -105,6 +106,9 @@ class MapStatisticsPicker extends Component {
   }
 }
 
-MapStatisticsPicker.propTypes = {};
+MapStatisticsPicker.propTypes = {
+  dispatch: PropTypes.func,
+  opnames: PropTypes.object,
+};
 
 export default MapStatisticsPicker;

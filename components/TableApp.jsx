@@ -94,7 +94,7 @@ class TableApp extends Component {
     let nextDirection = this.getNextDirection(currentDirection);
     let newSorting = Object.assign({}, this.props.opnames.sorting);
 
-    if (nextDirection == null) {
+    if (nextDirection === null) {
       delete newSorting[colName];
     } else {
       newSorting[colName] = nextDirection;
@@ -105,10 +105,10 @@ class TableApp extends Component {
 
   getNextDirection(currentDirection) {
     /* currentDirection has to be null, 1, -1 */
-    if (currentDirection == null){
+    if (currentDirection === null) {
       return 1;
     }
-    if (currentDirection == 1){
+    if (currentDirection === 1) {
       return -1;
     }
     return null;
@@ -117,19 +117,24 @@ class TableApp extends Component {
   getCurrentDirection(colName) {
     if (this.props.opnames.sorting.hasOwnProperty(colName)) {
       return this.props.opnames.sorting[colName];
-    } else {
+    }
+    else {
       return null;
     }
   }
 
   renderSortingButton(colName) {
-    return (<Button bsSize='xsmall' onClick={(e) => {
-	this.setSorting(colName);
+    return (
+      <Button bsSize='xsmall' onClick={(e) => {
+      	this.setSorting(colName);
       }}>
-      {(this.getCurrentDirection(colName) == 1) ? <i className='fa fa-long-arrow-up'></i> : ''}
-      {(this.getCurrentDirection(colName) == -1) ? <i className='fa fa-long-arrow-down'></i> : ''}
-      {(this.getCurrentDirection(colName) == null) ? <i className='fa fa-arrows-v'></i> : ''}
-    </Button>);
+        {(this.getCurrentDirection(colName) === 1) ?
+          <i className='fa fa-long-arrow-up'></i> : ''}
+        {(this.getCurrentDirection(colName) === -1) ?
+          <i className='fa fa-long-arrow-down'></i> : ''}
+        {(this.getCurrentDirection(colName) === null) ?
+          <i className='fa fa-arrows-v'></i> : ''}
+      </Button>);
   }
 
   renderOverlayFilter(filterValue, colName) {
@@ -172,8 +177,10 @@ class TableApp extends Component {
 
   render() {
 
-    const totalResults = (this.props.opnames.results.count) ?
-      this.props.opnames.results.count : 0;
+    const { dispatch, opnames } = this.props;
+
+    const totalResults = (opnames.results.count) ?
+      opnames.results.count : 0;
     const totalPages = parseInt(totalResults / 200);
 
     let admin_dt = '';
@@ -197,7 +204,7 @@ class TableApp extends Component {
             </div>
             <div className='col-md-10' >
               <div className={styles.TableDiv}>
-                {(this.props.opnames.isFetching) ?
+                {(opnames.isFetching) ?
                   <div style={{
                     position: 'absolute',
                     left: this.state.width / 2.7,
@@ -213,13 +220,13 @@ class TableApp extends Component {
                       <th>
 		        <div style={{ width: 300 }}>
                           Locatie omschrijving<br/>
-                          {this.renderOverlayFilter(this.props.opnames.filters.loc_oms, 'loc_oms')}
+                          {this.renderOverlayFilter(opnames.filters.loc_oms, 'loc_oms')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 110 }}>
                         ID<br/>
-			{this.renderOverlayFilter(this.props.opnames.filters.loc_id, 'loc_id')}
+			{this.renderOverlayFilter(opnames.filters.loc_id, 'loc_id')}
 		        </div>
                       </th>
                       <th>
@@ -239,91 +246,91 @@ class TableApp extends Component {
                       <th>
 		        <div style={{ width: 190 }}>
 		          Parameteromschrijving<br/>
-			  {this.renderOverlayFilter(this.props.opnames.filters.par_oms, 'par_oms')}
+			  {this.renderOverlayFilter(opnames.filters.par_oms, 'par_oms')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 210 }}>
 		          Parameteromschrijving (NL)<br/>
-			  {this.renderOverlayFilter(this.props.opnames.filters.par_oms_nl, 'par_oms_nl')}
+			  {this.renderOverlayFilter(opnames.filters.par_oms_nl, 'par_oms_nl')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 300 }}>
 		          WNS omschrijving<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.wns_oms, 'wns_oms')}
+		          {this.renderOverlayFilter(opnames.filters.wns_oms, 'wns_oms')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 120 }}>
 		          Detectiegrens<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.detectiegrens, 'detectiegrens')}
+		          {this.renderOverlayFilter(opnames.filters.detectiegrens, 'detectiegrens')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 150 }}>
 		          Waarde N<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.waarde_n, 'waarde_n')}
+		          {this.renderOverlayFilter(opnames.filters.waarde_n, 'waarde_n')}
 		        </div>
                       </th>
                       <th>
 		        <div style={{ width: 100 }}>
 		          Waarde A<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.waarde_n, 'waarde_n')}
+		          {this.renderOverlayFilter(opnames.filters.waarde_n, 'waarde_n')}
                         </div>
                       </th>
                       <th>
 		        <div style={{ width: 200 }}>
 		          Activiteit<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.activiteit, 'activiteit')}
+		          {this.renderOverlayFilter(opnames.filters.activiteit, 'activiteit')}
                         </div>
                       </th>
                       <th>
 		        <div style={{ width: 230 }}>
 		          Eenheid omschrijving<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.eenheid_oms, 'eenheid_oms')}
+		          {this.renderOverlayFilter(opnames.filters.eenheid_oms, 'eenheid_oms')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Hoedanigheid omschrijving<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.hoed_oms, 'hoed_oms')}
+		          {this.renderOverlayFilter(opnames.filters.hoed_oms, 'hoed_oms')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Compartiment omschrijving<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.comp_oms, 'comp_oms')}
+		          {this.renderOverlayFilter(opnames.filters.comp_oms, 'comp_oms')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Landgebruik<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.landgebruik, 'landgebruik')}
+		          {this.renderOverlayFilter(opnames.filters.landgebruik, 'landgebruik')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Bodemtype<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.grondsoort, 'grondsoort')}
+		          {this.renderOverlayFilter(opnames.filters.grondsoort, 'grondsoort')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Afvoergebied<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.afvoergebeid, 'afvoergebied')}
+		          {this.renderOverlayFilter(opnames.filters.afvoergebeid, 'afvoergebied')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 230 }}>
 			  Watertype<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.watertype, 'watertype')}
+		          {this.renderOverlayFilter(opnames.filters.watertype, 'watertype')}
                         </div>
                       </th>
 		      <th>
 		        <div style={{ width: 150 }}>
 			  Validatiestatus<br/>
-		          {this.renderOverlayFilter(this.props.opnames.filters.validatiestatus, 'validatiestatus')}
+		          {this.renderOverlayFilter(opnames.filters.validatiestatus, 'validatiestatus')}
                         </div>
                       </th>
                     </tr>
@@ -331,8 +338,8 @@ class TableApp extends Component {
                   <tbody style={{
                     height: this.state.height - 250,
                   }}>
-                  {(this.props.opnames.results.results) ?
-                    this.props.opnames.results.results.map((result, i) => {
+                  {(opnames.results.results) ?
+                    opnames.results.results.map((result, i) => {
                       return (
                         <tr key={i} onClick={() => this.setState({
                           showModal: true,
@@ -342,7 +349,7 @@ class TableApp extends Component {
 			    <div style={{ width: 300 }}>
                               <Highlighter
                                highlightClassName={styles.Highlight}
-                               searchWords={[this.props.opnames.filters.loc_oms]}
+                               searchWords={[opnames.filters.loc_oms]}
                                textToHighlight={(result.loc_oms) ? result.loc_oms.toString() : '' }
 			      />
 			    </div>
@@ -351,7 +358,7 @@ class TableApp extends Component {
 			    <div style={{ width: 110 }}>
 			    <Highlighter
 				highlightClassName={styles.Highlight}
-				searchWords={[this.props.opnames.filters.loc_id]}
+				searchWords={[opnames.filters.loc_id]}
 				textToHighlight={(result.loc_id) ? result.loc_id.toString() : '' }
                             />
 			    </div>
@@ -362,7 +369,7 @@ class TableApp extends Component {
 			    <div style={{ width: 190 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.par_oms]}
+				  searchWords={[opnames.filters.par_oms]}
 				  textToHighlight={(result.par_oms) ? result.par_oms.toString() : '' }
                               />
 			    </div>
@@ -371,7 +378,7 @@ class TableApp extends Component {
 			    <div style={{ width: 210 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.par_oms_nl]}
+				  searchWords={[opnames.filters.par_oms_nl]}
 				  textToHighlight={(result.par_oms_nl) ? result.par_oms_nl.toString() : '' }
                               />
 			    </div>
@@ -380,7 +387,7 @@ class TableApp extends Component {
 			    <div style={{ width: 300 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.wns_oms]}
+				  searchWords={[opnames.filters.wns_oms]}
 				  textToHighlight={(result.wns_oms) ? result.wns_oms.toString() : ''}
                               />
 			    </div>
@@ -389,7 +396,7 @@ class TableApp extends Component {
 			    <div style={{ width: 120 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.detectiegrens]}
+				  searchWords={[opnames.filters.detectiegrens]}
 				  textToHighlight={(result.detectiegrens) ? result.detectiegrens.toString() : '' }
                               />
 			    </div>
@@ -398,7 +405,7 @@ class TableApp extends Component {
 			    <div style={{ width: 150 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.waarde_n]}
+				  searchWords={[opnames.filters.waarde_n]}
 				  textToHighlight={(result.waarde_n) ? result.waarde_n.toString() : '' }
                               />
 			    </div>
@@ -407,7 +414,7 @@ class TableApp extends Component {
 			    <div style={{ width: 100 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.waarde_a]}
+				  searchWords={[opnames.filters.waarde_a]}
 				  textToHighlight={(result.waarde_a) ? result.waarde_a.toString() : '' }
                               />
 			    </div>
@@ -416,7 +423,7 @@ class TableApp extends Component {
 			    <div style={{ width: 200 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.activiteit]}
+				  searchWords={[opnames.filters.activiteit]}
 				  textToHighlight={(result.activiteit) ? result.activiteit.toString() : '' }
                               />
 			    </div>
@@ -425,7 +432,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.eenheid_oms]}
+				  searchWords={[opnames.filters.eenheid_oms]}
 				  textToHighlight={(result.eenheid_oms) ? result.eenheid_oms.toString() : '' }
                               />
 			    </div>
@@ -434,7 +441,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.hoed_oms]}
+				  searchWords={[opnames.filters.hoed_oms]}
 				  textToHighlight={(result.hoed_oms) ? result.hoed_oms.toString() : '' }
                               />
 			    </div>
@@ -443,7 +450,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.comp_oms]}
+				  searchWords={[opnames.filters.comp_oms]}
 				  textToHighlight={(result.comp_oms) ? result.comp_oms.toString() : '' }
                               />
 			    </div>
@@ -452,7 +459,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.landgebruik]}
+				  searchWords={[opnames.filters.landgebruik]}
 				  textToHighlight={(result.landgebruik) ? result.landgebruik.toString() : '' }
                               />
 			    </div>
@@ -461,7 +468,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.grondsoort]}
+				  searchWords={[opnames.filters.grondsoort]}
 				  textToHighlight={(result.grondsoort) ? result.grondsoort.toString() : '' }
                               />
 			    </div>
@@ -470,7 +477,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.afvoergebied]}
+				  searchWords={[opnames.filters.afvoergebied]}
 				  textToHighlight={(result.afvoergebied) ? result.afvoergebied.toString() : '' }
                               />
 			    </div>
@@ -479,7 +486,7 @@ class TableApp extends Component {
 			    <div style={{ width: 230 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.watertype]}
+				  searchWords={[opnames.filters.watertype]}
 				  textToHighlight={(result.watertype) ? result.watertype.toString() : '' }
                               />
 			    </div>
@@ -488,7 +495,7 @@ class TableApp extends Component {
 			    <div style={{ width: 150 }}>
 			      <Highlighter
 				  highlightClassName={styles.Highlight}
-				  searchWords={[this.props.opnames.filters.validatiestatus]}
+				  searchWords={[opnames.filters.validatiestatus]}
 				  textToHighlight={(result.validatiestatus) ? result.validatiestatus.toString() : '' }
                               />
 			    </div>
@@ -507,11 +514,11 @@ class TableApp extends Component {
                 return (
                   <span key={i} style={{ overflowY: 'hidden' }}>
                     <a
-                      onClick={(e) => this.props.dispatch(
+                      onClick={(e) => dispatch(
                         fetchOpnames(r))}
                       style={{
                         cursor: 'pointer',
-                        textDecoration: (this.props.opnames.page === r) ? 'underline' : '',
+                        textDecoration: (opnames.page === r) ? 'underline' : '',
                       }}>{r}</a>&nbsp;
                   </span>
                 );
@@ -530,11 +537,11 @@ class TableApp extends Component {
                 return (
                   <span key={i} style={{ overflowY: 'hidden' }}>
                     <a
-                      onClick={(e) => this.props.dispatch(
+                      onClick={(e) => dispatch(
                         fetchOpnames(r))}
                       style={{
                         cursor: 'pointer',
-                        textDecoration: (this.props.opnames.page === r) ? 'underline' : '',
+                        textDecoration: (opnames.page === r) ? 'underline' : '',
                       }}>{r}</a>&nbsp;
                   </span>
                 );
@@ -681,7 +688,10 @@ class TableApp extends Component {
   }
 }
 
-TableApp.propTypes = {};
+TableApp.propTypes = {
+  dispatch: PropTypes.func,
+  opnames: PropTypes.object,
+};
 
 function mapStateToProps(state) {
   // This function maps the Redux state to React Props.

@@ -131,7 +131,7 @@ function opnames(state = {
       results: {},
       tijdreeksTitle: 'Tijdreeks',
       boxplotTitle: 'Boxplot',
-      scatterplotTitle: 'Scatterplot',      
+      scatterplotTitle: 'Scatterplot',
       page: 1,
       filters: {},
       sorting: {},
