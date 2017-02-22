@@ -514,14 +514,15 @@ export function reloadDataForBoxplots() {
     const endDate = getState().opnames.end_date;
     const splitByYear = getState().opnames.split_by_year;
 
-    const urls = getState().opnames.boxplotCharts.map((chart) => {
-      return $.ajax({
-        type: 'GET',
-        url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
-      });
+    const urls = getState().opnames.boxplotCharts.map((charts, i) => { 
+      return charts.map((chart, j) => { 
+	return $.ajax({
+          type: 'GET',
+          url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+	})
+      })
     });
-
-    Promise.all(urls).then(([boxplotResults]) => {
+    Promise.all([urls]).then(([boxplotResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveDataForSelectedBoxplots(boxplotResults));
     });

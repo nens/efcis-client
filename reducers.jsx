@@ -329,7 +329,7 @@ function opnames(state = {
   case REMOVE_FROM_BOXPLOTCHARTS_BY_ID:
     return Object.assign({}, state, {
       boxplotCharts: state.boxplotCharts.filter((chart) => {
-        if (chart.id === action.id) {
+        if (chart[0].id === action.id) {
           return false;
         }
         return chart;

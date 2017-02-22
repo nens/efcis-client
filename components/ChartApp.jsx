@@ -1242,11 +1242,11 @@ class ChartApp extends Component {
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       this.props.dispatch(
-                        removeFromBoxplotChartsById(chart.id)
+                        removeFromBoxplotChartsById(chart[0].id)
                       );
                     }}
                     key={i}>
-                    {chart.wns} - {chart.location}
+                    {chart[0].wns} - {chart[0].location}
                   </li>
                 );
               })}
