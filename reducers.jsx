@@ -605,9 +605,10 @@ function opnames(state = {
     });
   case RECEIVE_DATA_FOR_SELECTED_BOXPLOTS:
     console.log('action.results', action.results);
+    console.log('state.boxplotCharts', state.boxplotCharts);
     return Object.assign({}, state, {
       isFetching: false,
-      // boxplotCharts: [...state.boxplotCharts, action.results],
+      boxplotCharts: action.results,
     });
   default:
     return state;

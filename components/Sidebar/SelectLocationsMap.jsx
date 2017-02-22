@@ -4,8 +4,9 @@ import styles from './SelectLocationsMap.css';
 import { Button, ButtonGroup, Modal } from 'react-bootstrap';
 import L from 'leaflet';
 import $ from 'jquery';
-import { Map, Marker, Popup, LayersControl,
+import { Map, Marker, Popup, LayersControl, FeatureGroup,
   TileLayer, GeoJSON } from 'react-leaflet';
+import { EditControl } from 'react-leaflet-draw';
 import 'leaflet.markercluster';
 import hdsrMaskData from '../../lib/hdsr-mask.json';
 import krwAreas from '../../lib/kwr-areas.json';
@@ -229,9 +230,11 @@ reloadMap(meetStatusIds) {
      }
  }
 
+
   render() {
 
     const position = [52.0741, 5.1432];
+    const self = this;
 
     return (
       <Map
@@ -240,6 +243,55 @@ reloadMap(meetStatusIds) {
         center={position}
         maxZoom={22}
         zoom={11}>
+        <FeatureGroup>
+          <EditControl
+            position='topleft'
+            onEdited={(e) => console.log('edited')}
+            onCreated={(e) => {
+              const selectionPolygon = e.layer.toGeoJSON();
+              const locationResults = {
+                'type': 'FeatureCollection',
+                'features': this.state.mapLocations.filter((location) => {
+                  if (_.has(location.geometry, 'coordinates')) {
+                    return location;
+                  }
+                  return false;
+                }),
+              };
+              var withinFilter = {
+                'type': 'FeatureCollection',
+                'features': [
+                  {
+                    'type': 'Feature',
+                    'properties': '',
+                    'geometry': {
+                      'type': 'Polygon',
+                      'coordinates': selectionPolygon.geometry.coordinates,
+                    },
+                  },
+                ],
+              };
+              const result = within(locationResults, withinFilter);
+              const selectedLocations = result.features;
+              const selectedLocationIds = result.features.map((location) => {
+                return location.id;
+              });
+              this.props.dispatch(setLocations(selectedLocations));
+              this.props.hideMapModal();
+            }}
+            onDeleted={(e) => console.log('deleted')}
+            draw={{
+              polyline: false,
+              circle: false,
+              rectangle: false,
+              marker: false,
+            }}
+            edit={{
+              remove: false,
+            }}
+          />
+
+        </FeatureGroup>
         <LayersControl position='topright'>
           <LayersControl.BaseLayer name='Topografisch' checked={true}>
             <TileLayer
@@ -267,6 +319,59 @@ reloadMap(meetStatusIds) {
           </LayersControl.Overlay>
           <LayersControl.Overlay name='KRW Waterlichamen'>
             <GeoJSON
+              onEachFeature={(feature, layer) => {
+                layer.setStyle({
+                  'fillColor': 'pink',
+                  'color': '#fff',
+                  'weight': 2,
+                  'opacity': 1,
+                  'dashArray': 3,
+                  'fillOpacity': 0.3,
+                });
+                layer.on('mouseover', (e) => {
+                  layer.setStyle({
+                    'fillColor': 'purple',
+                  });
+                });
+                layer.on('mouseout', (e) => {
+                  layer.setStyle({
+                    'fillColor': 'pink',
+                  });
+                });
+
+                layer.on('click', (e) => {
+                  const locationResults = {
+                    'type': 'FeatureCollection',
+                    'features': this.state.mapLocations.filter((location) => {
+                      if (_.has(location.geometry, 'coordinates')) {
+                        return location;
+                      }
+                      return false;
+                    }),
+                  };
+                  const withinFilter = {
+                    'type': 'FeatureCollection',
+                    'features': [
+                      {
+                        'type': 'Feature',
+                        'properties': '',
+                        'geometry': {
+                          'type': 'MultiPolygon',
+                          'coordinates': feature.geometry.coordinates,
+                        },
+                      },
+                    ],
+                  };
+                  const result = within(locationResults, withinFilter);
+
+                  const selectedLocations = result.features;
+                  const selectedLocationIds = result.features.map((location) => {
+                    return location.id;
+                  });
+                  this.props.dispatch(setLocations(selectedLocations));
+                  this.props.hideMapModal();
+                });
+              }}
               data={krwAreas} />
           </LayersControl.Overlay>
           <LayersControl.Overlay name='Afvoergebieden'>
@@ -304,20 +409,20 @@ reloadMap(meetStatusIds) {
                     ],
                   };
                   const result = within(locationResults, withinFilter);
-                  console.log('result', result);
                   const selectedLocations = result.features;
                   const selectedLocationIds = result.features.map((location) => {
                     return location.id;
                   });
                   this.props.dispatch(setLocations(selectedLocations));
+                  this.props.hideMapModal();
                 });
-                layer.on('mouseover', function(e) {
-                  this.setStyle({
+                layer.on('mouseover', (e) => {
+                  layer.setStyle({
                     'fillColor': 'purple',
                   });
                 });
-                layer.on('mouseout', function(e) {
-                  this.setStyle({
+                layer.on('mouseout', (e) => {
+                  layer.setStyle({
                     'fillColor': 'pink',
                   });
                 });

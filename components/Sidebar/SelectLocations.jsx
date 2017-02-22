@@ -138,7 +138,9 @@ class SelectLocations extends Component {
             <Modal.Title id='kaartselectie'>Selectie op kaart</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ height: this.state.height - 200 }}>
-            <SelectLocationsMap {...this.props} />
+            <SelectLocationsMap
+              {...this.props}
+              hideMapModal={this.hideMapModal} />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.hideMapModal}>Sluiten</Button>

@@ -509,16 +509,18 @@ export function reloadDataForBoxplots() {
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
+    const split_by_year = getState().opnames.splitByYear;
 
     const urls = getState().opnames.boxplotCharts.map((chart) => {
       return $.ajax({
         type: 'GET',
-        url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
+        url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${split_by_year}`,
       });
     });
 
-    Promise.all([urls]).then(([boxplotResults]) => {
+    Promise.all(urls).then((boxplotResults) => {
       dispatch(hideLoading());
+      // console.log('boxplotResults:::', boxplotResults);
       return dispatch(receiveDataForSelectedBoxplots(boxplotResults));
     });
   };

@@ -20,6 +20,7 @@ import {
   fetchCharts,
   fetchScatterplotDataByUrl,
   fetchSecondScatterplotAxis,
+  reloadDataForBoxplots,
   removeFromBoxplotChartsById,
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
@@ -971,6 +972,7 @@ class ChartApp extends Component {
                 />
             		<Button bsSize='xsmall' className='pull-right'  onClick={() => {
                   this.props.dispatch(setSplitByYear(!this.props.opnames.splitByYear));
+                  this.props.dispatch(reloadDataForBoxplots());
                 }}>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
                 </Button>
@@ -1043,7 +1045,7 @@ class ChartApp extends Component {
                     border: 'none',
                     margin: '10px 0 10px 0',
                   }}
-                />              
+                />
                 <ScatterChartComponent
                   {...this.props}
                   width={this.state.width} />

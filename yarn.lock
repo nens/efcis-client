@@ -5491,6 +5491,10 @@ react-leaflet-choropleth@:
   dependencies:
     chroma-js "1.1.1"
 
+react-leaflet-draw@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/react-leaflet-draw/-/react-leaflet-draw-0.13.0.tgz#496c0d07f9884d6db9edb72d64dfb2aeac967102"
+
 react-leaflet@:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-1.0.1.tgz#aac306d71b8d9aa24b63487801a2c2f8598885dc"

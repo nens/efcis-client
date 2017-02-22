@@ -61,6 +61,7 @@
     "react-intl": "https://registry.npmjs.org/react-intl/-/react-intl-2.1.3.tgz",
     "react-leaflet": "",
     "react-leaflet-choropleth": "",
+    "react-leaflet-draw": "^0.13.0",
     "react-map-gl": "^1.7.2",
     "react-progress": "^0.0.12",
     "react-redux": "",
