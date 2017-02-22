@@ -14,6 +14,8 @@ export const RECEIVE_DATA_FOR_BOXPLOT = 'RECEIVE_DATA_FOR_BOXPLOT';
 export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
 export const RECEIVE_DATA_FOR_RIGHT_Y = 'RECEIVE_DATA_FOR_RIGHT_Y';
 export const RECEIVE_DATA_FOR_SCATTERPLOT = 'RECEIVE_DATA_FOR_SCATTERPLOT';
+export const REQUEST_DATA_FOR_SELECTED_BOXPLOTS = 'REQUEST_DATA_FOR_SELECTED_BOXPLOTS';
+export const RECEIVE_DATA_FOR_SELECTED_BOXPLOTS = 'RECEIVE_DATA_FOR_SELECTED_BOXPLOTS';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const RECEIVE_SCATTERPLOT_DATA = 'RECEIVE_SCATTERPLOT_DATA';
@@ -489,6 +491,44 @@ export function fetchCharts() {
 }
 
 
+function requestDataForSelectedBoxplots() {
+  return {
+    type: REQUEST_DATA_FOR_SELECTED_BOXPLOTS,
+  };
+}
+
+function receiveDataForSelectedBoxplots(results) {
+  return {
+    type: RECEIVE_DATA_FOR_SELECTED_BOXPLOTS,
+    results,
+  };
+}
+
+
+export function reloadDataForBoxplots() {
+  return (dispatch, getState) => {
+    dispatch(showLoading());
+    dispatch(requestDataForSelectedBoxplots());
+
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+    const splitByYear = getState().opnames.split_by_year;
+
+    const urls = getState().opnames.boxplotCharts.map((chart) => {
+      return $.ajax({
+        type: 'GET',
+        url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+      });
+    });
+
+    Promise.all(urls).then(([boxplotResults]) => {
+      dispatch(hideLoading());
+      return dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+    });
+  };
+}
+
+
 function requestDataForBoxplot() {
   return {
     type: REQUEST_DATA_FOR_BOXPLOT,
@@ -517,21 +557,21 @@ export function addToBoxplotCharts(chart) {
       url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
       success: (data) => {
         return data;
-      }
+      },
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveDataForBoxplot(chart, chartsResults));
     });
-  }
+  };
 }
 
 export function removeFromBoxplotChartsById(id) {
   return {
     type: REMOVE_FROM_BOXPLOTCHARTS_BY_ID,
     id,
-  }
+  };
 }
 
 

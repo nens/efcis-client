@@ -623,18 +623,18 @@ class ChartApp extends Component {
             <div className='col-md-10' id='chart'>
             <Tabs activeKey={this.state.key} id='chart-tab'>
               <Tab eventKey={1} title='Tijdreeks'>
-                <h1
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      e.preventDefault();
-                    }
+                <input
+                  onChange={(e) => this.props.dispatch(setTitleForTijdreeks(e.target.value))}
+                  defaultValue={this.props.opnames.tijdreeksTitle}
+                  style={{
+                    width: '100%',
+                    fontSize: 22,
+                    fontWeight: 'bold',
+                    padding: 10,
+                    border: 'none',
+                    margin: '10px 0 10px 0',
                   }}
-                  onPaste={(e) => e.preventDefault()}
-                  onInput={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
-                  onBlur={(e) => this.props.dispatch(setTitleForTijdreeks($(e.target).html()))}
-                  contentEditable
-                  dangerouslySetInnerHTML={{__html: this.props.opnames.tijdreeksTitle}}>
-                </h1>
+                />
                 <Button
                   bsSize='xsmall'
                   style={{ margin: 5 }}
@@ -959,19 +959,19 @@ class ChartApp extends Component {
                 </div>
               </Tab>
               <Tab eventKey={2} title='Boxplot'>
-                <h1
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      e.preventDefault();
-                    }
+                <input
+                  onChange={(e) => this.props.dispatch(setTitleForBoxplot(e.target.value))}
+                  defaultValue={this.props.opnames.boxplotTitle}
+                  style={{
+                    width: '100%',
+                    fontSize: 22,
+                    fontWeight: 'bold',
+                    padding: 10,
+                    border: 'none',
+                    margin: '10px 0 10px 0',
                   }}
-                  onPaste={(e) => e.preventDefault()}
-                  onInput={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
-                  onBlur={(e) => this.props.dispatch(setTitleForBoxplot($(e.target).html()))}
-                  contentEditable
-                  dangerouslySetInnerHTML={{__html: this.props.opnames.boxplotTitle}}>
-                </h1>
-		<Button bsSize='xsmall' className='pull-right'  onClick={() => {
+                />
+            	<Button bsSize='xsmall' className='pull-right'  onClick={() => {
                   this.props.dispatch(setSplitByYear(!this.props.opnames.split_by_year));
                 }}>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
@@ -1036,18 +1036,18 @@ class ChartApp extends Component {
                   </div>
               </Tab>
               <Tab eventKey={3} title='Scatterplot'>
-                <h1
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      e.preventDefault();
-                    }
+                <input
+                  onChange={(e) => this.props.dispatch(setTitleForScatterplot(e.target.value))}
+                  defaultValue={this.props.opnames.scatterplotTitle}
+                  style={{
+                    width: '100%',
+                    fontSize: 22,
+                    fontWeight: 'bold',
+                    padding: 10,
+                    border: 'none',
+                    margin: '10px 0 10px 0',
                   }}
-                  onPaste={(e) => e.preventDefault()}
-                  onInput={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
-                  onBlur={(e) => this.props.dispatch(setTitleForScatterplot($(e.target).html()))}
-                  contentEditable
-                  dangerouslySetInnerHTML={{__html: this.props.opnames.scatterplotTitle}}>
-                </h1>
+                />              
                 <ScatterChartComponent
                   {...this.props}
                   width={this.state.width} />

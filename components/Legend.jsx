@@ -28,7 +28,8 @@ class Legend extends Component {
   componentWillReceiveProps(newProps) {}
 
   render() {
-    const opnames = this.props.opnames;
+
+    const { dispatch, opnames } = this.props;
 
     let scaleVariant = colorbrewer.RdYlGn[this.props.opnames.mapSettings.numLegendIntervals];
 
@@ -40,18 +41,18 @@ class Legend extends Component {
       '#FF0000',
     ];
 
-    if (this.props.opnames.mapSettings.reverseLegend) {
+    if (opnames.mapSettings.reverseLegend) {
       scaleVariant.reverse();
       scaleVariantKrw.reverse();
     }
 
     const domain = [
-      (this.props.opnames.mapSettings.dataDomain) ?
-        this.props.opnames.features.min_value :
-        this.props.opnames.features.abs_min_value,
-      (this.props.opnames.mapSettings.dataDomain) ?
-        this.props.opnames.features.max_value :
-        this.props.opnames.features.abs_max_value,
+      (opnames.mapSettings.dataDomain) ?
+        opnames.features.min_value :
+        opnames.features.abs_min_value,
+      (opnames.mapSettings.dataDomain) ?
+        opnames.features.max_value :
+        opnames.features.abs_max_value,
     ];
 
     const colors = scaleQuantize()
@@ -61,10 +62,10 @@ class Legend extends Component {
     return (
       <div
         onClick={() => {
-          this.props.dispatch(
+          dispatch(
             toggleReverseLegend()
           );
-          this.props.dispatch(
+          dispatch(
             fetchFeatures()
           );
         }}
@@ -91,6 +92,9 @@ class Legend extends Component {
   }
 }
 
-Legend.propTypes = {};
+Legend.propTypes = {
+  dispatch: PropTypes.func,
+  opnames: PropTypes.object,
+};
 
 export default Legend;
