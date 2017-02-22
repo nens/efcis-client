@@ -254,6 +254,7 @@ export function fetchOpnames(page) {
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const split_by_year = getState().opnames.split_by_year
     const dataObject = {
       page: page,
       page_size: 200,
@@ -264,6 +265,7 @@ export function fetchOpnames(page) {
       start_date,
       end_date,
       season,
+      split_by_year,
       sort_fields: sort_fields.join(','),
       sort_dirs: sort_dirs.join(','),
     };
@@ -459,6 +461,7 @@ export function fetchCharts() {
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const split_by_year = getState().opnames.split_by_year;
 
     const dataObject = {
       meetnets: meetnetids.join(','),
@@ -466,6 +469,7 @@ export function fetchCharts() {
       start_date,
       end_date,
       season,
+      split_by_year,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const chartsEndpoint = $.ajax({
@@ -483,10 +487,6 @@ export function fetchCharts() {
     });
   }
 }
-
-
-
-
 
 
 function requestDataForBoxplot() {
@@ -510,10 +510,11 @@ export function addToBoxplotCharts(chart) {
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
+    const splitByYear = getState().opnames.split_by_year;
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
+      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
       success: (data) => {
         return data;
       }

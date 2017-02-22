@@ -12,6 +12,7 @@ const dateFormat = 'DD-MM-YYYY';
 import {
   fetchFeatures,
   fetchOpnames,
+  fetchCharts,
   setPeriod,
   setSeason,
 } from '../../actions.jsx';
@@ -83,6 +84,7 @@ class SelectPeriod extends Component {
     ));
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
+    this.props.dispatch(fetchCharts());
   }
 
   handleSeasonChange() {
@@ -90,6 +92,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(setSeason(season));
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
+    this.props.dispatch(fetchCharts());
   }
 
   render() {

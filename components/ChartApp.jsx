@@ -287,7 +287,6 @@ class BoxplotChartComponent extends Component {
     let categories = [];
     let series = [];
     let currYear = '';
-    debugger;
     for (let i = 0; i < this.props.opnames.boxplotCharts.length; i++) {
       for (let j = 0; j < this.props.opnames.boxplotCharts[i].length; j++) {
 	let bD = this.props.opnames.boxplotCharts[i][j]
@@ -295,11 +294,11 @@ class BoxplotChartComponent extends Component {
         (${bD.wns})
         ${bD.start_date} - ${bD.end_date}`);
 	series.push([
-          boxplotCharts.boxplot_data.min,
-          boxplotCharts.boxplot_data.q1,
-          boxplotCharts.boxplot_data.median,
-          boxplotCharts.boxplot_data.q3,
-          boxplotCharts.boxplot_data.max,
+          bD.boxplot_data.min,
+          bD.boxplot_data.q1,
+          bD.boxplot_data.median,
+          bD.boxplot_data.q3,
+          bD.boxplot_data.max,
 	]);
       }
     }
@@ -973,7 +972,7 @@ class ChartApp extends Component {
                   dangerouslySetInnerHTML={{__html: this.props.opnames.boxplotTitle}}>
                 </h1>
 		<Button bsSize='xsmall' className='pull-right'  onClick={() => {
-                  this.props.dispatch(setSplitByYear(!this.props.opnames.splitByYear));
+                  this.props.dispatch(setSplitByYear(!this.props.opnames.split_by_year));
                 }}>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
                 </Button>
@@ -1010,26 +1009,28 @@ class ChartApp extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.props.opnames.boxplotCharts.map((s, i) => {
-                          return (
-                            <tr key={i}>
-                              <td style={{width:'100px'}}>{s[0].start_date} - {s[0].end_date}</td>
-                              <td style={{width:'100px'}}>{s[0].location_id}</td>
-                              <td style={{width:'100px'}}>{s[0].location} ({s[0].wns})</td>
-                              <td style={{width:'15px'}}>({s[0].unit})</td>
-                              <td style={{width:'10px'}}>{s[0].boxplot_data.num_values}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.min.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.max.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.std.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.median.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.mean.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.q1.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.q3.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.p10.toFixed(2)}</td>
-                              <td style={{width:'15px'}}>{s[0].boxplot_data.p90.toFixed(2)}</td>
-                            </tr>
-                          );
-                        })}
+                        { this.props.opnames.boxplotCharts.map(function(d, i){ 
+			   return d.map(function(s, j) { 
+                              return (
+                                <tr key={100*i+j}>
+                                  <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
+                                  <td style={{width:'100px'}}>{s.location_id}</td>
+                                  <td style={{width:'100px'}}>{s.location} ({s.wns})</td>
+                                  <td style={{width:'15px'}}>({s.unit})</td>
+                                  <td style={{width:'10px'}}>{s.boxplot_data.num_values}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.min.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.max.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.std.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.median.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.mean.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.q1.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.q3.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.p10.toFixed(2)}</td>
+                                  <td style={{width:'15px'}}>{s.boxplot_data.p90.toFixed(2)}</td>
+                                </tr>
+                              )}
+			    )}
+                          )}
                       </tbody>
                     </Table>
                   </div>

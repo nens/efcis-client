@@ -107,7 +107,7 @@ function opnames(state = {
     legendMax: undefined,
   },
   boxplotCharts: [],
-  splitByYear: false,
+  split_by_year: false,
   scatterplotCharts: [],
   scatterplotData: undefined,
   linechartsLeftY: [],
@@ -161,7 +161,7 @@ function opnames(state = {
         legendMax: undefined,
       },
       boxplotCharts: [],
-      splitByYear: false,
+      split_by_year: false,
       scatterplotCharts: [],
       scatterplotData: undefined,
       secondScatterplotCharts: [],
@@ -198,7 +198,7 @@ function opnames(state = {
     });
   case SET_SPLIT_BY_YEAR:
     return Object.assign({}, state, {
-      splitByYear: action.splitByYear,
+      split_by_year: action.splitByYear,
     });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
@@ -338,7 +338,6 @@ function opnames(state = {
       isFetching: true,
     });
   case RECEIVE_DATA_FOR_BOXPLOT:
-    debugger;
     return Object.assign({}, state, {
       isFetching: false,
       boxplotCharts: [...state.boxplotCharts, action.results],
