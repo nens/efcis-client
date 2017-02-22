@@ -10,6 +10,7 @@ require('!style!css!../../node_modules/bootstrap-daterangepicker/daterangepicker
 const dateFormat = 'DD-MM-YYYY';
 
 import {
+  reloadDataForBoxplots,
   fetchFeatures,
   fetchOpnames,
   setPeriod,
@@ -83,6 +84,7 @@ class SelectPeriod extends Component {
     ));
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
+    this.props.dispatch(reloadDataForBoxplots());
   }
 
   handleSeasonChange() {
@@ -90,6 +92,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(setSeason(season));
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
+    this.props.dispatch(reloadDataForBoxplots());
   }
 
   render() {

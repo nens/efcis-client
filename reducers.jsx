@@ -30,6 +30,8 @@ import {
   REQUEST_DATA_FOR_LEFT_Y,
   REQUEST_DATA_FOR_RIGHT_Y,
   REQUEST_DATA_FOR_SCATTERPLOT,
+  REQUEST_DATA_FOR_SELECTED_BOXPLOTS,
+  RECEIVE_DATA_FOR_SELECTED_BOXPLOTS,
   REQUEST_FEATURES,
   REQUEST_OPNAMES,
   REQUEST_SCATTERPLOT_DATA,
@@ -597,6 +599,16 @@ function opnames(state = {
       ...state,
       scatterplotTitle: action.title,
     };
+  case REQUEST_DATA_FOR_SELECTED_BOXPLOTS:
+    return Object.assign({}, state, {
+      isFetching: true,
+    });
+  case RECEIVE_DATA_FOR_SELECTED_BOXPLOTS:
+    console.log('action.results', action.results);
+    return Object.assign({}, state, {
+      isFetching: false,
+      // boxplotCharts: [...state.boxplotCharts, action.results],
+    });
   default:
     return state;
   }
