@@ -57,6 +57,13 @@ class MapApp extends Component {
     setTimeout(() =>
       $('.leaflet-control-layers').
       addClass('leaflet-control-layers-expanded'), 15);
+
+    this.refs.mapElement.leafletElement.on('overlayadd', (a) => {
+      console.log('a.name', a.name);
+      if (a.name !== 'Labels') {
+        a.layer.bringToBack();
+      }
+    });
 	}
 
 	componentWillUnmount() {
@@ -134,90 +141,7 @@ class MapApp extends Component {
 							onMoveend={this.handleMoveend}
 							zoom={this.props.opnames.map.zoom}>
               <ScaleControl position='bottomleft' />
-              <LayersControl position='topright'>
-                <LayersControl.BaseLayer name='Topografisch' checked={true}>
-                  <TileLayer
-    								url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.5641a12c/{z}/{x}/{y}.png'
-    								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    							/>
-                </LayersControl.BaseLayer>
-                <LayersControl.BaseLayer name='Satelliet'>
-                  <TileLayer
-    								url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png'
-    								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    							/>
-                </LayersControl.BaseLayer>
-                <LayersControl.Overlay name='Masker'>
-                  <GeoJSON
-                    onEachFeature={(feature, layer) => {
-                      layer.setStyle({
-                        fillColor: '#ffffff',
-                        color: '#ffffff',
-                        opacity: 1,
-                        fillOpacity: 1,
-                      });
-                    }}
-                    data={hdsrMaskData} />
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='KRW Waterlichamen'>
-                  <GeoJsonUpdatable
-                    onEachFeature={(feature, layer) => {
-                      layer.setStyle({
-                        'fillColor': KRW_AREA_COLORS[layer.feature.properties.krw_color],
-              	        'color': KRW_AREA_COLORS[layer.feature.properties.krw_color],
-              	        'weight': (this.props.opnames.map.zoom - 17) * -1,
-                      });
-                      layer.bindPopup(`
-                        <dl class="dl-horizontal"
-                            width="200"
-                            style="overflow:hidden;">
-                          <dt style="width:100px;">ID</dt>
-                          <dd style="width:300px;margin-left:130px !important;">
-                          ${layer.feature.properties.loc_id}
-                          <dt style="width:100px;">Omschrijving</dt>
-                          <dd style="width:300px;margin-left:130px !important;">
-                          ${layer.feature.properties.loc_oms}
-                          </dd>
-                        </dl>`);
-                    }}
-                    data={krwAreas} />
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Afvoergebieden'>
-                  <GeoJSON
-                    onEachFeature={(feature, layer) => {
-                      layer.setStyle({
-                        'fillColor': 'pink',
-                        'color': '#fff',
-                        'weight': 2,
-                        'opacity': 1,
-                        'dashArray': 3,
-                        'fillOpacity': 0.3,
-                      });
-                      layer.bindPopup(`
-                        GAF ID: ${layer.feature.properties.GAF_ID}
-                      `);
-                      // layer.on('mouseover', function(e) {
-                      //   this.setStyle({
-                      //     'fillColor': 'purple',
-                      //   });
-                      // });
-                      // layer.on('mouseout', function(e) {
-                      //   this.setStyle({
-                      //     'fillColor': 'pink',
-                      //   });
-                      // });
-                    }}
-                    data={afvoergebieden} />
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Labels'>
-                <TileLayer
-                  url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.0a5c8e74/{z}/{x}/{y}.png'
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-                </LayersControl.Overlay>
-              </LayersControl>
-
-							<GeoJsonUpdatable
+              <GeoJsonUpdatable
 								data={this.props.opnames.features.features}
                 onEachFeature={(feature, layer) => {
                   layer.bindPopup(PopupContent(feature));
@@ -366,6 +290,89 @@ class MapApp extends Component {
                   return f;
                 }}
 							/>
+
+              <LayersControl position='topright'>
+                <LayersControl.BaseLayer name='Topografisch' checked={true}>
+                  <TileLayer
+    								url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.5641a12c/{z}/{x}/{y}.png'
+    								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    							/>
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name='Satelliet'>
+                  <TileLayer
+    								url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png'
+    								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    							/>
+                </LayersControl.BaseLayer>
+                <LayersControl.Overlay name='Masker'>
+                  <GeoJSON
+                    onEachFeature={(feature, layer) => {
+                      layer.setStyle({
+                        fillColor: '#ffffff',
+                        color: '#ffffff',
+                        opacity: 1,
+                        fillOpacity: 1,
+                      });
+                    }}
+                    data={hdsrMaskData} />
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name='KRW Waterlichamen'>
+                  <GeoJsonUpdatable
+                    onEachFeature={(feature, layer) => {
+                      layer.setStyle({
+                        'fillColor': KRW_AREA_COLORS[layer.feature.properties.krw_color],
+              	        'color': KRW_AREA_COLORS[layer.feature.properties.krw_color],
+              	        'weight': (this.props.opnames.map.zoom - 17) * -1,
+                      });
+                      layer.bindPopup(`
+                        <dl class="dl-horizontal"
+                            width="200"
+                            style="overflow:hidden;">
+                          <dt style="width:100px;">ID</dt>
+                          <dd style="width:300px;margin-left:130px !important;">
+                          ${layer.feature.properties.loc_id}
+                          <dt style="width:100px;">Omschrijving</dt>
+                          <dd style="width:300px;margin-left:130px !important;">
+                          ${layer.feature.properties.loc_oms}
+                          </dd>
+                        </dl>`);
+                    }}
+                    data={krwAreas} />
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name='Afvoergebieden'>
+                  <GeoJSON
+                    onEachFeature={(feature, layer) => {
+                      layer.setStyle({
+                        'fillColor': 'pink',
+                        'color': '#fff',
+                        'weight': 2,
+                        'opacity': 1,
+                        'dashArray': 3,
+                        'fillOpacity': 0.3,
+                      });
+                      layer.bindPopup(`
+                        GAF ID: ${layer.feature.properties.GAF_ID}
+                      `);
+                      // layer.on('mouseover', function(e) {
+                      //   this.setStyle({
+                      //     'fillColor': 'purple',
+                      //   });
+                      // });
+                      // layer.on('mouseout', function(e) {
+                      //   this.setStyle({
+                      //     'fillColor': 'pink',
+                      //   });
+                      // });
+                    }}
+                    data={afvoergebieden} />
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name='Labels'>
+                <TileLayer
+                  url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.0a5c8e74/{z}/{x}/{y}.png'
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                </LayersControl.Overlay>
+              </LayersControl>
 						</Map>
 						{(this.props.opnames.isFetching) ?
 							<div style={{
