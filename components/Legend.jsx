@@ -46,15 +46,22 @@ class Legend extends Component {
       scaleVariantKrw.reverse();
     }
 
-    const domain = [
-      (opnames.mapSettings.dataDomain) ?
-        opnames.features.min_value :
-        opnames.features.abs_min_value,
-      (opnames.mapSettings.dataDomain) ?
-        opnames.features.max_value :
-        opnames.features.abs_max_value,
-    ];
 
+    if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
+      const domain = [
+        opnames.mapSettings.legendMin, opnames.mapSettings.legendMax
+      ];
+    }
+    else {
+      const domain = [
+        (opnames.mapSettings.dataDomain) ?
+          opnames.features.min_value :
+          opnames.features.abs_min_value,
+        (opnames.mapSettings.dataDomain) ?
+          opnames.features.max_value :
+          opnames.features.abs_max_value,
+      ];
+    }
     const colors = scaleQuantize()
           .domain(domain)
           .range(scaleVariant);

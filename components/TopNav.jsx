@@ -28,7 +28,11 @@ class TopNav extends Component {
   render() {
     return (
       <nav className='navbar navbar-fixed-top'>
-      <LoadingBar updateTime={100} maxProgress={100} progressIncrease={10} />
+      <LoadingBar
+        style={{ backgroundColor: 'blue', height: '2px' }}
+        updateTime={200}
+        maxProgress={100}
+        progressIncrease={5} />
          <div className='container-fluid'>
            <div className='navbar-header'>
              <button type='button'
