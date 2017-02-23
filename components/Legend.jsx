@@ -77,23 +77,23 @@ class Legend extends Component {
           );
         }}
         className={`${styles.Legend} pull-right`}>
-        <ul>
-          <li className={styles.LegendList}
+        <div className={styles.LegendWrapper}>
+          <div className={styles.LegendList}
               style={{ borderTop: '15px solid #cccccc' }}>
               NULL
-          </li>
+          </div>
           {colors.range().map((color, i) => {
             const label = colors.invertExtent(color);
             return (
-              <li
+              <div
                 key={i}
                 className={styles.LegendList}
                 style={{ borderTop: `15px solid ${color}` }}>
                 {(label) ? label[0].toFixed(2) : ''}
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
     );
   }

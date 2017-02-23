@@ -545,7 +545,7 @@ class TableApp extends Component {
                       }}>{r}</a>&nbsp;
                   </span>
                 );
-              })}&nbsp;
+              })}&nbsp;<em>({totalResults} totaal)</em>
 
               <a
                 onClick={() => this.setState({ showExportModal: true })}

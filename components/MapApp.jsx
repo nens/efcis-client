@@ -59,7 +59,6 @@ class MapApp extends Component {
       addClass('leaflet-control-layers-expanded'), 15);
 
     this.refs.mapElement.leafletElement.on('overlayadd', (a) => {
-      console.log('a.name', a.name);
       if (a.name !== 'Labels') {
         a.layer.bringToBack();
       }
