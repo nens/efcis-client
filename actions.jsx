@@ -199,10 +199,10 @@ export function setLocations(locations) {
   };
 }
 
-export function setSplitByYear(splitByYear) {
+export function setSplitByYear(split_by_year) {
   return {
     type: SET_SPLIT_BY_YEAR,
-    splitByYear,
+    split_by_year,
   };
 }
 
@@ -256,6 +256,7 @@ export function fetchOpnames(page) {
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const split_by_year = getState().opnames.split_by_year
     const dataObject = {
       page: page,
       page_size: 200,
@@ -266,6 +267,7 @@ export function fetchOpnames(page) {
       start_date,
       end_date,
       season,
+      split_by_year,
       sort_fields: sort_fields.join(','),
       sort_dirs: sort_dirs.join(','),
     };
@@ -461,6 +463,7 @@ export function fetchCharts() {
     const start_date = getState().opnames.start_date;
     const end_date = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const split_by_year = getState().opnames.split_by_year;
 
     const dataObject = {
       meetnets: meetnetids.join(','),
@@ -468,6 +471,7 @@ export function fetchCharts() {
       start_date,
       end_date,
       season,
+      split_by_year,
     };
     const mergedData = _.merge(dataObject, filtersObject);
     const chartsEndpoint = $.ajax({
@@ -487,7 +491,6 @@ export function fetchCharts() {
 }
 
 
-
 function requestDataForSelectedBoxplots() {
   return {
     type: REQUEST_DATA_FOR_SELECTED_BOXPLOTS,
@@ -503,29 +506,33 @@ function receiveDataForSelectedBoxplots(results) {
 
 
 export function reloadDataForBoxplots() {
+  console.log("reloadDataForBoxplots");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForSelectedBoxplots());
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
-    const split_by_year = getState().opnames.splitByYear;
+    const splitByYear = getState().opnames.split_by_year;
 
-    const urls = getState().opnames.boxplotCharts.map((chart) => {
-      return $.ajax({
+    let urls = [];
+    const boxplotCharts = getState().opnames.boxplotCharts;
+    for (let i = 0; i < boxplotCharts.length; i++) {
+      urls.push($.ajax({
         type: 'GET',
-        url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${split_by_year}`,
-      });
-    });
+        url: `/api/boxplots/${boxplotCharts[i][0].id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+      }))
+    }
 
     Promise.all(urls).then((boxplotResults) => {
-      dispatch(hideLoading());
-      // console.log('boxplotResults:::', boxplotResults);
-      return dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+      console.log("--- >", boxplotResults, boxplotResults.length)
+      if (boxplotResults.length > 0) {
+	dispatch(hideLoading());
+	dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+      }
     });
   };
 }
-
 
 function requestDataForBoxplot() {
   return {
@@ -542,24 +549,27 @@ function receiveDataForBoxplot(chart, results) {
 }
 
 export function addToBoxplotCharts(chart) {
+  console.log("AddToBoxplotCharts");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForBoxplot());
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
-
+    const splitByYear = getState().opnames.split_by_year;
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
+      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
       success: (data) => {
         return data;
       },
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
-      dispatch(hideLoading());
-      return dispatch(receiveDataForBoxplot(chart, chartsResults));
+      if (chartsResults.length > 0){
+	dispatch(hideLoading());
+	dispatch(receiveDataForBoxplot(chart, chartsResults));
+      }
     });
   };
 }
@@ -570,9 +580,6 @@ export function removeFromBoxplotChartsById(id) {
     id,
   };
 }
-
-
-
 
 function requestDataForScatterplot() {
   return {
@@ -615,8 +622,6 @@ export function removeFromScatterplotChartsById(id) {
   }
 }
 
-
-
 function requestSecondScatterplotAxis() {
   return {
     type: REQUEST_SECOND_SCATTERPLOT_AXIS,
@@ -630,17 +635,17 @@ function receiveSecondScatterplotAxis(result) {
   };
 }
 
-
 export function fetchSecondScatterplotAxis(chart) {
 
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
+    var parser = document.createElement('a');
+    parser.href = chart['scatterplot-second-axis-url'];
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: chart['scatterplot-second-axis-url'].replace(
-        'https://efcis.staging.lizard.net', ''),
+      url: parser.pathname,
       success: (data) => {
         return data;
       }
@@ -660,10 +665,6 @@ export function setAsScatterplotChartsY(chart) {
   };
 }
 
-
-
-
-
 function requestScatterplotData() {
   return {
     type: REQUEST_SCATTERPLOT_DATA,
@@ -677,16 +678,15 @@ function receiveScatterplotData(result) {
   };
 }
 
-
 export function fetchScatterplotDataByUrl(scatterplotUrl) {
   return (dispatch, getState) => {
     dispatch(requestScatterplotData());
     dispatch(showLoading());
-
+    var parser = document.createElement('a');
+    parser.href = scatterplotUrl;
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: scatterplotUrl.replace(
-        'https://efcis.staging.lizard.net', ''),
+      url: parser.pathname,
       success: (data) => {
         return data;
       }
