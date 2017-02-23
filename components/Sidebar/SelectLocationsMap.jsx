@@ -215,19 +215,15 @@ reloadMap(meetStatusIds) {
  }
 
  getFillColor(feature) {
-     var selectedLocations = [];
-     try {
-         selectedLocations = JSON.parse(localStorage.getItem('selectedLocations'));
-     } catch(e) {}
-     try {
-         if(selectedLocations[feature.id] !== undefined) {
-             return '#FC625D'; // if the location is selected, color it red
-         } else {
-             return '#337AB7'; // if the location is not selected, color it blue
-         }
-     } catch(e) {
-         return '#337AB7';
-     }
+   const location = _.find(this.props.opnames.locations, (location) => {
+     if (feature.id === location.id) return location;
+   });
+   if (location) {
+     return '#FC625D'; // if the location is selected, color it red
+   }
+   else {
+    return '#337AB7'; // if the location is not selected, color it blue
+   }
  }
 
 
@@ -430,22 +426,6 @@ reloadMap(meetStatusIds) {
               data={afvoergebieden} />
           </LayersControl.Overlay>
         </LayersControl>
-
-
-
-        {/* {this.state.mapLocations.map((location, i) => {
-            if (_.has(location.geometry, 'coordinates')) {
-              return (
-                <Marker
-                  key={i}
-                  position={[
-                    location.geometry.coordinates[1],
-                    location.geometry.coordinates[0]
-                  ]} />
-              );
-            }
-          }
-        )} */}
 
       </Map>
     );
