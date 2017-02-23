@@ -1,6 +1,6 @@
 .TableDiv {
   font-family: 'Fira Sans', sans-serif;
-  overflow: scroll;
+  overflow-y: hidden;
 }
 
 .Table {

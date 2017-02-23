@@ -13,6 +13,7 @@ import {
   reloadDataForBoxplots,
   fetchFeatures,
   fetchOpnames,
+  fetchCharts,
   setPeriod,
   setSeason,
 } from '../../actions.jsx';
