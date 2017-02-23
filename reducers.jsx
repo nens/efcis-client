@@ -200,7 +200,7 @@ function opnames(state = {
     });
   case SET_SPLIT_BY_YEAR:
     return Object.assign({}, state, {
-      split_by_year: action.splitByYear,
+      split_by_year: action.split_by_year,
     });
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
@@ -340,6 +340,7 @@ function opnames(state = {
       isFetching: true,
     });
   case RECEIVE_DATA_FOR_BOXPLOT:
+    console.log('RECEIVE_DATA_FOR_BOXPLOT', action.results);
     return Object.assign({}, state, {
       isFetching: false,
       boxplotCharts: [...state.boxplotCharts, action.results],
@@ -605,7 +606,7 @@ function opnames(state = {
     console.log('action.results', action.results);
     return Object.assign({}, state, {
       isFetching: false,
-      // boxplotCharts: [...state.boxplotCharts, action.results],
+      boxplotCharts: action.results,
     });
   default:
     return state;

@@ -20,6 +20,7 @@ import {
   fetchCharts,
   fetchScatterplotDataByUrl,
   fetchSecondScatterplotAxis,
+  reloadDataForBoxplots,
   removeFromBoxplotChartsById,
   removeFromLinechartsLeftYById,
   removeFromLinechartsRightYById,
@@ -973,6 +974,7 @@ class ChartApp extends Component {
                 />
             	<Button bsSize='xsmall' className='pull-right'  onClick={() => {
                   this.props.dispatch(setSplitByYear(!this.props.opnames.split_by_year));
+		  this.props.dispatch(reloadDataForBoxplots());
                 }}>
                   <i className='fa fa-deviantart'></i>&nbsp;Splitsen/samenvoegen
                 </Button>
@@ -1011,6 +1013,7 @@ class ChartApp extends Component {
                       <tbody>
                         { this.props.opnames.boxplotCharts.map(function(d, i){ 
 			   return d.map(function(s, j) { 
+			     console.log("====== Loop", s.boxplot_data.num_values, s);
                               return (
                                 <tr key={100*i+j}>
                                   <td style={{width:'100px'}}>{s.start_date} - {s.end_date}</td>
@@ -1237,6 +1240,7 @@ class ChartApp extends Component {
           <div className='col-md-6'>
             <ul>
               {this.props.opnames.boxplotCharts.map((chart, i) => {
+		if (chart.length <= 0) { return; }
                 return (
                   <li
                     style={{ cursor: 'pointer' }}

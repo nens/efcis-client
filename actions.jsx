@@ -199,10 +199,10 @@ export function setLocations(locations) {
   };
 }
 
-export function setSplitByYear(splitByYear) {
+export function setSplitByYear(split_by_year) {
   return {
     type: SET_SPLIT_BY_YEAR,
-    splitByYear,
+    split_by_year,
   };
 }
 
@@ -506,6 +506,7 @@ function receiveDataForSelectedBoxplots(results) {
 
 
 export function reloadDataForBoxplots() {
+  console.log("reloadDataForBoxplots");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForSelectedBoxplots());
@@ -514,17 +515,21 @@ export function reloadDataForBoxplots() {
     const endDate = getState().opnames.end_date;
     const splitByYear = getState().opnames.split_by_year;
 
-    const urls = getState().opnames.boxplotCharts.map((charts, i) => { 
-      return charts.map((chart, j) => { 
-	return $.ajax({
-          type: 'GET',
-          url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
-	})
-      })
-    });
-    Promise.all([urls]).then(([boxplotResults]) => {
-      dispatch(hideLoading());
-      return dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+    let urls = [];
+    const boxplotCharts = getState().opnames.boxplotCharts;
+    for (let i = 0; i < boxplotCharts.length; i++) {
+      urls.push($.ajax({
+        type: 'GET',
+        url: `/api/boxplots/${boxplotCharts[i][0].id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+      }))
+    }
+
+    Promise.all(urls).then((boxplotResults) => {
+      console.log("--- >", boxplotResults, boxplotResults.length)
+      if (boxplotResults.length > 0) {
+	dispatch(hideLoading());
+	dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+      }
     });
   };
 }
@@ -545,6 +550,7 @@ function receiveDataForBoxplot(chart, results) {
 }
 
 export function addToBoxplotCharts(chart) {
+  console.log("AddToBoxplotCharts");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForBoxplot());
@@ -552,7 +558,6 @@ export function addToBoxplotCharts(chart) {
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
     const splitByYear = getState().opnames.split_by_year;
-
     const chartsEndpoint = $.ajax({
       type: 'GET',
       url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
@@ -562,8 +567,10 @@ export function addToBoxplotCharts(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
-      dispatch(hideLoading());
-      return dispatch(receiveDataForBoxplot(chart, chartsResults));
+      if (chartsResults.length > 0){
+	dispatch(hideLoading());
+	dispatch(receiveDataForBoxplot(chart, chartsResults));
+      }
     });
   };
 }
@@ -574,9 +581,6 @@ export function removeFromBoxplotChartsById(id) {
     id,
   };
 }
-
-
-
 
 function requestDataForScatterplot() {
   return {
@@ -640,11 +644,12 @@ export function fetchSecondScatterplotAxis(chart) {
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
+    var parser = document.createElement('a');
+    parser.href = chart['scatterplot-second-axis-url'];
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: chart['scatterplot-second-axis-url'].replace(
-        'https://efcis.staging.lizard.net', ''),
+      url: parser.pathname,
       success: (data) => {
         return data;
       }
@@ -664,10 +669,6 @@ export function setAsScatterplotChartsY(chart) {
   };
 }
 
-
-
-
-
 function requestScatterplotData() {
   return {
     type: REQUEST_SCATTERPLOT_DATA,
@@ -681,16 +682,15 @@ function receiveScatterplotData(result) {
   };
 }
 
-
 export function fetchScatterplotDataByUrl(scatterplotUrl) {
   return (dispatch, getState) => {
     dispatch(requestScatterplotData());
     dispatch(showLoading());
-
+    var parser = document.createElement('a');
+    parser.href = scatterplotUrl;
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: scatterplotUrl.replace(
-        'https://efcis.staging.lizard.net', ''),
+      url: parser.pathname,
       success: (data) => {
         return data;
       }
