@@ -46,14 +46,14 @@ class Legend extends Component {
       scaleVariantKrw.reverse();
     }
 
-
+    let domain;
     if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
-      const domain = [
+      domain = [
         opnames.mapSettings.legendMin, opnames.mapSettings.legendMax
       ];
     }
     else {
-      const domain = [
+      domain = [
         (opnames.mapSettings.dataDomain) ?
           opnames.features.min_value :
           opnames.features.abs_min_value,
