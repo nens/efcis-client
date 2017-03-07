@@ -35,9 +35,9 @@ class SelectParameters extends Component {
 
   componentWillUnmount() {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -118,14 +118,14 @@ class SelectParameters extends Component {
               show={this.state.showParameterGroupsModal}
               onHide={this.hideParameterGroupsModal}
               dialogClassName={styles.WideModal}>
-              <Modal.Header closeButton>
+              <Modal.Header>
               <Modal.Title id='parameters-selectie'>Parametergroep selectie</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               <SelectParameterGroup {...this.props} />
               </Modal.Body>
               <Modal.Footer>
-              <Button onClick={this.hideParameterGroupsModal}>Sluiten</Button>
+              {/* <Button onClick={this.hideParameterGroupsModal}>Sluiten</Button> */}
               <Button onClick={() => {
                 this.props.dispatch(
                   setParameterGroups(
@@ -144,14 +144,14 @@ class SelectParameters extends Component {
               show={this.state.showParametersModal}
               onHide={this.hideParametersModal}
               dialogClassName={styles.WideModal}>
-              <Modal.Header closeButton>
+              <Modal.Header>
               <Modal.Title id='parameters'>Parameters selectie</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               <SelectParameterList {...this.props} />
               </Modal.Body>
               <Modal.Footer>
-              <Button onClick={this.hideParametersModal}>Sluiten</Button>
+              {/* <Button onClick={this.hideParametersModal}>Sluiten</Button> */}
               <Button onClick={() => {
                 this.props.dispatch(fetchOpnames());
                 this.props.dispatch(fetchFeatures());
