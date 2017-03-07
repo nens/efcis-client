@@ -104,20 +104,26 @@ class MapApp extends Component {
 	}
 
 	render() {
-		const colorBy = this.props.opnames.color_by;
+
+    const { dispatch, opnames } = this.props;
+
+		const colorBy = opnames.color_by;
 		const selectedParameter = _.find(
-			this.props.opnames.features.color_by_fields, (field) => {
+			opnames.features.color_by_fields, (field) => {
 			  return field.id === colorBy;
 			}
 		);
 
-    const KRW_AREA_COLORS = {"1": "#B6B6B4", "2": "#D1D0CE", "3": "#848482"};
+    const KRW_AREA_COLORS = {
+      '1': '#B6B6B4',
+      '2': '#D1D0CE',
+      '3': '#848482',
+    };
 
 		const parameterButtonText = (selectedParameter) ?
-			selectedParameter.wns_oms : 'Selecteer';
+			selectedParameter.wns_oms : 'Selecteer parameter';
 
-		const position = [this.props.opnames.map.lat,
-											this.props.opnames.map.lng];
+		const position = [opnames.map.lat, opnames.map.lng];
 
 		return (
 			<div>
@@ -128,49 +134,116 @@ class MapApp extends Component {
 						<Sidebar {...this.props} />
 						</div>
 						<div className='col-md-10' style={{
-              height: this.state.height - 190
+              height: this.state.height - 190,
             }}>
 						<Map
 							style={{
-								opacity: (this.props.opnames.isFetching) ? 0.5 : 1,
+								opacity: (opnames.isFetching) ? 0.5 : 1,
 							}}
+              id='map1'
 							ref='mapElement'
 							className={styles.Map}
 							center={position}
 							onMoveend={this.handleMoveend}
-							zoom={this.props.opnames.map.zoom}>
+							zoom={opnames.map.zoom}>
+
               <ScaleControl position='bottomleft' />
+
               <GeoJsonUpdatable
-								data={this.props.opnames.features.features}
+                key={Date.now()}
+                {...this.props}
+								data={opnames.features.features}
                 onEachFeature={(feature, layer) => {
                   layer.bindPopup(PopupContent(feature));
+
+                  if (feature.properties.is_krw_area && feature.geometry.type === 'MultiPolygon') {
+                    let scaleVariant = ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
+
+                    let domain;
+                    if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
+                      if (opnames.mapSettings.reverseLegend) {
+                        domain = [
+                          opnames.mapSettings.legendMax, opnames.mapSettings.legendMin,
+                        ];
+                      }
+                      else {
+                        domain = [
+                          opnames.mapSettings.legendMin, opnames.mapSettings.legendMax,
+                        ];
+                      }
+                    }
+                    else {
+                      if (opnames.mapSettings.reverseLegend) {
+                        domain = [
+                          (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                          (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                        ];
+                      }
+                      else {
+                        domain = [
+                          (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                          (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                        ];
+                      }
+                    }
+
+
+
+                    const mapColors = scaleQuantize()
+                          .domain(domain)
+                          .range((opnames.mapSettings.reverseLegend) ?
+                          scaleVariant.slice().reverse() : scaleVariant);
+
+                    layer.setStyle({
+                      fillColor: mapColors(feature.properties.latest_value),
+                      color: mapColors(feature.properties.latest_value),
+                      weight: (this.props.opnames.map.zoom - 17) * -1,
+                      opacity: 1,
+                      fillOpacity: 1,
+                    });
+                  }
                 }}
 								pointToLayer={(feature, latlng) => {
-                  let scaleVariant = (this.props.opnames.features.is_krw_score) ?
-                    colorbrewer.RdYlGn[this.props.opnames.mapSettings.numLegendIntervals]
-                    :
-                    ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
 
-                  const domain = (this.props.opnames.mapSettings.reverseLegend) ? [
-                    (this.props.opnames.mapSettings.dataDomain) ?
-                    this.props.opnames.features.max_value :
-                    this.props.opnames.features.abs_max_value,
-                    (this.props.opnames.mapSettings.dataDomain) ?
-                    this.props.opnames.features.min_value :
-                    this.props.opnames.features.abs_min_value,
-                  ] : [
-                    (this.props.opnames.mapSettings.dataDomain) ?
-                    this.props.opnames.features.min_value :
-                    this.props.opnames.features.abs_min_value,
-                    (this.props.opnames.mapSettings.dataDomain) ?
-                    this.props.opnames.features.max_value :
-                    this.props.opnames.features.abs_max_value,
-                  ];
+                  // let scaleVariant = (opnames.features.is_krw_score && !opnames.features.is_krw_area) ?
+                  //   colorbrewer.RdYlGn[opnames.mapSettings.numLegendIntervals]
+                  //   :
+                  //   ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
+
+                  let scaleVariant = colorbrewer.RdYlGn[opnames.mapSettings.numLegendIntervals];
+
+                  let domain;
+                  if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
+                    if (opnames.mapSettings.reverseLegend) {
+                      domain = [
+                        opnames.mapSettings.legendMax, opnames.mapSettings.legendMin,
+                      ];
+                    }
+                    else {
+                      domain = [
+                        opnames.mapSettings.legendMin, opnames.mapSettings.legendMax,
+                      ];
+                    }
+                  }
+                  else {
+                    if (opnames.mapSettings.reverseLegend) {
+                      domain = [
+                        (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                        (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                      ];
+                    }
+                    else {
+                      domain = [
+                        (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                        (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                      ];
+                    }
+                  }
 
                   const mapColors = scaleQuantize()
               					.domain(domain)
-                        .range((this.props.opnames.mapSettings.reverseLegend) ?
-                        scaleVariant.reverse() : scaleVariant);
+                        .range((opnames.mapSettings.reverseLegend) ?
+                        scaleVariant.slice().reverse() : scaleVariant);
 
 									let geojsonMarkerOptions = {
 										radius: 8,
@@ -181,89 +254,63 @@ class MapApp extends Component {
 										fillOpacity: 0.8,
 									};
 
-									if (feature.properties.is_krw_area &&
-											!this.props.opnames.features.isKrwScore) {
-
-										geojsonMarkerOptions = {
-											radius: 8,
-											weight: 1,
-											color: '#999',
-											opacity: 1,
-											fillColor: '#999',
-											fillOpacity: 1,
-										};
-									}
-
-									if (feature.properties.is_krw_area &&
-											!this.props.opnames.features.isKrwScore &&
-											feature.properties.latest_value === null) {
-
-										geojsonMarkerOptions = {
-											weight: 1,
-											color: '#999',
-											opacity: 1,
-											fillColor: '#999',
-											fillOpacity: 1,
-										}
-									}
-
-									if (feature.properties.is_krw_area &&
-											this.props.opnames.features.isKrwScore) {
-
-										geojsonMarkerOptions = {
-											weight: 1,
-											color: mapColors(feature.properties.latest_value),
-											opacity: 1,
-											fillColor: mapColors(feature.properties.latest_value),
-											fillOpacity: 0.8,
-										}
-									}
 
 									let myFillColor;
-
 									try {
-
-										if(this.props.opnames.map_statistics === 'lastval') {
+										if (opnames.map_statistics === 'lastval') {
 											myFillColor = (feature.properties.latest_value === null) ?
 											 '#bbccff' : mapColors(feature.properties.latest_value);
-										} else if(this.props.opnames.map_statistics === 'min') {
+										}
+                    else if(opnames.map_statistics === 'min') {
 											myFillColor = (feature.properties.boxplot_data.min === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.min);
-										} else if(this.props.opnames.map_statistics === 'max') {
+										}
+                    else if(opnames.map_statistics === 'max') {
 											myFillColor = (feature.properties.boxplot_data.max === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.max);
-										} else if(this.props.opnames.map_statistics === 'amount') {
+										}
+                    else if(opnames.map_statistics === 'amount') {
 											myFillColor = (feature.properties.boxplot_data.num_values === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.num_values);
-										} else if(this.props.opnames.map_statistics === 'stdev') {
+										}
+                    else if(opnames.map_statistics === 'stdev') {
 											myFillColor = (feature.properties.boxplot_data.std === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.std);
-										} else if(this.props.opnames.map_statistics === 'mean') {
+										}
+                    else if(opnames.map_statistics === 'mean') {
 											myFillColor = (feature.properties.boxplot_data.mean === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.mean);
-										} else if(this.props.opnames.map_statistics === 'median') {
+										}
+                    else if(opnames.map_statistics === 'median') {
 											myFillColor = (feature.properties.boxplot_data.median === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.median);
-										} else if(this.props.opnames.map_statistics === 'q1') {
+										}
+                    else if(opnames.map_statistics === 'q1') {
 											myFillColor = (feature.properties.boxplot_data.q1 === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.q1);
-										} else if(this.props.opnames.map_statistics === 'q3') {
+										}
+                    else if(opnames.map_statistics === 'q3') {
 											myFillColor = (feature.properties.boxplot_data.q3 === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.q3);
-										} else if(this.props.opnames.map_statistics === 'p10') {
+										}
+                    else if(opnames.map_statistics === 'p10') {
 											myFillColor = (feature.properties.boxplot_data.p10 === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.p10);
-										} else if(this.props.opnames.map_statistics === 'p90') {
+										}
+                    else if(opnames.map_statistics === 'p90') {
 											myFillColor = (feature.properties.boxplot_data.p90 === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.p90);
-										} else if(this.props.opnames.map_statistics === 'summer') {
+										}
+                    else if(opnames.map_statistics === 'summer') {
 											myFillColor = (feature.properties.boxplot_data.summer_mean === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.summer_mean);
-										} else if(this.props.opnames.map_statistics === 'winter') {
+										}
+                    else if(opnames.map_statistics === 'winter') {
 											myFillColor = (feature.properties.boxplot_data.winter_mean === null) ?
 											'#bbccff' : mapColors(feature.properties.boxplot_data.winter_mean);
 										}
-									} catch(error) {
+									} catch(warning) {
+                    console.warn(warning);
 										myFillColor = '#bbccff';
 									}
 
@@ -271,22 +318,31 @@ class MapApp extends Component {
 									if (myFillColor === '#bbccff') {
 										opacity = 0;
 									}
+
 									if (!feature.properties.is_krw_area) {
+
+                    console.log('%c %s %s', `background: ${myFillColor}; color: #ffffff`, myFillColor, feature.properties.latest_value);
 										geojsonMarkerOptions = {
 											radius: (feature.properties.photo_url) ? 8 : 7,
 											fillColor: myFillColor,
 											color: (feature.properties.photo_url) ? '#fff' : '#000',
 											weight: (feature.properties.photo_url) ? 1.5 : 0.75,
 											opacity: opacity,
-											fillOpacity: opacity
+											fillOpacity: opacity,
 										};
 										return L.circleMarker(latlng, geojsonMarkerOptions);
 									}
-									return L.circleMarker(latlng, geojsonMarkerOptions);
+                  else {
+                    console.log('before the else');
+                    console.log('feature.properties.is_krw_area???')
+                    return L.multiPolygon(latlng, geojsonMarkerOptions);
+                  }
 								}}
 								filter={(f) => {
-                  // console.log('filter', f);
-                  return f;
+                  if (f.properties.latest_value !== null) {
+                    return f;
+                  }
+                  return false;
                 }}
 							/>
 
@@ -321,7 +377,7 @@ class MapApp extends Component {
                       layer.setStyle({
                         'fillColor': KRW_AREA_COLORS[layer.feature.properties.krw_color],
               	        'color': KRW_AREA_COLORS[layer.feature.properties.krw_color],
-              	        'weight': (this.props.opnames.map.zoom - 17) * -1,
+              	        'weight': (opnames.map.zoom - 17) * -1,
                       });
                       layer.bindPopup(`
                         <dl class="dl-horizontal"
@@ -373,7 +429,7 @@ class MapApp extends Component {
                 </LayersControl.Overlay>
               </LayersControl>
 						</Map>
-						{(this.props.opnames.isFetching) ?
+						{(opnames.isFetching) ?
 							<div style={{
 								position: 'absolute',
 								left: this.state.width / 2.7,
@@ -401,7 +457,7 @@ class MapApp extends Component {
 								</Button>
 								<Button
 									onClick={() => this.setState({ showSettingsModal: true })}>
-									<i className='fa fa-cog'></i>&nbsp;Kaartinstellingen
+									<i className='fa fa-cog'></i>&nbsp;Legenda instellingen
 								</Button>
 							</ButtonGroup>
 							<MapStatisticsPicker {...this.props} />
@@ -426,18 +482,18 @@ class MapApp extends Component {
 						onChange={(e) => this.setState({colorFilterValue: e.target.value}) }
 					/>
 					<ul style={{ overflow: 'scroll', height: this.state.height - 300 }}>
-						{(this.props.opnames.features.color_by_fields) ?
-							this.props.opnames.features.color_by_fields.map((colorField, i) => {
+						{(opnames.features.color_by_fields) ?
+							opnames.features.color_by_fields.map((colorField, i) => {
 							if (colorField.wns_oms.toLowerCase().indexOf(
 								this.state.colorFilterValue.toLowerCase()) !== -1) {
 								return (
 									<li
 										key={i}
 										onClick={(e) => {
-											this.props.dispatch(
+											dispatch(
 												setColorBy(colorField.id)
 											);
-											this.props.dispatch(
+											dispatch(
 												fetchFeatures()
 											);
 											this.hideColorByModal();
@@ -445,7 +501,7 @@ class MapApp extends Component {
 										style={{
 											cursor: 'pointer',
 											textDecoration: 'underline',
-											backgroundColor: (colorField.id === this.props.opnames.color_by) ? '#ccc' : '',
+											backgroundColor: (colorField.id === opnames.color_by) ? '#ccc' : '',
 										}}>
 										{colorField.wns_oms}
 									</li>
@@ -477,15 +533,12 @@ class MapApp extends Component {
 											<label>
 												<input
                           onClick={() => {
-                            this.props.dispatch(
+                            dispatch(
                               toggleReverseLegend()
-                            );
-                            this.props.dispatch(
-                              fetchFeatures()
                             );
                           }}
                           type='checkbox'
-                          defaultChecked={this.props.opnames.mapSettings.reverseLegend} />
+                          defaultChecked={opnames.mapSettings.reverseLegend} />
                           Omgekeerd kleurverloop
 											</label>
 										</div>
@@ -495,15 +548,12 @@ class MapApp extends Component {
 											<label>
 												<input
                           onClick={() => {
-                            this.props.dispatch(
+                            dispatch(
                               useDataDomain()
-                            );
-                            this.props.dispatch(
-                              fetchFeatures()
                             );
                           }}
                           type='checkbox'
-                          defaultChecked={this.props.opnames.mapSettings.dataDomain} />
+                          defaultChecked={opnames.mapSettings.dataDomain} />
                           Schakel tussen alle data / geselecteerde data
 											</label>
 										</div>
@@ -512,33 +562,37 @@ class MapApp extends Component {
 										<label htmlFor='legendMin'>
 											Minimumwaarde
 										</label>
-										<input type='number'
+										<input type='text'
 													 className='form-control'
 													 id='legendMin'
                            onChange={(e) => {
-                             if (parseFloat(e.target.value) < this.props.opnames.mapSettings.legendMax || !this.props.opnames.mapSettings.legendMin) {
-                               this.props.dispatch(setLegendMin(e.target.value));
-                               this.props.dispatch(fetchFeatures());
-                             }
                              e.stopPropagation();
+                             if (parseFloat(e.target.value) < parseFloat(opnames.mapSettings.legendMax) || !opnames.mapSettings.legendMax) {
+                               dispatch(setLegendMin(parseFloat(e.target.value)));
+                             }
+                             else {
+                               dispatch(setLegendMin(undefined));
+                             }
                            }}
-                           value={this.props.opnames.mapSettings.legendMin} />
+                           defaultValue={(opnames.mapSettings.legendMin) ? parseFloat(opnames.mapSettings.legendMin) : ''} />
 								 </div>
 								 <div className='form-group'>
 									 <label htmlFor='legendMax'>
                     Maximumwaarde
                   </label>
-								  <input type='number'
+								  <input type='text'
 													className='form-control'
 													id='legendMax'
                           onChange={(e) => {
-                            if (parseFloat(e.target.value) > this.props.opnames.mapSettings.legendMin || !this.props.opnames.mapSettings.legendMax) {
-                              this.props.dispatch(setLegendMax(e.target.value));
-                              this.props.dispatch(fetchFeatures());
+                            if (parseFloat(e.target.value) > parseFloat(opnames.mapSettings.legendMin) || !opnames.mapSettings.legendMin) {
+                              dispatch(setLegendMax(parseFloat(e.target.value)));
+                            }
+                            else {
+                              dispatch(setLegendMax(undefined));
                             }
                             e.stopPropagation();
                           }}
-                          value={this.props.opnames.mapSettings.legendMax} />
+                          defaultValue={(opnames.mapSettings.legendMax) ? parseFloat(opnames.mapSettings.legendMax) : ''} />
 								</div>
 								<div className='form-group'>
 									<label htmlFor='legendLength'>
@@ -550,19 +604,17 @@ class MapApp extends Component {
 												 min='3'
 												 max='11'
                          onChange={(e) => {
-                           this.props.dispatch(setLegendIntervals(e.target.value));
-                           this.props.dispatch(
-                             fetchFeatures()
-                           );
+                           dispatch(setLegendIntervals(e.target.value));
                          }}
-                         defaultValue={this.props.opnames.mapSettings.numLegendIntervals}
-												 placeholder='Het aantal legenda-intervallen 3 en 11.' />
+                         defaultValue={opnames.mapSettings.numLegendIntervals}
+												 placeholder='Tussen 3 en 11' />
 							 </div>
 							</div>
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={() => {
+              dispatch(fetchFeatures());
 							this.hideSettingsModal();
 						}}>Sluiten</Button>
 					</Modal.Footer>
@@ -576,7 +628,6 @@ MapApp.propTypes = {};
 
 
 function mapStateToProps(state) {
-	// This function maps the Redux state to React Props.
 	return {
 		'opnames': state.opnames,
 	};
