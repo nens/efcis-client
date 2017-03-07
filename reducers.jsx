@@ -14,6 +14,10 @@ import {
   RECEIVE_DATA_FOR_BOXPLOT,
   RECEIVE_DATA_FOR_LEFT_Y,
   RECEIVE_DATA_FOR_RIGHT_Y,
+  REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS,
+  RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS,
+  REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS,
+  RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS,
   RECEIVE_DATA_FOR_SCATTERPLOT,
   RECEIVE_FEATURES,
   RECEIVE_OPNAMES,
@@ -98,13 +102,13 @@ function opnames(state = {
     leftMax: undefined,
     rightMin: undefined,
     rightMax: undefined,
-    userDefinedDaterange: false,
+    userDefinedDaterange: true,
     showSymbols: true,
   },
   mapSettings: {
     reverseLegend: false,
     numLegendIntervals: 11,
-    dataDomain: false,
+    dataDomain: true,
     legendMin: undefined,
     legendMax: undefined,
   },
@@ -152,13 +156,13 @@ function opnames(state = {
         leftMax: undefined,
         rightMin: undefined,
         rightMax: undefined,
-        userDefinedDaterange: false,
+        userDefinedDaterange: true,
         showSymbols: true,
       },
       mapSettings: {
         reverseLegend: false,
         numLegendIntervals: 11,
-        dataDomain: false,
+        dataDomain: true,
         legendMin: undefined,
         legendMax: undefined,
       },
@@ -608,6 +612,32 @@ function opnames(state = {
     return Object.assign({}, state, {
       isFetching: false,
       boxplotCharts: action.results,
+    });
+  case REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS:
+    return Object.assign({}, state, {
+      isFetching: true
+    });
+  case RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS:
+    // console.log('RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS', action);
+    return Object.assign({}, state, {
+      isFetching: false,
+      linechartsLeftY: action.results.filter((result) => {
+        if (result.hasOwnProperty('id') === true) return result;
+        return false;
+      }),
+    });
+  case REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS:
+    return Object.assign({}, state, {
+      isFetching: true
+    });
+  case RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS:
+    // console.log('RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS', action);
+    return Object.assign({}, state, {
+      isFetching: false,
+      linechartsRightY: action.results.filter((result) => {
+        if (result.hasOwnProperty('id') === true) return result;
+        return false;
+      }),
     });
   default:
     return state;
