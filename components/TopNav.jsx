@@ -19,9 +19,9 @@ class TopNav extends Component {
 
   componentWillUnmount() {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
