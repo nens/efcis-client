@@ -12,7 +12,7 @@ import React, { Component, PropTypes } from 'react';
 import styles from './TableApp.css';
 import sharedStyles from './SharedStyles.css';
 import _ from 'lodash';
-
+import $ from 'jquery';
 
 import {
   fetchOpnames,
@@ -20,6 +20,20 @@ import {
   applySorting,
 } from '../actions.jsx';
 
+function getCookie(cName) {
+  if (document.cookie.length > 0) {
+    let cStart = document.cookie.indexOf(cName + '=');
+    if (cStart !== -1) {
+      cStart = cStart + cName.length + 1;
+      let cEnd = document.cookie.indexOf(';', cStart);
+      if (cEnd === -1) {
+        cEnd = document.cookie.length;
+      }
+      return unescape(document.cookie.substring(cStart, cEnd));
+    }
+  }
+  return '';
+}
 
 class TableApp extends Component {
 
@@ -31,6 +45,7 @@ class TableApp extends Component {
       width: window.innerWidth,
       height: window.innerHeight,
       modalResult: {},
+      detail: {},
     };
     this.updateDimensions = this.updateDimensions.bind(this);
     this.gotoPage = _.debounce(this.gotoPage.bind(this), 500);
@@ -44,6 +59,10 @@ class TableApp extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions);
     this.props.dispatch(fetchOpnames(this.props.opnames.page));
+
+    $.ajaxSetup({
+      headers: { 'X-CSRFToken': getCookie('csrftoken') }
+    });
   }
 
   componentWillMount() {
@@ -54,9 +73,9 @@ class TableApp extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -80,7 +99,7 @@ class TableApp extends Component {
   }
 
   gotoPage() {
-    const page = parseInt(this.refs.gotoPageInput.value) - 1;
+    const page = parseInt(this.refs.gotoPageInput.value);
     this.props.dispatch(fetchOpnames(page));
   }
 
@@ -177,6 +196,7 @@ class TableApp extends Component {
 
   render() {
 
+    let self = this;
     const { dispatch, opnames } = this.props;
 
     const totalResults = (opnames.results.count) ?
@@ -185,12 +205,12 @@ class TableApp extends Component {
 
     let admin_dt = '';
     let admin_dd = '';
-    if (this.state.modalResult.admin_link) {
+    if (this.state.detail && this.state.detail.admin_link) {
       admin_dt = <dt>Admin-link</dt>;
       admin_dd = <dd>
       <a target="_blank"
-         href={this.state.modalResult.admin_link}>
-         {this.state.modalResult.admin_link}
+         href={this.state.detail.admin_link}>
+         {this.state.detail.admin_link}
       </a></dd>;
     }
 
@@ -340,11 +360,26 @@ class TableApp extends Component {
                   }}>
                   {(opnames.results.results) ?
                     opnames.results.results.map((result, i) => {
+                      // console.log('result', result);
                       return (
-                        <tr key={i} onClick={() => this.setState({
-                          showModal: true,
-                          modalResult: result,
-                        })}>
+                        <tr key={i} onClick={() => {
+
+                        let parser = document.createElement('a');
+                        parser.href = result.url;
+
+                        $.ajax({
+                          contentType: 'application/json',
+                          dataType: 'json',
+                          url: parser.pathname,
+                        })
+                        .then(function(response) {
+                           self.setState({
+                              modalResult: result,
+                              detail: response,
+                              showModal: true,
+                          });
+                        });
+                        }}>
                           <td>
 			    <div style={{ width: 300 }}>
                               <Highlighter
@@ -563,102 +598,102 @@ class TableApp extends Component {
           dialogClassName={styles.WideModal}>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">
-              {this.state.modalResult.wns_oms}
+              {this.state.detail.wns_oms}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <dl className="dl-horizontal">
               {admin_dt}{admin_dd}
               <dt>Location ID</dt>
-              <dd>{this.state.modalResult.loc_id}</dd>
+              <dd>{this.state.detail.loc_id}</dd>
               <dt>Locatie Omschrijving</dt>
-              <dd>{this.state.modalResult.loc_oms}</dd>
+              <dd>{this.state.detail.loc_oms}</dd>
               <dt>WNS Omschrijving</dt>
-              <dd>{this.state.modalResult.wns_oms}</dd>
+              <dd>{this.state.detail.wns_oms}</dd>
               <dt>WNS Code</dt>
-              <dd>{this.state.modalResult.wns_code}</dd>
+              <dd>{this.state.detail.wns_code}</dd>
               <dt>Parameter Code</dt>
-              <dd>{this.state.modalResult.par_code}</dd>
+              <dd>{this.state.detail.par_code}</dd>
               <dt>Parameter Omschrijving</dt>
-              <dd>{this.state.modalResult.par_oms}</dd>
+              <dd>{this.state.detail.par_oms}</dd>
               <dt>(NL)Parameter Omschrijving</dt>
-              <dd>{this.state.modalResult.par_oms_nl}</dd>
+              <dd>{this.state.detail.par_oms_nl}</dd>
               <dt>Waarde_N</dt>
-              <dd>{this.state.modalResult.waarde_n}</dd>
+              <dd>{this.state.detail.waarde_n}</dd>
               <dt>Waarde_A</dt>
-              <dd>{this.state.modalResult.waarde_a}</dd>
+              <dd>{this.state.detail.waarde_a}</dd>
               <dt>Detectiegrens</dt>
-              <dd>{this.state.modalResult.detectiegrens}</dd>
+              <dd>{this.state.detail.detectiegrens}</dd>
               <dt>Datum</dt>
-              <dd>{this.state.modalResult.datum}</dd>
+              <dd>{this.state.detail.datum}</dd>
               <dt>Tijd</dt>
-              <dd>{this.state.modalResult.tijd}</dd>
+              <dd>{this.state.detail.tijd}</dd>
               <dt>Validatiestatus</dt>
-              <dd>{this.state.modalResult.validatiestatus}</dd>
+              <dd>{this.state.detail.validatiestatus}</dd>
               <dt>Meetnet</dt>
-              <dd>{this.state.modalResult.meetnet}</dd>
+              <dd>{this.state.detail.meetnet}</dd>
               <dt>X1_COORD</dt>
-              <dd>{this.state.modalResult.x1}</dd>
+              <dd>{this.state.detail.x1}</dd>
               <dt>Y1_COORD</dt>
-              <dd>{this.state.modalResult.y1}</dd>
+              <dd>{this.state.detail.y1}</dd>
               <dt>X2_COORD</dt>
-              <dd>{this.state.modalResult.x2}</dd>
+              <dd>{this.state.detail.x2}</dd>
               <dt>Y2_COORD</dt>
-              <dd>{this.state.modalResult.y2}</dd>
+              <dd>{this.state.detail.y2}</dd>
               <dt>Waterlichaam</dt>
-              <dd>{this.state.modalResult.waterlichaam}</dd>
+              <dd>{this.state.detail.waterlichaam}</dd>
               <dt>Water Type</dt>
-              <dd>{this.state.modalResult.watertype}</dd>
+              <dd>{this.state.detail.watertype}</dd>
               <dt>Status KRW</dt>
-              <dd>{this.state.modalResult.status_krw}</dd>
+              <dd>{this.state.detail.status_krw}</dd>
               <dt>Activiteit</dt>
-              <dd>{this.state.modalResult.activiteit}</dd>
+              <dd>{this.state.detail.activiteit}</dd>
               <dt>Activiteit Oms.</dt>
-              <dd>{this.state.modalResult.act_oms}</dd>
+              <dd>{this.state.detail.act_oms}</dd>
               <dt>Activiteit Type</dt>
-              <dd>{this.state.modalResult.activiteit_type}</dd>
+              <dd>{this.state.detail.activiteit_type}</dd>
               <dt>Uitvoerende</dt>
-              <dd>{this.state.modalResult.uitvoerende}</dd>
+              <dd>{this.state.detail.uitvoerende}</dd>
               <dt>MET_MAFA</dt>
-              <dd>{this.state.modalResult.met_mafa}</dd>
+              <dd>{this.state.detail.met_mafa}</dd>
               <dt>MET_MAFY</dt>
-              <dd>{this.state.modalResult.met_MAFY}</dd>
+              <dd>{this.state.detail.met_MAFY}</dd>
               <dt>MET_FYT</dt>
-              <dd>{this.state.modalResult.met_fyt}</dd>
+              <dd>{this.state.detail.met_fyt}</dd>
               <dt>MET_VIS</dt>
-              <dd>{this.state.modalResult.met_vis}</dd>
+              <dd>{this.state.detail.met_vis}</dd>
               <dt>MET_FC</dt>
-              <dd>{this.state.modalResult.met_fc}</dd>
+              <dd>{this.state.detail.met_fc}</dd>
               <dt>MET_TOETS</dt>
-              <dd>{this.state.modalResult.met_toets}</dd>
+              <dd>{this.state.detail.met_toets}</dd>
               <dt>Eenheid</dt>
-              <dd>{this.state.modalResult.eenheid}</dd>
+              <dd>{this.state.detail.eenheid}</dd>
               <dt>Eenheid Oms.</dt>
-              <dd>{this.state.modalResult.eenheid_oms}</dd>
+              <dd>{this.state.detail.eenheid_oms}</dd>
               <dt>Hoedanigheid</dt>
-              <dd>{this.state.modalResult.hoedanigheid}</dd>
+              <dd>{this.state.detail.hoedanigheid}</dd>
               <dt>Hoedanigheid Oms.</dt>
-              <dd>{this.state.modalResult.hoed_oms}</dd>
+              <dd>{this.state.detail.hoed_oms}</dd>
               <dt>Compartiment</dt>
-              <dd>{this.state.modalResult.compartiment}</dd>
+              <dd>{this.state.detail.compartiment}</dd>
               <dt>Compartiment Oms.</dt>
-              <dd>{this.state.modalResult.comp_oms}</dd>
+              <dd>{this.state.detail.comp_oms}</dd>
               <dt>Bodemtype</dt>
-              <dd>{this.state.modalResult.grondsoort}</dd>
+              <dd>{this.state.detail.grondsoort}</dd>
               <dt>Landgebruik</dt>
-              <dd>{this.state.modalResult.landgebruik}</dd>
+              <dd>{this.state.detail.landgebruik}</dd>
               <dt>Afvoergebied</dt>
-              <dd>{this.state.modalResult.afvoergebied}</dd>
+              <dd>{this.state.detail.afvoergebied}</dd>
               <dt>Opmerkingen</dt>
-              <dd>{this.state.modalResult.opmerkingen}</dd>
+              <dd>{this.state.detail.opmerkingen}</dd>
               <dt>VIS_OPP_HA</dt>
-              <dd>{this.state.modalResult.vis_opp_ha}</dd>
+              <dd>{this.state.detail.vis_opp_ha}</dd>
               <dt>VIS_KG</dt>
-              <dd>{this.state.modalResult.vis_kg}</dd>
+              <dd>{this.state.detail.vis_kg}</dd>
               <dt>VIS_CM</dt>
-              <dd>{this.state.modalResult.vis_cm}</dd>
+              <dd>{this.state.detail.vis_cm}</dd>
               <dt>Locatiestatus</dt>
-              <dd>{this.state.modalResult.meet_status}</dd>
+              <dd>{this.state.detail.meet_status}</dd>
           </dl>
 
           </Modal.Body>
