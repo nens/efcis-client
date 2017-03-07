@@ -22,9 +22,9 @@ class Sidebar extends Component {
 
   componentWillUnmount() {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -37,6 +37,7 @@ class Sidebar extends Component {
         <Button
           onClick={() => {
             this.props.dispatch(resetAllFilters());
+            window.location.reload();
           }}
           bsStyle='warning'
           bsSize='xsmall'>
