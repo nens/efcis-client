@@ -20,9 +20,9 @@ class MapStatisticsPicker extends Component {
   componentWillUnmount() {
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -79,7 +79,7 @@ class MapStatisticsPicker extends Component {
             ref='item'
             onClick={() => {
               dispatch(setMapStatistics(item.name));
-              dispatch(fetchFeatures());
+              // dispatch(fetchFeatures());
             }}
             style={{
               marginRight: 0,
