@@ -21,9 +21,9 @@ class Legend extends Component {
 
   componentWillUnmount() {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -42,38 +42,47 @@ class Legend extends Component {
     ];
 
     if (opnames.mapSettings.reverseLegend) {
-      scaleVariant.reverse();
-      scaleVariantKrw.reverse();
+      scaleVariant.slice().reverse();
+      scaleVariantKrw.slice().reverse();
     }
 
     let domain;
     if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
-      domain = [
-        opnames.mapSettings.legendMin, opnames.mapSettings.legendMax
-      ];
+      if (opnames.mapSettings.reverseLegend) {
+        domain = [
+          opnames.mapSettings.legendMax, opnames.mapSettings.legendMin,
+        ];
+      }
+      else {
+        domain = [
+          opnames.mapSettings.legendMin, opnames.mapSettings.legendMax,
+        ];
+      }
     }
     else {
-      domain = [
-        (opnames.mapSettings.dataDomain) ?
-          opnames.features.min_value :
-          opnames.features.abs_min_value,
-        (opnames.mapSettings.dataDomain) ?
-          opnames.features.max_value :
-          opnames.features.abs_max_value,
-      ];
+      if (opnames.mapSettings.reverseLegend) {
+        domain = [
+          (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+          (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+        ];
+      }
+      else {
+        domain = [
+          (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+          (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+        ];
+      }
     }
+
     const colors = scaleQuantize()
           .domain(domain)
-          .range(scaleVariant);
+          .range((opnames.features.is_krw_score) ? scaleVariantKrw : scaleVariant);
 
     return (
       <div
         onClick={() => {
           dispatch(
             toggleReverseLegend()
-          );
-          dispatch(
-            fetchFeatures()
           );
         }}
         className={`${styles.Legend} pull-right`}>
