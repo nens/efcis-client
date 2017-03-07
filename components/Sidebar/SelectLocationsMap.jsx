@@ -107,9 +107,9 @@ class SelectLocationsMap extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -229,6 +229,9 @@ reloadMap(meetStatusIds) {
 
   render() {
 
+
+    const KRW_AREA_COLORS = {"1": "#B6B6B4", "2": "#D1D0CE", "3": "#848482"};
+
     const position = [52.0741, 5.1432];
     const self = this;
 
@@ -316,13 +319,11 @@ reloadMap(meetStatusIds) {
           <LayersControl.Overlay name='KRW Waterlichamen'>
             <GeoJSON
               onEachFeature={(feature, layer) => {
+
                 layer.setStyle({
-                  'fillColor': 'pink',
-                  'color': '#fff',
-                  'weight': 2,
-                  'opacity': 1,
-                  'dashArray': 3,
-                  'fillOpacity': 0.3,
+                  'fillColor': KRW_AREA_COLORS[layer.feature.properties.krw_color],
+                  'color': KRW_AREA_COLORS[layer.feature.properties.krw_color],
+                  // 'weight': (this.props.opnames.map.zoom - 17) * -1,
                 });
                 layer.on('mouseover', (e) => {
                   layer.setStyle({
