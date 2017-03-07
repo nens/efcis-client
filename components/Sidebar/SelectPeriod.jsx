@@ -11,6 +11,7 @@ const dateFormat = 'DD-MM-YYYY';
 
 import {
   reloadDataForBoxplots,
+  reloadAllLineCharts,
   fetchFeatures,
   fetchOpnames,
   fetchCharts,
@@ -72,9 +73,9 @@ class SelectPeriod extends Component {
 
   componentWillUnmount() {}
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -86,6 +87,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
+    this.props.dispatch(reloadAllLineCharts());
   }
 
   handleSeasonChange() {
@@ -94,6 +96,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(fetchFeatures());
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
+    this.props.dispatch(reloadAllLineCharts());
   }
 
   render() {
