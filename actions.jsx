@@ -16,6 +16,10 @@ export const RECEIVE_DATA_FOR_RIGHT_Y = 'RECEIVE_DATA_FOR_RIGHT_Y';
 export const RECEIVE_DATA_FOR_SCATTERPLOT = 'RECEIVE_DATA_FOR_SCATTERPLOT';
 export const REQUEST_DATA_FOR_SELECTED_BOXPLOTS = 'REQUEST_DATA_FOR_SELECTED_BOXPLOTS';
 export const RECEIVE_DATA_FOR_SELECTED_BOXPLOTS = 'RECEIVE_DATA_FOR_SELECTED_BOXPLOTS';
+export const RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS = 'RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS';
+export const RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS = 'RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS';
+export const REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS';
+export const REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
 export const RECEIVE_SCATTERPLOT_DATA = 'RECEIVE_SCATTERPLOT_DATA';
@@ -262,7 +266,7 @@ export function fetchOpnames(page) {
       page_size: 200,
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
-      parametergroups: parametergroupids.join(','),
+      parametergroeps: parametergroupids.join(','),
       parameters: parameterids.join(','),
       start_date,
       end_date,
@@ -328,6 +332,8 @@ export function fetchFeatures() {
     const dataObject = {
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      parameters: parameterids.join(','),
+      parametergroeps: parametergroupids.join(','),
       start_date,
       end_date,
       season,
@@ -377,29 +383,110 @@ export function addToLinechartsRightY(chart) {
     dispatch(showLoading());
     dispatch(requestDataForRightY());
 
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/lines/${chart.id}/`,
+      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
       success: (data) => {
         return data;
-      }
+      },
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveDataForRightY(chart, chartsResults));
     });
-  }
+  };
 }
-
-
-
 
 export function removeFromLinechartsLeftYById(id) {
   return {
     type: REMOVE_FROM_LINECHARTS_LEFT_Y_BY_ID,
     id,
-  }
+  };
+}
+
+
+
+
+
+
+
+function requestDataForSelectedLeftLinecharts(results) {
+  return {
+    type: REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS,
+  };
+}
+function requestDataForSelectedRightLinecharts(results) {
+  return {
+    type: REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS,
+  };
+}
+
+function receiveDataForSelectedLeftLinecharts(results) {
+  return {
+    type: RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS,
+    results,
+  };
+}
+
+function receiveDataForSelectedRightLinecharts(results) {
+  return {
+    type: RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS,
+    results,
+  };
+}
+
+export function reloadAllLineCharts() {
+
+  return (dispatch, getState) => {
+    dispatch(showLoading());
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+    const season = getState().opnames.season;
+
+    const leftChartsUrls = getState()
+      .opnames
+      .linechartsLeftY
+      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}`);
+
+    const rightChartsUrls = getState()
+      .opnames
+      .linechartsRightY
+      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}`);
+
+    let lefturls = [];
+    let righturls = [];
+
+    for (let i = 0; i < leftChartsUrls.length; i++) {
+      lefturls.push($.ajax({
+        type: 'GET',
+        url: leftChartsUrls[i],
+      }));
+    }
+    for (let i = 0; i < rightChartsUrls.length; i++) {
+      righturls.push($.ajax({
+        type: 'GET',
+        url: rightChartsUrls[i],
+      }));
+    }
+
+    Promise.all(lefturls).then((leftLineResults) => {
+      if (leftLineResults.length > 0) {
+        dispatch(hideLoading());
+        dispatch(receiveDataForSelectedLeftLinecharts(leftLineResults));
+      }
+    });
+
+    Promise.all(righturls).then((rightLineResults) => {
+      if (rightLineResults.length > 0) {
+        dispatch(hideLoading());
+        dispatch(receiveDataForSelectedRightLinecharts(rightLineResults));
+      }
+    });
+  };
 }
 
 
@@ -422,20 +509,26 @@ export function addToLinechartsLeftY(chart) {
     dispatch(showLoading());
     dispatch(requestDataForLeftY());
 
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/lines/${chart.id}/`,
+      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
       success: (data) => {
         return data;
-      }
+      },
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveDataForLeftY(chart, chartsResults));
     });
-  }
+  };
 }
+
+
+
 
 
 function requestCharts() {
@@ -506,7 +599,6 @@ function receiveDataForSelectedBoxplots(results) {
 
 
 export function reloadDataForBoxplots() {
-  console.log("reloadDataForBoxplots");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForSelectedBoxplots());
@@ -525,10 +617,9 @@ export function reloadDataForBoxplots() {
     }
 
     Promise.all(urls).then((boxplotResults) => {
-      console.log("--- >", boxplotResults, boxplotResults.length)
       if (boxplotResults.length > 0) {
-	dispatch(hideLoading());
-	dispatch(receiveDataForSelectedBoxplots(boxplotResults));
+      	dispatch(hideLoading());
+      	dispatch(receiveDataForSelectedBoxplots(boxplotResults));
       }
     });
   };
@@ -549,7 +640,6 @@ function receiveDataForBoxplot(chart, results) {
 }
 
 export function addToBoxplotCharts(chart) {
-  console.log("AddToBoxplotCharts");
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestDataForBoxplot());
@@ -566,9 +656,9 @@ export function addToBoxplotCharts(chart) {
     });
 
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
-      if (chartsResults.length > 0){
-	dispatch(hideLoading());
-	dispatch(receiveDataForBoxplot(chart, chartsResults));
+      if (chartsResults.length > 0) {
+        dispatch(hideLoading());
+        dispatch(receiveDataForBoxplot(chart, chartsResults));
       }
     });
   };
@@ -640,7 +730,7 @@ export function fetchSecondScatterplotAxis(chart) {
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
-    var parser = document.createElement('a');
+    let parser = document.createElement('a');
     parser.href = chart['scatterplot-second-axis-url'];
 
     const chartsEndpoint = $.ajax({
@@ -814,14 +904,14 @@ export function setLegendIntervals(numberOfIntervals) {
 export function setLegendMin(value) {
   return {
     type: SET_LEGEND_MIN,
-    value: parseFloat(value),
+    value: (value === undefined) ? undefined : parseFloat(value),
   };
 }
 
 export function setLegendMax(value) {
   return {
     type: SET_LEGEND_MAX,
-    value: parseFloat(value),
+    value: (value === undefined) ? undefined : parseFloat(value),
   };
 }
 
