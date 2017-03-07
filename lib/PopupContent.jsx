@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default function PopupContent(result) {
   let latest_value_formatted, median_formatted, num_values_formatted,
       min_formatted, max_formatted, q1_formatted, q3_formatted,
@@ -6,10 +8,13 @@ export default function PopupContent(result) {
   std_formatted, p10_formatted, p90_formatted;
     onbekend_1 = 'Niet bemeten';
     onbekend_2 = 'Niet te bepalen';
+
   if (result.properties.latest_value === null) {
     latest_value_formatted = onbekend_1;
   }
-  latest_value_formatted = result.properties.latest_value;
+  else {
+    latest_value_formatted = result.properties.latest_value;
+  }
 
   if (result.properties.photo_url) {
     photo_url_div = `<div><a href="${result.properties.photo_url}"
@@ -49,7 +54,7 @@ export default function PopupContent(result) {
 
     try {
       date_formatted = (result.properties.boxplot_data === null) ?
-        onbekend_2 : moment(result.properties.latest_datetime).format('L');
+        onbekend_2 : moment(result.properties.latest_datetime).format('DD/MM/YYYY');
     } catch(error) {
       date_formatted = onbekend_1;
     }
@@ -131,9 +136,9 @@ export default function PopupContent(result) {
       <dd style="width:300px;margin-left:130px !important;">${result.properties.loc_id}</dd>
       <dt style="width:100px;">Omschrijving</dt>
       <dd style="width:300px;margin-left:130px !important;">${result.properties.loc_oms}</dd>`;
-      if (result.properties.waarde_n !== undefined) {
+      if (result.properties.latest_value !== undefined) {
         returnString += `<dt style="width:100px;">Waarde</dt>
-                         <dd style="width:300px;margin-left:130px !important;">${result.properties.waarde_n}</dd>`;
+                         <dd style="width:300px;margin-left:130px !important;">${result.properties.latest_value}</dd>`;
       }
       returnString += `</dl> ${photo_url_div}`;
       return returnString;
