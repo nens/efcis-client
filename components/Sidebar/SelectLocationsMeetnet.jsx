@@ -57,10 +57,10 @@ class SelectLocationsMeetnet extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) ||
-           !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) ||
+  //          !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -131,7 +131,7 @@ class SelectLocationsMeetnet extends Component {
 
     return (
       <div>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id='kaartselectie'>Meetnetselectie</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -154,7 +154,6 @@ class SelectLocationsMeetnet extends Component {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.hideMeetnetModal}>Sluiten</Button>
           <Button onClick={() => {
             this.props.dispatch(
               setMeetnets(
