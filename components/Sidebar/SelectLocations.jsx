@@ -45,9 +45,9 @@ class SelectLocations extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  // }
 
   componentWillReceiveProps(newProps) {}
 
@@ -152,7 +152,7 @@ class SelectLocations extends Component {
           show={this.state.showListModal}
           onHide={this.hideListModal}
           dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='kaartselectie'>Lijst selectie</Modal.Title>
           </Modal.Header>
           <Modal.Body>
