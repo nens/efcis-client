@@ -13,7 +13,10 @@ import {
   fetchOpnames,
   setParameterGroups,
   setParameters,
-  clearParametersSelection
+  clearParametersSelection,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
 } from '../../actions.jsx';
 
 
@@ -134,6 +137,9 @@ class SelectParameters extends Component {
                 );
                 this.props.dispatch(fetchOpnames());
                 this.props.dispatch(fetchFeatures());
+                this.props.dispatch(reloadDataForBoxplots());
+                this.props.dispatch(reloadAllLineCharts());
+                this.props.dispatch(reloadDataForScatterplot());
                 this.hideParameterGroupsModal();
               }}>Selecteren &amp; sluiten</Button>
               </Modal.Footer>
@@ -151,10 +157,12 @@ class SelectParameters extends Component {
               <SelectParameterList {...this.props} />
               </Modal.Body>
               <Modal.Footer>
-              {/* <Button onClick={this.hideParametersModal}>Sluiten</Button> */}
               <Button onClick={() => {
                 this.props.dispatch(fetchOpnames());
                 this.props.dispatch(fetchFeatures());
+                this.props.dispatch(reloadDataForBoxplots());
+                this.props.dispatch(reloadAllLineCharts());
+                this.props.dispatch(reloadDataForScatterplot());
                 this.hideParametersModal();
               }}>Selecteren &amp; sluiten</Button>
               </Modal.Footer>

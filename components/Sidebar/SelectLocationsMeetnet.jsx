@@ -9,6 +9,9 @@ import {
   setMeetnets,
   fetchOpnames,
   fetchFeatures,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
 } from '../../actions.jsx';
 
 class SelectLocationsMeetnet extends Component {
@@ -162,6 +165,9 @@ class SelectLocationsMeetnet extends Component {
             );
             this.props.dispatch(fetchOpnames());
             this.props.dispatch(fetchFeatures());
+            this.props.dispatch(reloadDataForBoxplots());
+            this.props.dispatch(reloadAllLineCharts());
+            this.props.dispatch(reloadDataForScatterplot());
             this.props.hideMeetnetModal();
           }}>Selecteren &amp; sluiten</Button>
         </Modal.Footer>

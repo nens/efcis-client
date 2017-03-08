@@ -7,6 +7,9 @@ import $ from 'jquery';
 import {
   addLocationToSelection,
   removeLocationFromSelection,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
  } from '../../actions.jsx';
 
 class SelectLocationsList extends Component {

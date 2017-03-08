@@ -22,6 +22,9 @@ import {
   addLocationToSelection,
   removeLocationFromSelection,
   setLocations,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
  } from '../../actions.jsx';
 
 
@@ -411,6 +414,9 @@ reloadMap(meetStatusIds) {
                     return location.id;
                   });
                   this.props.dispatch(setLocations(selectedLocations));
+                  this.props.dispatch(reloadDataForBoxplots());
+                  this.props.dispatch(reloadAllLineCharts());
+                  this.props.dispatch(reloadDataForScatterplot());                  
                   this.props.hideMapModal();
                 });
                 layer.on('mouseover', (e) => {

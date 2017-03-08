@@ -10,6 +10,14 @@ require("!style!css!../../node_modules/sweetalert/lib/sweet-alert.css");
 require("!style!css!./SelectParameters.css");
 
 
+import {
+  fetchOpnames,
+  fetchFeatures,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
+} from '../../actions.jsx';
+
 class SelectParameterGroup extends Component {
 
   constructor(props) {

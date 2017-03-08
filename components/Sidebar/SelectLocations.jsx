@@ -16,6 +16,9 @@ import {
   fetchFeatures,
   fetchOpnames,
   setMeetnets,
+  reloadDataForBoxplots,
+  reloadAllLineCharts,
+  reloadDataForScatterplot,
 } from '../../actions.jsx';
 
 
@@ -162,6 +165,9 @@ class SelectLocations extends Component {
             <Button onClick={() => {
               this.props.dispatch(fetchOpnames());
               this.props.dispatch(fetchFeatures());
+              this.props.dispatch(reloadDataForBoxplots());
+              this.props.dispatch(reloadAllLineCharts());
+              this.props.dispatch(reloadDataForScatterplot());
               this.hideListModal();
             }}>Selecteren &amp; sluiten</Button>
           </Modal.Footer>

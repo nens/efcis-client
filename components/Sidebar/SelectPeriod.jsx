@@ -12,6 +12,7 @@ const dateFormat = 'DD-MM-YYYY';
 import {
   reloadDataForBoxplots,
   reloadAllLineCharts,
+  reloadDataForScatterplot,
   fetchFeatures,
   fetchOpnames,
   fetchCharts,
@@ -88,6 +89,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
     this.props.dispatch(reloadAllLineCharts());
+    this.props.dispatch(reloadDataForScatterplot());
   }
 
   handleSeasonChange() {
@@ -97,6 +99,7 @@ class SelectPeriod extends Component {
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
     this.props.dispatch(reloadAllLineCharts());
+    this.props.dispatch(reloadDataForScatterplot());
   }
 
   render() {
@@ -121,9 +124,9 @@ class SelectPeriod extends Component {
           endDate={moment(this.props.opnames.end_date, dateFormat)}
           ranges={this.state.ranges}
           onApply={this.applyDateRange}>
-          <Button className='selected-date-range-btn' style={{width:'100%'}}>
+          <Button className='selected-date-range-btn' style={{ width: '100%' }}>
             <div className='pull-left'><i className='fa fa-calendar'></i></div>
-              <div style={{overflow: 'hidden', 'whiteSpace': 'initial'}}>
+              <div style={{ overflow: 'hidden', 'whiteSpace': 'initial' }}>
                 {label}&nbsp;
               <div className='pull-right'>
                 <span className='caret'/>

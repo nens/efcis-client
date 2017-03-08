@@ -14,14 +14,12 @@ export const RECEIVE_DATA_FOR_BOXPLOT = 'RECEIVE_DATA_FOR_BOXPLOT';
 export const RECEIVE_DATA_FOR_LEFT_Y = 'RECEIVE_DATA_FOR_LEFT_Y';
 export const RECEIVE_DATA_FOR_RIGHT_Y = 'RECEIVE_DATA_FOR_RIGHT_Y';
 export const RECEIVE_DATA_FOR_SCATTERPLOT = 'RECEIVE_DATA_FOR_SCATTERPLOT';
-export const REQUEST_DATA_FOR_SELECTED_BOXPLOTS = 'REQUEST_DATA_FOR_SELECTED_BOXPLOTS';
 export const RECEIVE_DATA_FOR_SELECTED_BOXPLOTS = 'RECEIVE_DATA_FOR_SELECTED_BOXPLOTS';
 export const RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS = 'RECEIVE_DATA_FOR_SELECTED_LEFT_LINECHARTS';
 export const RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS = 'RECEIVE_DATA_FOR_SELECTED_RIGHT_LINECHARTS';
-export const REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS';
-export const REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS';
 export const RECEIVE_FEATURES = 'RECEIVE_FEATURES';
 export const RECEIVE_OPNAMES = 'RECEIVE_OPNAMES';
+export const RECEIVE_RELOAD_SCATTERPLOT = 'RECEIVE_RELOAD_SCATTERPLOT';
 export const RECEIVE_SCATTERPLOT_DATA = 'RECEIVE_SCATTERPLOT_DATA';
 export const RECEIVE_SECOND_SCATTERPLOT_AXIS = 'RECEIVE_SECOND_SCATTERPLOT_AXIS';
 export const REMOVE_FROM_BOXPLOTCHARTS_BY_ID = 'REMOVE_FROM_BOXPLOTCHARTS_BY_ID';
@@ -35,43 +33,47 @@ export const REQUEST_DATA_FOR_BOXPLOT = 'REQUEST_DATA_FOR_BOXPLOT';
 export const REQUEST_DATA_FOR_LEFT_Y = 'REQUEST_DATA_FOR_LEFT_Y';
 export const REQUEST_DATA_FOR_RIGHT_Y = 'REQUEST_DATA_FOR_RIGHT_Y';
 export const REQUEST_DATA_FOR_SCATTERPLOT = 'REQUEST_DATA_FOR_SCATTERPLOT';
+export const REQUEST_DATA_FOR_SELECTED_BOXPLOTS = 'REQUEST_DATA_FOR_SELECTED_BOXPLOTS';
+export const REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_LEFT_LINECHARTS';
+export const REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS = 'REQUEST_DATA_FOR_SELECTED_RIGHT_LINECHARTS';
 export const REQUEST_FEATURES = 'REQUEST_FEATURES';
 export const REQUEST_OPNAMES = 'REQUEST_OPNAMES';
+export const REQUEST_RELOAD_SCATTERPLOT = 'REQUEST_RELOAD_SCATTERPLOT';
 export const REQUEST_SCATTERPLOT_DATA = 'REQUEST_SCATTERPLOT_DATA';
 export const REQUEST_SECOND_SCATTERPLOT_AXIS = 'REQUEST_SECOND_SCATTERPLOT_AXIS';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
-export const SET_LEFT_LINEWIDTH_BY_ID = 'SET_LEFT_LINEWIDTH_BY_ID';
-export const SET_RIGHT_LINEWIDTH_BY_ID = 'SET_RIGHT_LINEWIDTH_BY_ID';
 export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
 export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
-export const SET_LEGEND_MIN = 'SET_LEGEND_MIN';
-export const SET_LEGEND_MAX = 'SET_LEGEND_MAX';
+export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
+export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART';
 export const SET_LEFT_LINECOLOR_BY_ID = 'SET_LEFT_LINECOLOR_BY_ID';
 export const SET_LEFT_LINESTYLE_BY_ID = 'SET_LEFT_LINESTYLE_BY_ID';
-export const SET_RIGHT_LINECOLOR_BY_ID = 'SET_RIGHT_LINECOLOR_BY_ID';
-export const SET_RIGHT_LINESTYLE_BY_ID = 'SET_RIGHT_LINESTYLE_BY_ID';
+export const SET_LEFT_LINEWIDTH_BY_ID = 'SET_LEFT_LINEWIDTH_BY_ID';
+export const SET_LEGEND_INTERVALS = 'SET_LEGEND_INTERVALS';
+export const SET_LEGEND_MAX = 'SET_LEGEND_MAX';
+export const SET_LEGEND_MIN = 'SET_LEGEND_MIN';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_MAP_POSITION = 'SET_MAP_POSITION';
 export const SET_MAP_STATISTICS = 'SET_MAP_STATISTICS';
 export const SET_MEETNETS = 'SET_MEETNETS';
-export const SET_LEGEND_INTERVALS = 'SET_LEGEND_INTERVALS';
 export const SET_PARAMETERGROUPS = 'SET_PARAMETERGROUPS';
 export const SET_PARAMETERS = 'SET_PARAMETERS';
 export const SET_PERIOD = 'SET_PERIOD';
+export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
+export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHART';
+export const SET_RIGHT_LINECOLOR_BY_ID = 'SET_RIGHT_LINECOLOR_BY_ID';
+export const SET_RIGHT_LINESTYLE_BY_ID = 'SET_RIGHT_LINESTYLE_BY_ID';
+export const SET_RIGHT_LINEWIDTH_BY_ID = 'SET_RIGHT_LINEWIDTH_BY_ID';
 export const SET_SEASON = 'SET_SEASON';
 export const SET_SPLIT_BY_YEAR = 'SET_SPLIT_BY_YEAR';
-export const SET_TITLE_FOR_TIJDREEKS = 'SET_TITLE_FOR_TIJDREEKS';
 export const SET_TITLE_FOR_BOXPLOT = 'SET_TITLE_FOR_BOXPLOT';
 export const SET_TITLE_FOR_SCATTERPLOT = 'SET_TITLE_FOR_SCATTERPLOT';
+export const SET_TITLE_FOR_TIJDREEKS = 'SET_TITLE_FOR_TIJDREEKS';
 export const SET_TRESHOLD_FOR_LINECHART = 'SET_TRESHOLD_FOR_LINECHART';
-export const SET_LEFT_AXIS_MIN_FOR_LINECHART = 'SET_LEFT_AXIS_MIN_FOR_LINECHART';
-export const SET_LEFT_AXIS_MAX_FOR_LINECHART = 'SET_LEFT_AXIS_MAX_FOR_LINECHART';
-export const SET_RIGHT_AXIS_MIN_FOR_LINECHART = 'SET_RIGHT_AXIS_MIN_FOR_LINECHART';
-export const SET_RIGHT_AXIS_MAX_FOR_LINECHART = 'SET_RIGHT_AXIS_MAX_FOR_LINECHART';
 export const TOGGLE_REVERSE_LEGEND = 'TOGGLE_REVERSE_LEGEND';
-export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
 export const TOGGLE_SYMBOLS = 'TOGGLE_SYMBOLS';
+export const TOGGLE_USER_DATERANGE = 'TOGGLE_USER_DATERANGE';
 export const USE_DATA_DOMAIN = 'USE_DATA_DOMAIN';
 
 // The following makes sure that the XHR POST requests in this file get a
@@ -385,10 +387,15 @@ export function addToLinechartsRightY(chart) {
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
+    const season = getState().opnames.season;
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
+      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`,
       success: (data) => {
         return data;
       },
@@ -446,16 +453,20 @@ export function reloadAllLineCharts() {
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
     const season = getState().opnames.season;
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
 
     const leftChartsUrls = getState()
       .opnames
       .linechartsLeftY
-      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}`);
+      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`);
 
     const rightChartsUrls = getState()
       .opnames
       .linechartsRightY
-      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}`);
+      .map((chart) => `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`);
 
     let lefturls = [];
     let righturls = [];
@@ -511,10 +522,16 @@ export function addToLinechartsLeftY(chart) {
 
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
+    const season = getState().opnames.season;
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
+
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}`,
+      url: `/api/lines/${chart.id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`,
       success: (data) => {
         return data;
       },
@@ -558,9 +575,14 @@ export function fetchCharts() {
     const season = getState().opnames.season;
     const split_by_year = getState().opnames.split_by_year;
 
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
+
     const dataObject = {
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      parameters: parameters.join(','),
+      parametergroeps: parametergroups.join(','),
       start_date,
       end_date,
       season,
@@ -671,6 +693,56 @@ export function removeFromBoxplotChartsById(id) {
   };
 }
 
+
+
+
+function requestReloadScatterplot() {
+  return {
+    type: REQUEST_RELOAD_SCATTERPLOT,
+  };
+}
+
+
+function receiveReloadScatterplot(data) {
+  return {
+    type: RECEIVE_RELOAD_SCATTERPLOT,
+    data,
+  };
+}
+
+export function reloadDataForScatterplot() {
+  return (dispatch, getState) => {
+    dispatch(showLoading());
+    dispatch(requestReloadScatterplot());
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+    const season = getState().opnames.season;
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
+
+    const x_id = getState().opnames.scatterplotData.x_id;
+    const y_id = getState().opnames.scatterplotData.y_id;
+
+    const scatterEndpoint = $.ajax({
+      method: 'GET',
+      // url: `/api/scatterplots/${x_id}/${y_id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`,
+      url: `/api/scatterplots/${x_id}/${y_id}/?start_date=${startDate}&end_date=${endDate}`,
+      success: (data) => {
+        return data;
+      },
+    });
+
+    Promise.all([scatterEndpoint]).then(([scatterResults]) => {
+      dispatch(hideLoading());
+      return dispatch(receiveReloadScatterplot(scatterResults));
+    });
+
+  }
+}
+
+
 function requestDataForScatterplot() {
   return {
     type: REQUEST_DATA_FOR_SCATTERPLOT,
@@ -726,7 +798,6 @@ function receiveSecondScatterplotAxis(result) {
 }
 
 export function fetchSecondScatterplotAxis(chart) {
-
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
@@ -738,14 +809,13 @@ export function fetchSecondScatterplotAxis(chart) {
       url: parser.pathname,
       success: (data) => {
         return data;
-      }
+      },
     });
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveSecondScatterplotAxis(chartsResults));
     });
-  }
-
+  };
 }
 
 export function setAsScatterplotChartsY(chart) {
@@ -772,20 +842,20 @@ export function fetchScatterplotDataByUrl(scatterplotUrl) {
   return (dispatch, getState) => {
     dispatch(requestScatterplotData());
     dispatch(showLoading());
-    var parser = document.createElement('a');
+    let parser = document.createElement('a');
     parser.href = scatterplotUrl;
     const chartsEndpoint = $.ajax({
       type: 'GET',
       url: parser.pathname,
       success: (data) => {
         return data;
-      }
+      },
     });
     Promise.all([chartsEndpoint]).then(([chartsResults]) => {
       dispatch(hideLoading());
       return dispatch(receiveScatterplotData(chartsResults));
     });
-  }
+  };
 }
 
 export function setTresholdForLinechart(value) {
