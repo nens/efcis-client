@@ -22,6 +22,8 @@ import {
   addLocationToSelection,
   removeLocationFromSelection,
   setLocations,
+  fetchOpnames,
+  fetchFeatures,
   reloadDataForBoxplots,
   reloadAllLineCharts,
   reloadDataForScatterplot,
@@ -279,6 +281,8 @@ reloadMap(meetStatusIds) {
                 return location.id;
               });
               this.props.dispatch(setLocations(selectedLocations));
+              this.props.dispatch(fetchOpnames());
+              this.props.dispatch(fetchFeatures());
               this.props.hideMapModal();
             }}
             onDeleted={(e) => console.log('deleted')}
@@ -416,7 +420,7 @@ reloadMap(meetStatusIds) {
                   this.props.dispatch(setLocations(selectedLocations));
                   this.props.dispatch(reloadDataForBoxplots());
                   this.props.dispatch(reloadAllLineCharts());
-                  this.props.dispatch(reloadDataForScatterplot());                  
+                  this.props.dispatch(reloadDataForScatterplot());
                   this.props.hideMapModal();
                 });
                 layer.on('mouseover', (e) => {
