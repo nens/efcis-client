@@ -190,11 +190,13 @@ function opnames(state = {
   case SET_SEASON:
     return Object.assign({}, state, {
       season: action.season,
+      page: 1,
     });
   case SET_PERIOD:
     return Object.assign({}, state, {
       start_date: action.startDate,
       end_date: action.endDate,
+      page: 1,
     });
   case SET_COLOR_BY:
     return Object.assign({}, state, {
@@ -318,19 +320,23 @@ function opnames(state = {
   case SET_MEETNETS:
     return Object.assign({}, state, {
       meetnets: action.ids,
+      page: 1,
     });
   case SET_PARAMETERGROUPS:
     return Object.assign({}, state, {
       parametergroups: action.ids,
+      page: 1,
     });
   case SET_PARAMETERS:
     return Object.assign({}, state, {
       parameters: action.ids,
+      page: 1,
     });
   case SET_LOCATIONS:
     return Object.assign({}, state, {
       locations: action.locations,
       locationIds: action.locations.map((location) => location.id),
+      page: 1,
     });
   case REMOVE_FROM_BOXPLOTCHARTS_BY_ID:
     return Object.assign({}, state, {
@@ -436,7 +442,7 @@ function opnames(state = {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
-        leftMin: parseInt(action.value),
+        leftMin: parseFloat(action.value),
       },
     };
   case SET_LEFT_AXIS_MAX_FOR_LINECHART:
@@ -444,7 +450,7 @@ function opnames(state = {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
-        leftMax: parseInt(action.value),
+        leftMax: parseFloat(action.value),
       },
     };
   case SET_RIGHT_AXIS_MIN_FOR_LINECHART:
@@ -452,7 +458,7 @@ function opnames(state = {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
-        rightMin: parseInt(action.value),
+        rightMin: parseFloat(action.value),
       },
     };
   case SET_RIGHT_AXIS_MAX_FOR_LINECHART:
@@ -460,7 +466,7 @@ function opnames(state = {
       ...state,
       lineChartSettings: {
         ...state.lineChartSettings,
-        rightMax: parseInt(action.value),
+        rightMax: parseFloat(action.value),
       },
     };
   case SET_LEFT_LINESTYLE_BY_ID:
