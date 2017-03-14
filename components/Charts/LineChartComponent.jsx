@@ -247,7 +247,7 @@ class LineChartComponent extends Component {
           text: (this.props.opnames.linechartsRightY.length > 0) ?
             this.props.opnames.linechartsRightY[0].unit : '',
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: Highcharts.getOptions().colors[1],
           }
         },
         min: (this.props.opnames.lineChartSettings.rightMin) ?
@@ -257,7 +257,7 @@ class LineChartComponent extends Component {
         labels: {
           format: '{value}',
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: Highcharts.getOptions().colors[1],
           },
         },
         opposite: true,
@@ -277,8 +277,6 @@ class LineChartComponent extends Component {
   }
 
   render() {
-
-
     let filteredLinechartSeriesLeftY = this.props.opnames.charts.filter((location) => {
       if (location.wns.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1 ||
           location.wns.toLowerCase().indexOf(this.state.linechartSeriesLeftYFilter.toLowerCase()) != -1) {
