@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.33"></a>
+## [0.0.33](https://github.com/nens/efcis-client/compare/v0.0.32...v0.0.33) (2017-03-14)
+
+
+### Bug Fixes
+
+* **Linechart:** Right axis now also colored black. ([2d50dc8](https://github.com/nens/efcis-client/commit/2d50dc8))
+* **Map:** Legend colors were wrong in inverse mode - fixed now. ([3d3509f](https://github.com/nens/efcis-client/commit/3d3509f))
+* **Redux:** Adding GET/POST parameters to each XHR call. ([8bde679](https://github.com/nens/efcis-client/commit/8bde679))
+* **Redux:** Table pagination now resets after manipulating selection. Some parseInt() had to be parseFloat()'s. ([a83cf72](https://github.com/nens/efcis-client/commit/a83cf72))
+* **SelectLocations:** Adds call to reload table and map data. ([7751d7c](https://github.com/nens/efcis-client/commit/7751d7c))
+* **SelectLocationsMeetnet:** Close after select fixed. ([4ab4a05](https://github.com/nens/efcis-client/commit/4ab4a05))
+* **Sidebar:** Reset state button now confirmed to work in IE11. ([0caa271](https://github.com/nens/efcis-client/commit/0caa271))
+* **TableApp:** Two bugs fixed that were caused by typos... ([9ef881f](https://github.com/nens/efcis-client/commit/9ef881f))
+
+
+
 <a name="0.0.32"></a>
 ## [0.0.32](https://github.com/nens/efcis-client/compare/v0.0.31...v0.0.32) (2017-03-08)
 
