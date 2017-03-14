@@ -158,6 +158,7 @@ class SelectLocationsMeetnet extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => {
+            this.props.hideMeetnetModal();
             this.props.dispatch(
               setMeetnets(
                 $('#meetnet-tree').jstree().get_selected()
@@ -168,7 +169,6 @@ class SelectLocationsMeetnet extends Component {
             this.props.dispatch(reloadDataForBoxplots());
             this.props.dispatch(reloadAllLineCharts());
             this.props.dispatch(reloadDataForScatterplot());
-            this.props.hideMeetnetModal();
           }}>Selecteren &amp; sluiten</Button>
         </Modal.Footer>
       </div>
