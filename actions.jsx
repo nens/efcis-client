@@ -628,13 +628,14 @@ export function reloadDataForBoxplots() {
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
     const splitByYear = getState().opnames.split_by_year;
+    const season = getState().opnames.season;
 
     let urls = [];
     const boxplotCharts = getState().opnames.boxplotCharts;
     for (let i = 0; i < boxplotCharts.length; i++) {
       urls.push($.ajax({
         type: 'GET',
-        url: `/api/boxplots/${boxplotCharts[i][0].id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+        url: `/api/boxplots/${boxplotCharts[i][0].id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}&season=${season}`,
       }))
     }
 
@@ -669,9 +670,10 @@ export function addToBoxplotCharts(chart) {
     const startDate = getState().opnames.start_date;
     const endDate = getState().opnames.end_date;
     const splitByYear = getState().opnames.split_by_year;
+    const season = getState().opnames.season;
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}`,
+      url: `/api/boxplots/${chart.id}/?start_date=${startDate}&end_date=${endDate}&split_by_year=${splitByYear}&season=${season}`,
       success: (data) => {
         return data;
       },
@@ -712,6 +714,10 @@ function receiveReloadScatterplot(data) {
 
 export function reloadDataForScatterplot() {
   return (dispatch, getState) => {
+    if (!getState().opnames.scatterplotData) {
+      return Promise.resolve();
+    }
+
     dispatch(showLoading());
     dispatch(requestReloadScatterplot());
     const startDate = getState().opnames.start_date;
@@ -728,7 +734,7 @@ export function reloadDataForScatterplot() {
     const scatterEndpoint = $.ajax({
       method: 'GET',
       // url: `/api/scatterplots/${x_id}/${y_id}/?start_date=${startDate}&end_date=${endDate}&season=${season}&meetnets=${meetnets.join(',')}&locations=${locations.join(',')}&parameters=${parameters.join(',')}&parametergroeps=${parametergroups.join(',')}`,
-      url: `/api/scatterplots/${x_id}/${y_id}/?start_date=${startDate}&end_date=${endDate}`,
+      url: `/api/scatterplots/${x_id}/${y_id}/`,
       success: (data) => {
         return data;
       },
@@ -738,7 +744,6 @@ export function reloadDataForScatterplot() {
       dispatch(hideLoading());
       return dispatch(receiveReloadScatterplot(scatterResults));
     });
-
   }
 }
 
@@ -762,9 +767,17 @@ export function addToScatterplotCharts(chart) {
     dispatch(showLoading());
     dispatch(requestDataForScatterplot());
 
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+    const season = getState().opnames.season;
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
+
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: `/api/scatterplots/${chart.id}/`,
+      url: `/api/scatterplots/${chart.id}/?season=${season}&start_date=${startDate}&end_date=${endDate}`,
       success: (data) => {
         return data;
       }
@@ -801,12 +814,21 @@ export function fetchSecondScatterplotAxis(chart) {
   return (dispatch, getState) => {
     dispatch(showLoading());
     dispatch(requestSecondScatterplotAxis());
+
+    const startDate = getState().opnames.start_date;
+    const endDate = getState().opnames.end_date;
+    const season = (getState().opnames.season) ? getState().opnames.season : '';
+    const meetnets = getState().opnames.meetnets;
+    const locations = getState().opnames.locationIds;
+    const parameters = getState().opnames.parameterIds;
+    const parametergroups = getState().opnames.parametergroups;
+
     let parser = document.createElement('a');
     parser.href = chart['scatterplot-second-axis-url'];
 
     const chartsEndpoint = $.ajax({
       type: 'GET',
-      url: parser.pathname,
+      url: `${parser.pathname}?season=${season}&start_date=${startDate}&end_date=${endDate}`,
       success: (data) => {
         return data;
       },
