@@ -43,6 +43,8 @@ class MapApp extends Component {
 			showColorByModal: false,
 			showSettingsModal: false,
 			colorFilterValue: '',
+      legendMin: undefined,
+      legendMax: undefined,
 		};
 		this.updateDimensions = this.updateDimensions.bind(this);
 		this.hideColorByModal = this.hideColorByModal.bind(this);
@@ -173,18 +175,18 @@ class MapApp extends Component {
                       }
                     }
                     else {
-                      if (opnames.mapSettings.reverseLegend) {
+                      // if (opnames.mapSettings.reverseLegend) {
+                      //   domain = [
+                      //     (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                      //     (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                      //   ];
+                      // }
+                      // else {
                         domain = [
-                          (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
-                          (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
-                        ];
-                      }
-                      else {
-                        domain = [
                           (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
                           (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
                         ];
-                      }
+                      // }
                     }
 
 
@@ -226,18 +228,18 @@ class MapApp extends Component {
                     }
                   }
                   else {
-                    if (opnames.mapSettings.reverseLegend) {
+                    // if (opnames.mapSettings.reverseLegend) {
+                    //   domain = [
+                    //     (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
+                    //     (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
+                    //   ];
+                    // }
+                    // else {
                       domain = [
-                        (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
-                        (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
-                      ];
-                    }
-                    else {
-                      domain = [
                         (opnames.mapSettings.dataDomain) ? opnames.features.min_value : opnames.features.abs_min_value,
                         (opnames.mapSettings.dataDomain) ? opnames.features.max_value : opnames.features.abs_max_value,
                       ];
-                    }
+                    // }
                   }
 
                   const mapColors = scaleQuantize()
@@ -320,7 +322,6 @@ class MapApp extends Component {
 									}
 
 									if (!feature.properties.is_krw_area) {
-
                     console.log('%c %s %s', `background: ${myFillColor}; color: #ffffff`, myFillColor, feature.properties.latest_value);
 										geojsonMarkerOptions = {
 											radius: (feature.properties.photo_url) ? 8 : 7,
@@ -333,8 +334,6 @@ class MapApp extends Component {
 										return L.circleMarker(latlng, geojsonMarkerOptions);
 									}
                   else {
-                    console.log('before the else');
-                    console.log('feature.properties.is_krw_area???')
                     return L.multiPolygon(latlng, geojsonMarkerOptions);
                   }
 								}}
@@ -567,14 +566,11 @@ class MapApp extends Component {
 													 id='legendMin'
                            onChange={(e) => {
                              e.stopPropagation();
-                             if (parseFloat(e.target.value) < parseFloat(opnames.mapSettings.legendMax) || !opnames.mapSettings.legendMax) {
-                               dispatch(setLegendMin(parseFloat(e.target.value)));
-                             }
-                             else {
-                               dispatch(setLegendMin(undefined));
-                             }
+                             this.setState({
+                               legendMin: e.target.value,
+                             });
                            }}
-                           defaultValue={(opnames.mapSettings.legendMin) ? parseFloat(opnames.mapSettings.legendMin) : ''} />
+                           defaultValue={opnames.mapSettings.legendMin} />
 								 </div>
 								 <div className='form-group'>
 									 <label htmlFor='legendMax'>
@@ -584,15 +580,12 @@ class MapApp extends Component {
 													className='form-control'
 													id='legendMax'
                           onChange={(e) => {
-                            if (parseFloat(e.target.value) > parseFloat(opnames.mapSettings.legendMin) || !opnames.mapSettings.legendMin) {
-                              dispatch(setLegendMax(parseFloat(e.target.value)));
-                            }
-                            else {
-                              dispatch(setLegendMax(undefined));
-                            }
                             e.stopPropagation();
+                            this.setState({
+                              legendMax: e.target.value,
+                            });
                           }}
-                          defaultValue={(opnames.mapSettings.legendMax) ? parseFloat(opnames.mapSettings.legendMax) : ''} />
+                          defaultValue={opnames.mapSettings.legendMax} />
 								</div>
 								<div className='form-group'>
 									<label htmlFor='legendLength'>
@@ -614,6 +607,8 @@ class MapApp extends Component {
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={() => {
+              dispatch(setLegendMin(this.state.legendMin));
+              dispatch(setLegendMax(this.state.legendMax));
               dispatch(fetchFeatures());
 							this.hideSettingsModal();
 						}}>Sluiten</Button>
