@@ -296,7 +296,7 @@ class TableApp extends Component {
                       <th>
 		        <div style={{ width: 100 }}>
 		          Waarde A<br/>
-		          {this.renderOverlayFilter(opnames.filters.waarde_n, 'waarde_n')}
+		          {this.renderOverlayFilter(opnames.filters.waarde_a, 'waarde_a')}
                         </div>
                       </th>
                       <th>
@@ -438,11 +438,7 @@ class TableApp extends Component {
 			  </td>
                           <td>
 			    <div style={{ width: 150 }}>
-			      <Highlighter
-				  highlightClassName={styles.Highlight}
-				  searchWords={[opnames.filters.waarde_n]}
-				  textToHighlight={(result.waarde_n) ? result.waarde_n.toString() : '' }
-                              />
+          {result.waarde_n}
 			    </div>
 			  </td>
                           <td>
@@ -657,7 +653,7 @@ class TableApp extends Component {
               <dt>MET_MAFA</dt>
               <dd>{this.state.detail.met_mafa}</dd>
               <dt>MET_MAFY</dt>
-              <dd>{this.state.detail.met_MAFY}</dd>
+              <dd>{this.state.detail.met_mafy}</dd>
               <dt>MET_FYT</dt>
               <dd>{this.state.detail.met_fyt}</dd>
               <dt>MET_VIS</dt>
