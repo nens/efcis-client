@@ -119,7 +119,7 @@ class MapApp extends Component {
     const KRW_AREA_COLORS = {
       '1': '#B6B6B4',
       '2': '#D1D0CE',
-      '3': '#848482',
+      '3': '#989B9C',
     };
 
 		const parameterButtonText = (selectedParameter) ?

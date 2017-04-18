@@ -234,8 +234,7 @@ reloadMap(meetStatusIds) {
 
   render() {
 
-
-    const KRW_AREA_COLORS = {"1": "#B6B6B4", "2": "#D1D0CE", "3": "#848482"};
+    const KRW_AREA_COLORS = {"1": "#B6B6B4", "2": "#D1D0CE", "3": "#989B9C"};
 
     const position = [52.0741, 5.1432];
     const self = this;
