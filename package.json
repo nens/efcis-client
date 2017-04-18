@@ -1,6 +1,6 @@
 {
   "name": "efics-client",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "EFCIS client w/ Redux",
   "repository": {
     "type": "git",

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.35"></a>
+## [0.0.35](https://github.com/nens/efcis-client/compare/v0.0.34...v0.0.35) (2017-04-18)
+
+
+### Bug Fixes
+
+* **Linechart:** Colors now picked through Redux, so consistently showing in chart as well as in color picker. ([bb575d6](https://github.com/nens/efcis-client/commit/bb575d6))
+
+
+
 <a name="0.0.34"></a>
 ## [0.0.34](https://github.com/nens/efcis-client/compare/v0.0.33...v0.0.34) (2017-03-17)
 
