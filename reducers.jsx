@@ -70,6 +70,7 @@ import {
   SET_TITLE_FOR_SCATTERPLOT,
   SET_TITLE_FOR_TIJDREEKS,
   SET_TRESHOLD_FOR_LINECHART,
+  SHOW_ALL_MEASURE_LOCATIONS,
   TOGGLE_REVERSE_LEGEND,
   TOGGLE_SYMBOLS,
   TOGGLE_USER_DATERANGE,
@@ -149,6 +150,7 @@ function opnames(state = {
   },
   mapSettings: {
     reverseLegend: false,
+    showAllMeasurelocations: true,
     numLegendIntervals: 11,
     dataDomain: true,
     legendMin: undefined,
@@ -203,6 +205,7 @@ function opnames(state = {
       },
       mapSettings: {
         reverseLegend: false,
+        showAllMeasurelocations: true,
         numLegendIntervals: 11,
         dataDomain: true,
         legendMin: undefined,
@@ -250,6 +253,14 @@ function opnames(state = {
     return Object.assign({}, state, {
       split_by_year: action.split_by_year,
     });
+  case SHOW_ALL_MEASURE_LOCATIONS:
+    return {
+      ...state,
+      mapSettings: {
+        ...state.mapSettings,
+        showAllMeasurelocations: !state.mapSettings.showAllMeasurelocations,
+      },
+    };
   case CLEAR_LOCATIONS_SELECTION:
     return Object.assign({}, state, {
       locations: [],

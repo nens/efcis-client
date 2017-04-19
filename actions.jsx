@@ -42,6 +42,7 @@ export const REQUEST_RELOAD_SCATTERPLOT = 'REQUEST_RELOAD_SCATTERPLOT';
 export const REQUEST_SCATTERPLOT_DATA = 'REQUEST_SCATTERPLOT_DATA';
 export const REQUEST_SECOND_SCATTERPLOT_AXIS = 'REQUEST_SECOND_SCATTERPLOT_AXIS';
 export const RESET_ALL_FILTERS = 'RESET_ALL_FILTERS';
+export const SHOW_ALL_MEASURE_LOCATIONS = 'SHOW_ALL_MEASURE_LOCATIONS';
 export const SET_AS_SCATTERPLOTCHARTS_X = 'SET_AS_SCATTERPLOTCHARTS_X';
 export const SET_AS_SCATTERPLOTCHARTS_Y = 'SET_AS_SCATTERPLOTCHARTS_Y';
 export const SET_COLOR_BY = 'SET_COLOR_BY';
@@ -1027,5 +1028,11 @@ export function setTitleForScatterplot(title) {
   return {
     type: SET_TITLE_FOR_SCATTERPLOT,
     title,
+  };
+}
+
+export function toggleShowAllMeasureLocations() {
+  return {
+    type: SHOW_ALL_MEASURE_LOCATIONS,
   };
 }
