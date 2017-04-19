@@ -671,7 +671,7 @@ class LineChartComponent extends Component {
           show={this.state.showLeftYAxisModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideLeftYAxisModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='leftYAxisModal'>
               Configureer linker Y-as
             </Modal.Title>
@@ -750,7 +750,7 @@ class LineChartComponent extends Component {
           show={this.state.showRightYAxisModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideRightYAxisModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='rightYAxisModal'>
               Configureer rechter Y-as
             </Modal.Title>
@@ -829,7 +829,7 @@ class LineChartComponent extends Component {
           show={this.state.showLinechartSettingsModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideLinechartSettingsModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='linechart-settings-modal'>
               Configureer Lijngrafiek
             </Modal.Title>

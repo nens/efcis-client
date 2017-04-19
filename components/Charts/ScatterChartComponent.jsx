@@ -201,7 +201,7 @@ class ScatterChartComponent extends Component {
           show={this.state.showScatterplotModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideScatterplotModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='scatterplotModal'>
               Configureer Scatterplot
             </Modal.Title>

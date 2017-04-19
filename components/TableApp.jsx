@@ -592,7 +592,7 @@ class TableApp extends Component {
           show={this.state.showModal}
           onHide={this.hideModal}
           dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id="contained-modal-title-lg">
               {this.state.detail.wns_oms}
             </Modal.Title>
@@ -702,7 +702,7 @@ class TableApp extends Component {
           show={this.state.showExportModal}
           onHide={this.hideExportModal}
           dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id="contained-modal-title-lg">
               Exporteren
             </Modal.Title>

@@ -233,7 +233,7 @@ class BoxplotChartComponent extends Component {
           show={this.state.showBoxplotModal}
           dialogClassName={styles.WideModal}
           onHide={this.hideBoxplotModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='boxplotModal'>
               Configureer Boxplot
             </Modal.Title>

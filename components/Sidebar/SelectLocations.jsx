@@ -137,7 +137,7 @@ class SelectLocations extends Component {
           show={this.state.showMapModal}
           onHide={this.hideMapModal}
           dialogClassName={styles.WideModal}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id='kaartselectie'>Selectie op kaart</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ height: this.state.height - 200 }}>
