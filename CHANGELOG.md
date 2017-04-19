@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.36"></a>
+## [0.0.36](https://github.com/nens/efcis-client/compare/v0.0.35...v0.0.36) (2017-04-19)
+
+
+### Bug Fixes
+
+* **Map:** Changed gray color to be less dark. ([9b94ec2](https://github.com/nens/efcis-client/commit/9b94ec2))
+* **MapApp:** Add option to view all measuring locations as grey points. ([e61f597](https://github.com/nens/efcis-client/commit/e61f597))
+* **Modals:** Removing modal closing X's for consistency's sake ([1452210](https://github.com/nens/efcis-client/commit/1452210))
+
+
+
 <a name="0.0.35"></a>
 ## [0.0.35](https://github.com/nens/efcis-client/compare/v0.0.34...v0.0.35) (2017-04-18)
 
