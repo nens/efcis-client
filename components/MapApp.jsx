@@ -452,7 +452,7 @@ class MapApp extends Component {
                           color: KRW_AREA_COLORS[
                             layer.feature.properties.krw_color
                           ],
-                          weight: (opnames.map.zoom - 17) * -1
+                          weight: (opnames.map.zoom - 17) * -1,
                         });
                         layer.bindPopup(
                           `
