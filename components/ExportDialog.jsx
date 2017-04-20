@@ -58,7 +58,8 @@ class ExportDialog extends Component {
     .done(function(msg) {
       swal(
         'Exporteren is gestart',
-        `U ontvangt een e-mail (adres: ${msg.email}) met een downloadlink als de export gereed is. Deze link blijft geldig tot middernacht.`,
+        `U ontvangt een e-mail (adres: ${msg.email}) met een downloadlink
+        als de export gereed is. Deze link blijft geldig tot middernacht.`,
         'success'
       );
     });
@@ -67,6 +68,7 @@ class ExportDialog extends Component {
   getSelectionParams() {
     const filtersObject = this.props.opnames.filters;
     const meetnetids = this.props.opnames.meetnets;
+    const parameterids = this.props.opnames.parameterIds;
     const parametergroupids = this.props.opnames.parametergroups;
     const locationids = this.props.opnames.locationIds;
     const start_date = this.props.opnames.start_date;
@@ -76,6 +78,8 @@ class ExportDialog extends Component {
     const dataObject = {
       meetnets: meetnetids.join(','),
       locations: locationids.join(','),
+      parameters: parameterids.join(','),
+      parametergroeps: parametergroupids.join(','),
       start_date,
       end_date,
       season,
