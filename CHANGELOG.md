@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.37"></a>
+## [0.0.37](https://github.com/nens/efcis-client/compare/v0.0.36...v0.0.37) (2017-04-20)
+
+
+### Bug Fixes
+
+* **Export:** Add parameter ids and parameter group ids to selection params. ([c84530c](https://github.com/nens/efcis-client/commit/c84530c))
+* **KRW Areas:** Fixed dupes in json. ([a88220a](https://github.com/nens/efcis-client/commit/a88220a))
+* **Select via Map:** Info popups now enabled on Map selection modal. ([64d9b26](https://github.com/nens/efcis-client/commit/64d9b26))
+
+
+
 <a name="0.0.36"></a>
 ## [0.0.36](https://github.com/nens/efcis-client/compare/v0.0.35...v0.0.36) (2017-04-19)
 
