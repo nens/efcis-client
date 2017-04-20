@@ -146,6 +146,9 @@ class SelectLocationsMap extends Component {
           if(result.geometry) {
               filteredMapLocations.push(result);
               var marker = L.geoJson(result, {
+                  onEachFeature: (feature, layer) => {
+                    layer.bindPopup(self.popupContent(result)).openPopup();
+                  },
                   pointToLayer: function (feature, latlng) {
                       var geojsonMarkerOptions = {
                           radius: 8,
@@ -157,10 +160,6 @@ class SelectLocationsMap extends Component {
                       };
                       return L.circleMarker(latlng, geojsonMarkerOptions);
                   }
-              });
-              marker.on('click', function(e) {
-                  this.bindPopup(self.popupContent(result))
-                      .openPopup();
               });
               self.clusteredMarkers.addLayer(marker);
           }
