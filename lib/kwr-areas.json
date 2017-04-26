@@ -995,7 +995,7 @@
       "properties": {
         "loc_id": "NL14_01",
         "loc_oms": "Langbroekerwetering",
-        "krw_color": null
+        "krw_color": 2
       },
       "id": 4698
     },
@@ -4577,7 +4577,7 @@
       "properties": {
         "loc_id": "NL14_02",
         "loc_oms": "Kromme Rijn",
-        "krw_color": null
+        "krw_color": 3
       },
       "id": 4707
     },
@@ -4951,7 +4951,7 @@
       "properties": {
         "loc_id": "NL14_03",
         "loc_oms": "Westerlaak",
-        "krw_color": null
+        "krw_color": 2
       },
       "id": 4718
     },
@@ -5589,7 +5589,7 @@
       "properties": {
         "loc_id": "NL14_04",
         "loc_oms": "Honswijk",
-        "krw_color": null
+        "krw_color": 1
       },
       "id": 4722
     },
@@ -6367,7 +6367,7 @@
       "properties": {
         "loc_id": "NL14_05",
         "loc_oms": "Biltse Grift",
-        "krw_color": null
+        "krw_color": 2
       },
       "id": 4723
     },
@@ -6925,7 +6925,7 @@
       "properties": {
         "loc_id": "NL14_06",
         "loc_oms": "Ravensewetering",
-        "krw_color": null
+        "krw_color": 1
       },
       "id": 4724
     },
@@ -8675,7 +8675,7 @@
       "properties": {
         "loc_id": "NL14_07",
         "loc_oms": "Merwedekanaal",
-        "krw_color": null
+        "krw_color": 2
       },
       "id": 4727
     },
@@ -9423,7 +9423,7 @@
       "properties": {
         "loc_id": "NL14_08",
         "loc_oms": "Binnenstad Utrecht",
-        "krw_color": null
+        "krw_color": 1
       },
       "id": 4725
     },
@@ -10549,7 +10549,7 @@
       "properties": {
         "loc_id": "NL14_09",
         "loc_oms": "Maartensdijk",
-        "krw_color": null
+        "krw_color": 2
       },
       "id": 4726
     },
