@@ -14,6 +14,7 @@ require('!style!css!../../node_modules/jstree/dist/themes/default/style.css');
 import {
   clearLocationsSelection,
   fetchFeatures,
+  fetchGreyFeatures,
   fetchOpnames,
   setMeetnets,
   reloadDataForBoxplots,
@@ -97,6 +98,7 @@ class SelectLocations extends Component {
                   this.props.dispatch(setMeetnets([]));
                   this.props.dispatch(fetchOpnames());
                   this.props.dispatch(fetchFeatures());
+                  this.props.dispatch(fetchGreyFeatures());
                 }}>&nbsp;<i className='fa fa-times'></i></span>
             </span> :
             'Geen filter'}
@@ -117,6 +119,7 @@ class SelectLocations extends Component {
                 this.props.dispatch(clearLocationsSelection());
                 this.props.dispatch(fetchOpnames());
                 this.props.dispatch(fetchFeatures());
+                this.props.dispatch(fetchGreyFeatures());
               }}
               style={{ cursor: 'pointer' }}>&nbsp;<i className='fa fa-times'></i></span>
           </span> :
@@ -165,6 +168,7 @@ class SelectLocations extends Component {
             <Button onClick={() => {
               this.props.dispatch(fetchOpnames());
               this.props.dispatch(fetchFeatures());
+              this.props.dispatch(fetchGreyFeatures());
               this.props.dispatch(reloadDataForBoxplots());
               this.props.dispatch(reloadAllLineCharts());
               this.props.dispatch(reloadDataForScatterplot());

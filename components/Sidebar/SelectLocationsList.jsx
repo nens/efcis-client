@@ -7,6 +7,7 @@ import $ from 'jquery';
 import {
   addLocationToSelection,
   removeLocationFromSelection,
+  fetchGreyFeatures,
   reloadDataForBoxplots,
   reloadAllLineCharts,
   reloadDataForScatterplot,

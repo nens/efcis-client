@@ -9,6 +9,7 @@ import {
   setMeetnets,
   fetchOpnames,
   fetchFeatures,
+  fetchGreyFeatures,
   reloadDataForBoxplots,
   reloadAllLineCharts,
   reloadDataForScatterplot,
@@ -166,6 +167,7 @@ class SelectLocationsMeetnet extends Component {
             );
             this.props.dispatch(fetchOpnames());
             this.props.dispatch(fetchFeatures());
+            this.props.dispatch(fetchGreyFeatures());
             this.props.dispatch(reloadDataForBoxplots());
             this.props.dispatch(reloadAllLineCharts());
             this.props.dispatch(reloadDataForScatterplot());

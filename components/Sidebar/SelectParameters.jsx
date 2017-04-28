@@ -10,6 +10,7 @@ import $ from 'jquery';
 
 import {
   fetchFeatures,
+  fetchGreyFeatures,
   fetchOpnames,
   setParameterGroups,
   setParameters,
@@ -78,6 +79,7 @@ class SelectParameters extends Component {
               this.props.dispatch(setParameterGroups([]));
               this.props.dispatch(fetchOpnames());
               this.props.dispatch(fetchFeatures());
+              this.props.dispatch(fetchGreyFeatures());
             }}>&nbsp;<i className='fa fa-times'></i></span>
             </span> :
             'Geen filter'}
@@ -103,6 +105,7 @@ class SelectParameters extends Component {
               this.props.dispatch(clearParametersSelection());
               this.props.dispatch(fetchOpnames());
               this.props.dispatch(fetchFeatures());
+              this.props.dispatch(fetchGreyFeatures());
             }}>&nbsp;<i className='fa fa-times'></i></span>
             </span> :
             'Geen filter'}

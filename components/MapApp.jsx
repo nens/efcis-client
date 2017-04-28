@@ -31,6 +31,7 @@ import L from "leaflet";
 
 import {
   fetchFeatures,
+  fetchGreyFeatures,
   setColorBy,
   setMapPosition,
   setLegendIntervals,
@@ -64,6 +65,7 @@ class MapApp extends Component {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
     this.props.dispatch(fetchFeatures());
+    this.props.dispatch(fetchGreyFeatures());
     setTimeout(
       () =>
         $(".leaflet-control-layers").addClass(
@@ -75,16 +77,6 @@ class MapApp extends Component {
     this.refs.mapElement.leafletElement.on("overlayadd", a => {
       if (a.name !== "Labels") {
         a.layer.bringToBack();
-      }
-    });
-
-    $.ajax({
-      type: "GET",
-      url: "/api/map/",
-      success: data => {
-        this.setState({
-          allLocations: data
-        });
       }
     });
   }
@@ -132,6 +124,8 @@ class MapApp extends Component {
   render() {
     const { dispatch, opnames } = this.props;
 
+    const availableGreyFeatures = (this.props.opnames.greyFeatures.features) ?
+      this.props.opnames.greyFeatures.features : [];
     const colorBy = opnames.color_by;
     const selectedParameter = _.find(
       opnames.features.color_by_fields,
@@ -452,7 +446,7 @@ class MapApp extends Component {
                           color: KRW_AREA_COLORS[
                             layer.feature.properties.krw_color
                           ],
-                          weight: (opnames.map.zoom - 17) * -1,
+                          weight: (opnames.map.zoom - 17) * -1
                         });
                         layer.bindPopup(
                           `
@@ -475,24 +469,24 @@ class MapApp extends Component {
                   {/* <LayersControl.Overlay name='Punten'> */}
                   {this.props.opnames.mapSettings.showAllMeasurelocations
                     ? <GeoJsonUpdatable
-												filter={f => {
-			                    if (f.geometry.type !== "MultiPolygon") {
-			                      return f;
-			                    }
-			                    return false;
-			                  }}
-												onEachFeature={(feature, layer) => {
-													// console.log('feature.geometry.type', feature.geometry.type);
-													if (feature.geometry.type === "MultiPolygon") {
-														return false;
-													}
-			                    layer.bindPopup(PopupContent(feature));
-												}}
+                        filter={f => {
+                          if (f.geometry.type !== "MultiPolygon") {
+                            return f;
+                          }
+                          return false;
+                        }}
+                        onEachFeature={(feature, layer) => {
+                          // console.log('feature.geometry.type', feature.geometry.type);
+                          if (feature.geometry.type === "MultiPolygon") {
+                            return false;
+                          }
+                          layer.bindPopup(PopupContent(feature));
+                        }}
                         pointToLayer={(feature, latlng) => {
-													// console.log('pointttolayer feature.geometry.type', feature.geometry.type);
-													if (feature.geometry.type === "MultiPolygon") {
-														return false;
-													}
+                          // console.log('pointttolayer feature.geometry.type', feature.geometry.type);
+                          if (feature.geometry.type === "MultiPolygon") {
+                            return false;
+                          }
                           if (!feature.properties.is_krw_area) {
                             const geojsonMarkerOptions = {
                               radius: 7,
@@ -503,12 +497,11 @@ class MapApp extends Component {
                               fillOpacity: 1
                             };
                             return L.circleMarker(latlng, geojsonMarkerOptions);
-                          }
-													else {
+                          } else {
                             return false;
                           }
                         }}
-                        data={this.state.allLocations}
+                        data={availableGreyFeatures}
                       />
                     : ""}
                   {/* </LayersControl.Overlay> */}

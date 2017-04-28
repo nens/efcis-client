@@ -16,6 +16,7 @@ import {
   fetchFeatures,
   fetchOpnames,
   fetchCharts,
+  fetchGreyFeatures,
   setPeriod,
   setSeason,
 } from '../../actions.jsx';
@@ -86,6 +87,7 @@ class SelectPeriod extends Component {
       picker.endDate.format(dateFormat)
     ));
     this.props.dispatch(fetchFeatures());
+    this.props.dispatch(fetchGreyFeatures());
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
     this.props.dispatch(reloadAllLineCharts());
@@ -96,6 +98,7 @@ class SelectPeriod extends Component {
     const season = this.refs.season.value;
     this.props.dispatch(setSeason(season));
     this.props.dispatch(fetchFeatures());
+    this.props.dispatch(fetchGreyFeatures());
     this.props.dispatch(fetchOpnames());
     this.props.dispatch(reloadDataForBoxplots());
     this.props.dispatch(reloadAllLineCharts());

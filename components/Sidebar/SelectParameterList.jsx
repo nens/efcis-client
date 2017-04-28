@@ -12,6 +12,7 @@ require("!style!css!./SelectParameters.css");
 import {
   fetchOpnames,
   fetchFeatures,
+  fetchGreyFeatures,
   addParameterToSelection,
   removeParameterFromSelection,
   reloadDataForBoxplots,

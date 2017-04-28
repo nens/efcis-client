@@ -24,6 +24,7 @@ import {
   setLocations,
   fetchOpnames,
   fetchFeatures,
+  fetchGreyFeatures,
   reloadDataForBoxplots,
   reloadAllLineCharts,
   reloadDataForScatterplot,
@@ -281,6 +282,7 @@ reloadMap(meetStatusIds) {
               this.props.dispatch(setLocations(selectedLocations));
               this.props.dispatch(fetchOpnames());
               this.props.dispatch(fetchFeatures());
+              this.props.dispatch(fetchGreyFeatures());
               this.props.hideMapModal();
             }}
             onDeleted={(e) => console.log('deleted')}
@@ -373,6 +375,7 @@ reloadMap(meetStatusIds) {
                   this.props.dispatch(setLocations(selectedLocations));
                   this.props.dispatch(fetchOpnames());
                   this.props.dispatch(fetchFeatures());
+                  this.props.dispatch(fetchGreyFeatures());
                   this.props.hideMapModal();
                 });
               }}
