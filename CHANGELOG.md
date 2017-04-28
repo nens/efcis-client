@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.38"></a>
+## [0.0.38](https://github.com/nens/efcis-client/compare/v0.0.37...v0.0.38) (2017-04-28)
+
+
+### Bug Fixes
+
+* **KRW Areas:** Some features did not have a color property in KRW Areas GeoJSON. ([4fbdae5](https://github.com/nens/efcis-client/commit/4fbdae5))
+* **Map/Chart:** Grey markers now listen to filter selection. Chart color now doesnt reset to white when filter selection is changed. ([d5ed2d0](https://github.com/nens/efcis-client/commit/d5ed2d0))
+
+
+
 <a name="0.0.37"></a>
 ## [0.0.37](https://github.com/nens/efcis-client/compare/v0.0.36...v0.0.37) (2017-04-20)
 
