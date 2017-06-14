@@ -490,7 +490,7 @@ class MapApp extends Component {
                           if (!feature.properties.is_krw_area) {
                             const geojsonMarkerOptions = {
                               radius: 7,
-                              fillColor: "#ccc",
+                              fillColor: "#989796",
                               color: "#fff",
                               weight: 1,
                               opacity: 1,
