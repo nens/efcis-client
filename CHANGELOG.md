@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.42"></a>
+## [0.0.42](https://github.com/nens/efcis-client/compare/v0.0.41...v0.0.42) (2017-07-07)
+
+
+### Bug Fixes
+
+* **SelectParameterList:** Fixed a scoping bug where deleting a selected parameter would actually remove the wrong item. Also ran prettier.js on the file. ([3606abe](https://github.com/nens/efcis-client/commit/3606abe))
+
+
+
 <a name="0.0.41"></a>
 ## [0.0.41](https://github.com/nens/efcis-client/compare/v0.0.40...v0.0.41) (2017-06-14)
 
