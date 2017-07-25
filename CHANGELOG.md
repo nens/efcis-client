@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.43"></a>
+## [0.0.43](https://github.com/nens/efcis-client/compare/v0.0.42...v0.0.43) (2017-07-25)
+
+
+### Bug Fixes
+
+* **KWR Colors:** Reversed order of KRW color pallette. ([e8a18aa](https://github.com/nens/efcis-client/commit/e8a18aa))
+
+
+
 <a name="0.0.42"></a>
 ## [0.0.42](https://github.com/nens/efcis-client/compare/v0.0.41...v0.0.42) (2017-07-07)
 
