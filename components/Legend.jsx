@@ -34,11 +34,11 @@ class Legend extends Component {
     let scaleVariant = colorbrewer.RdYlGn[this.props.opnames.mapSettings.numLegendIntervals];
 
     let scaleVariantKrw = [
-      '#0000FF',
-      '#1ECA22',
-      '#FFFD37',
-      '#FF9900',
       '#FF0000',
+      '#FF9900',
+      '#FFFD37',
+      '#1ECA22',
+      '#0000FF',
     ];
 
     if (opnames.mapSettings.reverseLegend) {
