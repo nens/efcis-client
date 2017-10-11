@@ -124,8 +124,9 @@ class MapApp extends Component {
   render() {
     const { dispatch, opnames } = this.props;
 
-    const availableGreyFeatures = (this.props.opnames.greyFeatures.features) ?
-      this.props.opnames.greyFeatures.features : [];
+    const availableGreyFeatures = this.props.opnames.greyFeatures.features
+      ? this.props.opnames.greyFeatures.features
+      : [];
     const colorBy = opnames.color_by;
     const selectedParameter = _.find(
       opnames.features.color_by_fields,
@@ -171,7 +172,6 @@ class MapApp extends Component {
                 onMoveend={this.handleMoveend}
                 zoom={opnames.map.zoom}
               >
-
                 <ScaleControl position="bottomleft" />
 
                 <GeoJsonUpdatable
@@ -179,8 +179,8 @@ class MapApp extends Component {
                   {...this.props}
                   data={opnames.features.features}
                   onEachFeature={(feature, layer) => {
-                    layer.bindPopup(PopupContent(feature));
-
+                    layer.bindPopup(PopupContent(feature, this.props.opnames.results));
+                    // console.log("GeoJsonUpdatable-->", feature.properties);
                     if (
                       feature.properties.is_krw_area &&
                       feature.geometry.type === "MultiPolygon"
@@ -238,14 +238,17 @@ class MapApp extends Component {
                     }
                   }}
                   pointToLayer={(feature, latlng) => {
-                    // let scaleVariant = (opnames.features.is_krw_score && !opnames.features.is_krw_area) ?
-                    //   colorbrewer.RdYlGn[opnames.mapSettings.numLegendIntervals]
-                    //   :
-                    //   ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
+                    let scaleVariant = (!opnames.features.is_krw_score) ?
+                      colorbrewer.RdYlGn[opnames.mapSettings.numLegendIntervals]
+                      :
+                      ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
 
-                    let scaleVariant = colorbrewer.RdYlGn[
-                      opnames.mapSettings.numLegendIntervals
-                    ];
+                    // let scaleVariant =
+                    //   colorbrewer.RdYlGn[
+                    //     opnames.mapSettings.numLegendIntervals
+                    //   ];
+
+                    // let scaleVariant = ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
 
                     let domain;
                     if (
@@ -302,75 +305,76 @@ class MapApp extends Component {
                     let myFillColor;
                     try {
                       if (opnames.map_statistics === "lastval") {
-                        myFillColor = feature.properties.latest_value === null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.latest_value);
+                        myFillColor =
+                          feature.properties.latest_value === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.latest_value);
                       } else if (opnames.map_statistics === "min") {
-                        myFillColor = feature.properties.boxplot_data.min ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.min);
+                        myFillColor =
+                          feature.properties.boxplot_data.min === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.min);
                       } else if (opnames.map_statistics === "max") {
-                        myFillColor = feature.properties.boxplot_data.max ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.max);
+                        myFillColor =
+                          feature.properties.boxplot_data.max === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.max);
                       } else if (opnames.map_statistics === "amount") {
-                        myFillColor = feature.properties.boxplot_data.num_values ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(
-                              feature.properties.boxplot_data.num_values
-                            );
+                        myFillColor =
+                          feature.properties.boxplot_data.num_values === null
+                            ? "#bbccff"
+                            : mapColors(
+                                feature.properties.boxplot_data.num_values
+                              );
                       } else if (opnames.map_statistics === "stdev") {
-                        myFillColor = feature.properties.boxplot_data.std ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.std);
+                        myFillColor =
+                          feature.properties.boxplot_data.std === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.std);
                       } else if (opnames.map_statistics === "mean") {
-                        myFillColor = feature.properties.boxplot_data.mean ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.mean);
+                        myFillColor =
+                          feature.properties.boxplot_data.mean === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.mean);
                       } else if (opnames.map_statistics === "median") {
-                        myFillColor = feature.properties.boxplot_data.median ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.median);
+                        myFillColor =
+                          feature.properties.boxplot_data.median === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.median);
                       } else if (opnames.map_statistics === "q1") {
-                        myFillColor = feature.properties.boxplot_data.q1 ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.q1);
+                        myFillColor =
+                          feature.properties.boxplot_data.q1 === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.q1);
                       } else if (opnames.map_statistics === "q3") {
-                        myFillColor = feature.properties.boxplot_data.q3 ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.q3);
+                        myFillColor =
+                          feature.properties.boxplot_data.q3 === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.q3);
                       } else if (opnames.map_statistics === "p10") {
-                        myFillColor = feature.properties.boxplot_data.p10 ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.p10);
+                        myFillColor =
+                          feature.properties.boxplot_data.p10 === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.p10);
                       } else if (opnames.map_statistics === "p90") {
-                        myFillColor = feature.properties.boxplot_data.p90 ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(feature.properties.boxplot_data.p90);
+                        myFillColor =
+                          feature.properties.boxplot_data.p90 === null
+                            ? "#bbccff"
+                            : mapColors(feature.properties.boxplot_data.p90);
                       } else if (opnames.map_statistics === "summer") {
-                        myFillColor = feature.properties.boxplot_data.summer_mean ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(
-                              feature.properties.boxplot_data.summer_mean
-                            );
+                        myFillColor =
+                          feature.properties.boxplot_data.summer_mean === null
+                            ? "#bbccff"
+                            : mapColors(
+                                feature.properties.boxplot_data.summer_mean
+                              );
                       } else if (opnames.map_statistics === "winter") {
-                        myFillColor = feature.properties.boxplot_data.winter_mean ===
-                          null
-                          ? "#bbccff"
-                          : mapColors(
-                              feature.properties.boxplot_data.winter_mean
-                            );
+                        myFillColor =
+                          feature.properties.boxplot_data.winter_mean === null
+                            ? "#bbccff"
+                            : mapColors(
+                                feature.properties.boxplot_data.winter_mean
+                              );
                       }
                     } catch (warning) {
                       console.warn(warning);
@@ -383,12 +387,12 @@ class MapApp extends Component {
                     }
 
                     if (!feature.properties.is_krw_area) {
-                      console.log(
-                        "%c %s %s",
-                        `background: ${myFillColor}; color: #ffffff`,
-                        myFillColor,
-                        feature.properties.latest_value
-                      );
+                      // console.log(
+                      //   "%c %s %s",
+                      //   `background: ${myFillColor}; color: #ffffff`,
+                      //   myFillColor,
+                      //   feature.properties.latest_value
+                      // );
                       geojsonMarkerOptions = {
                         radius: feature.properties.photo_url ? 8 : 7,
                         fillColor: myFillColor,
@@ -440,12 +444,10 @@ class MapApp extends Component {
                     <GeoJsonUpdatable
                       onEachFeature={(feature, layer) => {
                         layer.setStyle({
-                          fillColor: KRW_AREA_COLORS[
-                            layer.feature.properties.krw_color
-                          ],
-                          color: KRW_AREA_COLORS[
-                            layer.feature.properties.krw_color
-                          ],
+                          fillColor:
+                            KRW_AREA_COLORS[layer.feature.properties.krw_color],
+                          color:
+                            KRW_AREA_COLORS[layer.feature.properties.krw_color],
                           weight: (opnames.map.zoom - 17) * -1
                         });
                         layer.bindPopup(
@@ -480,7 +482,7 @@ class MapApp extends Component {
                           if (feature.geometry.type === "MultiPolygon") {
                             return false;
                           }
-                          layer.bindPopup(PopupContent(feature));
+                          layer.bindPopup(PopupContent(feature, this.props.opnames.results));
                         }}
                         pointToLayer={(feature, latlng) => {
                           // console.log('pointttolayer feature.geometry.type', feature.geometry.type);
@@ -624,9 +626,8 @@ class MapApp extends Component {
                           style={{
                             cursor: "pointer",
                             textDecoration: "underline",
-                            backgroundColor: colorField.id === opnames.color_by
-                              ? "#ccc"
-                              : ""
+                            backgroundColor:
+                              colorField.id === opnames.color_by ? "#ccc" : ""
                           }}
                         >
                           {colorField.wns_oms}
@@ -705,9 +706,7 @@ class MapApp extends Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="legendMin">
-                    Minimumwaarde
-                  </label>
+                  <label htmlFor="legendMin">Minimumwaarde</label>
                   <input
                     type="text"
                     className="form-control"
@@ -722,9 +721,7 @@ class MapApp extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="legendMax">
-                    Maximumwaarde
-                  </label>
+                  <label htmlFor="legendMax">Maximumwaarde</label>
                   <input
                     type="text"
                     className="form-control"

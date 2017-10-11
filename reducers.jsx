@@ -721,7 +721,7 @@ function opnames(
         linechartsRightY: action.results.filter(result => {
           result.lineColor = linechartColors[
             Math.floor(Math.random() * linechartColors.length) + 1
-          ];          
+          ];
           if (result.hasOwnProperty("id") === true) return result;
           return false;
         })
