@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.45"></a>
+## [0.0.45](https://github.com/nens/efcis-client/compare/v0.0.44...v0.0.45) (2017-10-13)
+
+
+### Bug Fixes
+
+* **Legend:** Legend minimum can now be 0 ([3101510](https://github.com/nens/efcis-client/commit/3101510))
+
+
+
 <a name="0.0.44"></a>
 ## [0.0.44](https://github.com/nens/efcis-client/compare/v0.0.43...v0.0.44) (2017-10-11)
 
