@@ -51,8 +51,8 @@ class MapApp extends Component {
       showColorByModal: false,
       showSettingsModal: false,
       colorFilterValue: "",
-      legendMin: null,
-      legendMax: null,
+      // legendMin: null,
+      // legendMax: null,
       allLocations: undefined
     };
     this.updateDimensions = this.updateDimensions.bind(this);
@@ -720,7 +720,9 @@ class MapApp extends Component {
                         legendMin: parseFloat(e.target.value)
                       });
                     }}
-                    defaultValue={parseFloat(opnames.mapSettings.legendMin)}
+                    defaultValue={
+                      (isNaN(opnames.mapSettings.legendMin) ? "" : opnames.mapSettings.legendMin)
+                    }
                   />
                 </div>
                 <div className="form-group">
@@ -735,7 +737,9 @@ class MapApp extends Component {
                         legendMax: parseFloat(e.target.value)
                       });
                     }}
-                    defaultValue={opnames.mapSettings.legendMax}
+                    defaultValue={
+                      (isNaN(opnames.mapSettings.legendMax) ? "" : opnames.mapSettings.legendMax)
+                    }
                   />
                 </div>
                 <div className="form-group">

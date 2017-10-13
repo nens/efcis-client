@@ -156,8 +156,8 @@ function opnames(
       showAllMeasurelocations: true,
       numLegendIntervals: 11,
       dataDomain: true,
-      legendMin: undefined,
-      legendMax: undefined
+      legendMin: null,
+      legendMax: null
     },
     boxplotCharts: [],
     split_by_year: false,
@@ -214,8 +214,8 @@ function opnames(
           showAllMeasurelocations: true,
           numLegendIntervals: 11,
           dataDomain: true,
-          legendMin: undefined,
-          legendMax: undefined
+          legendMin: null,
+          legendMax: null
         },
         boxplotCharts: [],
         split_by_year: false,
@@ -447,9 +447,8 @@ function opnames(
         isFetching: true
       });
     case RECEIVE_DATA_FOR_LEFT_Y:
-      action.results.lineColor = linechartColors[
-        Math.floor(Math.random() * linechartColors.length) + 1
-      ];
+      action.results.lineColor =
+        linechartColors[Math.floor(Math.random() * linechartColors.length) + 1];
       return Object.assign({}, state, {
         isFetching: false,
         linechartsLeftY: [...state.linechartsLeftY, action.results]
@@ -468,9 +467,8 @@ function opnames(
         isFetching: true
       });
     case RECEIVE_DATA_FOR_RIGHT_Y:
-      action.results.lineColor = linechartColors[
-        Math.floor(Math.random() * linechartColors.length) + 1
-      ];
+      action.results.lineColor =
+        linechartColors[Math.floor(Math.random() * linechartColors.length) + 1];
       return Object.assign({}, state, {
         isFetching: false,
         linechartsRightY: [...state.linechartsRightY, action.results]
@@ -645,10 +643,10 @@ function opnames(
         ...state,
         mapSettings: {
           ...state.mapSettings,
-          numLegendIntervals: action.numberOfIntervals >= 3 &&
-            action.numberOfIntervals <= 11
-            ? action.numberOfIntervals
-            : state.mapSettings.numLegendIntervals
+          numLegendIntervals:
+            action.numberOfIntervals >= 3 && action.numberOfIntervals <= 11
+              ? action.numberOfIntervals
+              : state.mapSettings.numLegendIntervals
         }
       };
     case SET_LEGEND_MIN:
@@ -702,9 +700,10 @@ function opnames(
       return Object.assign({}, state, {
         isFetching: false,
         linechartsLeftY: action.results.filter(result => {
-          result.lineColor = linechartColors[
-            Math.floor(Math.random() * linechartColors.length) + 1
-          ];
+          result.lineColor =
+            linechartColors[
+              Math.floor(Math.random() * linechartColors.length) + 1
+            ];
           if (result.hasOwnProperty("id") === true) {
             return result;
           }
@@ -719,9 +718,10 @@ function opnames(
       return Object.assign({}, state, {
         isFetching: false,
         linechartsRightY: action.results.filter(result => {
-          result.lineColor = linechartColors[
-            Math.floor(Math.random() * linechartColors.length) + 1
-          ];
+          result.lineColor =
+            linechartColors[
+              Math.floor(Math.random() * linechartColors.length) + 1
+            ];
           if (result.hasOwnProperty("id") === true) return result;
           return false;
         })

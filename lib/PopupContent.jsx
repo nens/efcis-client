@@ -1,8 +1,6 @@
 import moment from "moment";
 
 export default function PopupContent(result) {
-
-
   let latest_value_formatted,
     median_formatted,
     num_values_formatted,
@@ -173,8 +171,6 @@ export default function PopupContent(result) {
   }
 
   if (result.properties.is_krw_score) {
-    // console.log('JAA');
-    // console.log("----->", result);
     var returnString = `<dl class="dl-horizontal" width="200" style="overflow:hidden;">
       <dt style="width:100px;">ID</dt>
       <dd style="width:300px;margin-left:130px !important;">${result.properties
@@ -184,7 +180,8 @@ export default function PopupContent(result) {
         .loc_oms}</dd>`;
     if (result.properties.latest_value !== undefined) {
       returnString += `<dt style="width:100px;">Waarde</dt>
-                         <dd style="width:300px;margin-left:130px !important;">${result.properties.latest_value}</dd>`;
+                         <dd style="width:300px;margin-left:130px !important;">${result
+                           .properties.latest_display_value}</dd>`;
     }
     returnString += `</dl> ${photo_url_div}`;
     return returnString;
