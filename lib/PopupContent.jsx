@@ -1,6 +1,8 @@
 import moment from "moment";
 
-export default function PopupContent(result, results) {
+export default function PopupContent(result) {
+
+
   let latest_value_formatted,
     median_formatted,
     num_values_formatted,
@@ -21,10 +23,10 @@ export default function PopupContent(result, results) {
   onbekend_1 = "Niet bemeten";
   onbekend_2 = "Niet te bepalen";
 
-  let waarde_n = null;
-  if(results.results) {
-    waarde_n = results.results[0].waarde_n;
-  }
+  // let waarde_n = null;
+  // if(results.results) {
+  //   waarde_n = results.results[0].waarde_n;
+  // }
 
   if (result.properties.latest_value === null) {
     latest_value_formatted = onbekend_1;
@@ -182,7 +184,7 @@ export default function PopupContent(result, results) {
         .loc_oms}</dd>`;
     if (result.properties.latest_value !== undefined) {
       returnString += `<dt style="width:100px;">Waarde</dt>
-                         <dd style="width:300px;margin-left:130px !important;">${waarde_n}</dd>`;
+                         <dd style="width:300px;margin-left:130px !important;">${result.properties.latest_value}</dd>`;
     }
     returnString += `</dl> ${photo_url_div}`;
     return returnString;
