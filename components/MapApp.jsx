@@ -51,8 +51,8 @@ class MapApp extends Component {
       showColorByModal: false,
       showSettingsModal: false,
       colorFilterValue: "",
-      legendMin: undefined,
-      legendMax: undefined,
+      legendMin: null,
+      legendMax: null,
       allLocations: undefined
     };
     this.updateDimensions = this.updateDimensions.bind(this);
@@ -179,7 +179,9 @@ class MapApp extends Component {
                   {...this.props}
                   data={opnames.features.features}
                   onEachFeature={(feature, layer) => {
-                    layer.bindPopup(PopupContent(feature, this.props.opnames.results));
+                    layer.bindPopup(
+                      PopupContent(feature, this.props.opnames.results)
+                    );
                     // console.log("GeoJsonUpdatable-->", feature.properties);
                     if (
                       feature.properties.is_krw_area &&
@@ -238,10 +240,11 @@ class MapApp extends Component {
                     }
                   }}
                   pointToLayer={(feature, latlng) => {
-                    let scaleVariant = (!opnames.features.is_krw_score) ?
-                      colorbrewer.RdYlGn[opnames.mapSettings.numLegendIntervals]
-                      :
-                      ['#FF0000', '#FF9900', '#FFFD37', '#1ECA22', '#0000FF'];
+                    let scaleVariant = !opnames.features.is_krw_score
+                      ? colorbrewer.RdYlGn[
+                          opnames.mapSettings.numLegendIntervals
+                        ]
+                      : ["#FF0000", "#FF9900", "#FFFD37", "#1ECA22", "#0000FF"];
 
                     // let scaleVariant =
                     //   colorbrewer.RdYlGn[
@@ -482,7 +485,7 @@ class MapApp extends Component {
                           if (feature.geometry.type === "MultiPolygon") {
                             return false;
                           }
-                          layer.bindPopup(PopupContent(feature, this.props.opnames.results));
+                          layer.bindPopup(PopupContent(feature));
                         }}
                         pointToLayer={(feature, latlng) => {
                           // console.log('pointttolayer feature.geometry.type', feature.geometry.type);
@@ -714,10 +717,10 @@ class MapApp extends Component {
                     onChange={e => {
                       e.stopPropagation();
                       this.setState({
-                        legendMin: e.target.value
+                        legendMin: parseFloat(e.target.value)
                       });
                     }}
-                    defaultValue={opnames.mapSettings.legendMin}
+                    defaultValue={parseFloat(opnames.mapSettings.legendMin)}
                   />
                 </div>
                 <div className="form-group">
@@ -729,7 +732,7 @@ class MapApp extends Component {
                     onChange={e => {
                       e.stopPropagation();
                       this.setState({
-                        legendMax: e.target.value
+                        legendMax: parseFloat(e.target.value)
                       });
                     }}
                     defaultValue={opnames.mapSettings.legendMax}
@@ -758,8 +761,8 @@ class MapApp extends Component {
           <Modal.Footer>
             <Button
               onClick={() => {
-                dispatch(setLegendMin(this.state.legendMin));
-                dispatch(setLegendMax(this.state.legendMax));
+                dispatch(setLegendMin(parseFloat(this.state.legendMin)));
+                dispatch(setLegendMax(parseFloat(this.state.legendMax)));
                 dispatch(fetchFeatures());
                 this.hideSettingsModal();
               }}

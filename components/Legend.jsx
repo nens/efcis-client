@@ -47,15 +47,18 @@ class Legend extends Component {
     }
 
     let domain;
-    if (opnames.mapSettings.legendMin && opnames.mapSettings.legendMax) {
+
+    const { legendMin, legendMax } = opnames.mapSettings;
+
+    if (typeof legendMin !== "undefined" && typeof legendMax !== "undefined") {
       if (opnames.mapSettings.reverseLegend) {
         domain = [
-          opnames.mapSettings.legendMax, opnames.mapSettings.legendMin,
+          legendMax, legendMin,
         ];
       }
       else {
         domain = [
-          opnames.mapSettings.legendMin, opnames.mapSettings.legendMax,
+          legendMin, legendMax,
         ];
       }
     }
