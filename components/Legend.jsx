@@ -46,7 +46,7 @@ class Legend extends Component {
 
     const { legendMin, legendMax } = opnames.mapSettings;
 
-    if (legendMin && legendMax) {
+    if ((legendMin !== null || legendMin !== "") && legendMax) {
       if (opnames.mapSettings.reverseLegend) {
         domain = [legendMax, legendMin];
       } else {
