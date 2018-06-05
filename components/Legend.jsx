@@ -90,7 +90,7 @@ class Legend extends Component {
             className={styles.LegendList}
             style={{ borderTop: "15px solid #cccccc" }}
           >
-            NULL
+            NODATA
           </div>
           {colors.range().map((color, i) => {
             const label = colors.invertExtent(color);
