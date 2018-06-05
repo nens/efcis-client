@@ -1,22 +1,29 @@
-import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
-import styles from './SelectLocationsMap.css';
-import { Button, ButtonGroup, Modal } from 'react-bootstrap';
-import L from 'leaflet';
-import $ from 'jquery';
-import { Map, Marker, Popup, LayersControl, FeatureGroup,
-  TileLayer, GeoJSON } from 'react-leaflet';
-import { EditControl } from 'react-leaflet-draw';
-import 'leaflet.markercluster';
-import hdsrMaskData from '../../lib/hdsr-mask.json';
-import krwAreas from '../../lib/kwr-areas.json';
-import afvoergebieden from '../../lib/afvoergebieden.json';
-import within from 'turf-within';
+import React, { Component, PropTypes } from "react";
+import _ from "lodash";
+import styles from "./SelectLocationsMap.css";
+import { Button, ButtonGroup, Modal } from "react-bootstrap";
+import L from "leaflet";
+import $ from "jquery";
+import { Wave } from "better-react-spinkit";
+import {
+  Map,
+  Marker,
+  Popup,
+  LayersControl,
+  FeatureGroup,
+  TileLayer,
+  GeoJSON
+} from "react-leaflet";
+import { EditControl } from "react-leaflet-draw";
+import "leaflet.markercluster";
+import hdsrMaskData from "../../lib/hdsr-mask.json";
+import krwAreas from "../../lib/kwr-areas.json";
+import afvoergebieden from "../../lib/afvoergebieden.json";
+import within from "turf-within";
 
 require("!style!css!../../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css");
 require("!style!css!../../node_modules/leaflet.markercluster/dist/MarkerCluster.css");
 require("!style!css!../../node_modules/leaflet-draw/dist/leaflet.draw.css");
-
 
 import {
   addLocationToSelection,
@@ -27,12 +34,32 @@ import {
   fetchGreyFeatures,
   reloadDataForBoxplots,
   reloadAllLineCharts,
-  reloadDataForScatterplot,
- } from '../../actions.jsx';
+  reloadDataForScatterplot
+} from "../../actions.jsx";
 
+async function fetchLocationsAndMeasuringStatuses() {
+  try {
+    const locations = await $.ajax({
+      dataType: "json",
+      url: config.locationsUrl,
+      success: data => {
+        return data.results;
+      }
+    });
+
+    const statuses = await $.ajax({
+      dataType: "json",
+      url: config.meetStatusUrl,
+      success: data => data
+    });
+
+    return { locations, statuses };
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 
 class SelectLocationsMap extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,12 +67,14 @@ class SelectLocationsMap extends Component {
       height: window.innerHeight,
       meetnet: [],
       mapLocations: [],
+      mapLocationsLoaded: false,
+      meetstatusLoaded: false
     };
     this.clusteredMarkers = new L.MarkerClusterGroup({
       // disableClusteringAtZoom: 14,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
+      zoomToBoundsOnClick: true
     });
     this.updateDimensions = this.updateDimensions.bind(this);
     this.setLocationsOnMap = this.setLocationsOnMap.bind(this);
@@ -63,54 +92,53 @@ class SelectLocationsMap extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
+    window.addEventListener("resize", this.updateDimensions);
     const self = this;
-    const map = this.refs.mapElement.leafletElement;
-    $.ajax({
-      dataType: 'json',
-      url: config.locationsUrl,
-      success: (data) => {
-        self.setState({
-          mapLocations: data.results,
-        }, () => {
-          self.setLocationsOnMap(data.results, [-1]);
-        });
-      }
-    });
-    $.ajax({
-      dataType: 'json',
-      url: config.meetStatusUrl,
-      success: (data) => {
-        let meetStatusHtmlElement = `<select
+
+    fetchLocationsAndMeasuringStatuses().then(data => {
+      console.log("---locations--->", data.locations);
+      console.log("---statuses--->", data.statuses);
+
+      this.setState(
+        {
+          isLoaded: true,
+          mapLocations: data.locations.results
+        },
+        () => {
+          self.setLocationsOnMap(data.locations.results, [-1]);
+
+          let meetStatusHtmlElement = `<select
           multiple style="height: 170px; margin-right: -8px !important;
           margin-left: 9px !important;"
           class="form-control" id="meet_status_id">
           <option value="-1" selected>Alles</option>`;
-        data.map((item) => {
-          meetStatusHtmlElement += `<option value="${item.id}"
+          data.statuses.map(item => {
+            meetStatusHtmlElement += `<option value="${item.id}"
             title="${item.omschrijving}">${item.naam}</option>`;
-        });
-        meetStatusHtmlElement += '</select>';
+          });
+          meetStatusHtmlElement += "</select>";
 
-        let legend = L.control({ position: 'topright' });
-        legend.onAdd = function (map) {
-            var div = L.DomUtil.create('div', 'info legend');
+          let legend = L.control({ position: "topright" });
+          legend.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "info legend");
             div.innerHTML = meetStatusHtmlElement;
-            div.onchange = (e) => {
+            div.onchange = e => {
               const selectedValues = self
                 .getSelectValues(e.srcElement)
-                .map((x) => parseInt(x));
+                .map(x => parseInt(x));
               self.reloadMap(selectedValues);
-            }
+            };
             return div;
-        };
-        legend.addTo(map);
-      }
+          };
+          const map = this.refs.mapElement.leafletElement;
+          legend.addTo(map);
+        }
+      );
     });
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -122,161 +150,182 @@ class SelectLocationsMap extends Component {
   popupContent(result) {
     return `<dl class="dl-horizontal" width="200" style="overflow:hidden;">
         <dt style="width:80px;">ID</dt>
-        <dd style="width:300px;margin-left:100px !important;">${result.properties.loc_id}</dd>
+        <dd style="width:300px;margin-left:100px !important;">${
+          result.properties.loc_id
+        }</dd>
         <dt style="width:80px;">Omschrijving</dt>
-        <dd style="width:300px;margin-left:100px !important;">${result.properties.loc_oms}</dd>
+        <dd style="width:300px;margin-left:100px !important;">${
+          result.properties.loc_oms
+        }</dd>
         <dt style="width:80px;">Meetstatus</dt>
-        <dd style="width:300px;margin-left:100px !important;">${result.properties.meet_status_naam}</dd>
+        <dd style="width:300px;margin-left:100px !important;">${
+          result.properties.meet_status_naam
+        }</dd>
         </dl>`;
   }
 
   setLocationsOnMap(results, desiredStatusIds) {
-
-      //show all location when meetStatusIds contains "-1"
-      var self = this;
-      var filteredMapLocations = [];
-      results.map((result) => {
-          // console.log('desiredStatusIds', desiredStatusIds)
-          var meetStatus = result.properties.meet_status_id;
-          // if (!desiredStatusIds){
-          //   return;
-          // }
-          if (!((desiredStatusIds.indexOf(-1) > -1) || (desiredStatusIds.indexOf(meetStatus) > -1))) {
-            return;
+    //show all location when meetStatusIds contains "-1"
+    var self = this;
+    var filteredMapLocations = [];
+    results.map(result => {
+      // console.log('desiredStatusIds', desiredStatusIds)
+      var meetStatus = result.properties.meet_status_id;
+      // if (!desiredStatusIds){
+      //   return;
+      // }
+      if (
+        !(
+          desiredStatusIds.indexOf(-1) > -1 ||
+          desiredStatusIds.indexOf(meetStatus) > -1
+        )
+      ) {
+        return;
+      }
+      if (result.geometry) {
+        filteredMapLocations.push(result);
+        var marker = L.geoJson(result, {
+          onEachFeature: (feature, layer) => {
+            layer.bindPopup(self.popupContent(result)).openPopup();
+          },
+          pointToLayer: function(feature, latlng) {
+            var geojsonMarkerOptions = {
+              radius: 8,
+              fillColor: self.getFillColor(feature),
+              color: "#fff",
+              weight: 2,
+              opacity: 1,
+              fillOpacity: 0.8
+            };
+            return L.circleMarker(latlng, geojsonMarkerOptions);
           }
-          if(result.geometry) {
-              filteredMapLocations.push(result);
-              var marker = L.geoJson(result, {
-                  onEachFeature: (feature, layer) => {
-                    layer.bindPopup(self.popupContent(result)).openPopup();
-                  },
-                  pointToLayer: function (feature, latlng) {
-                      var geojsonMarkerOptions = {
-                          radius: 8,
-                          fillColor: self.getFillColor(feature),
-                          color: "#fff",
-                          weight: 2,
-                          opacity: 1,
-                          fillOpacity: 0.8
-                      };
-                      return L.circleMarker(latlng, geojsonMarkerOptions);
-                  }
-              });
-              self.clusteredMarkers.addLayer(marker);
-          }
-      });
-      self.setState({
-          filteredMapLocations: filteredMapLocations
-      });
-      self.clusteredMarkers.addTo(self.refs.mapElement.leafletElement);
-      self.clusteredMarkers.bringToFront();
+        });
+        self.clusteredMarkers.addLayer(marker);
+      }
+    });
+    self.setState({
+      filteredMapLocations: filteredMapLocations
+    });
+    self.clusteredMarkers.addTo(self.refs.mapElement.leafletElement);
+    self.clusteredMarkers.bringToFront();
   }
 
   getSelectValues(select) {
-      let result = [];
-      let options = select && select.options;
-      let opt;
+    let result = [];
+    let options = select && select.options;
+    let opt;
 
-      for (var i=0, iLen=options.length; i<iLen; i++) {
-          opt = options[i];
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+      opt = options[i];
 
-         if (opt.selected) {
-             result.push(opt.value || opt.text);
-         }
+      if (opt.selected) {
+        result.push(opt.value || opt.text);
       }
-      return result;
+    }
+    return result;
   }
-
 
   updateDimensions() {
     this.setState({
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: window.innerHeight
     });
   }
 
   retrieveLocations(meetStatusIds) {
     const results = this.state.mapLocations;
     if (!results) {
-      $.getJSON('/api/locaties/?page_size=100000000', (data) => {
+      $.getJSON("/api/locaties/?page_size=100000000", data => {
         this.setState({
           maplocations: data.results,
-          filteredMapLocations: data.results,
+          filteredMapLocations: data.results
         });
         this.setLocationsOnMap(data.results, meetStatusIds);
       });
-    }
-    else {
+    } else {
       this.setLocationsOnMap(results, meetStatusIds);
     }
     return;
   }
 
+  reloadMap(meetStatusIds) {
+    this.clusteredMarkers.clearLayers();
+    this.retrieveLocations(meetStatusIds);
+  }
 
-
-reloadMap(meetStatusIds) {
-     this.clusteredMarkers.clearLayers();
-     this.retrieveLocations(meetStatusIds);
- }
-
- getFillColor(feature) {
-   const location = _.find(this.props.opnames.locations, (location) => {
-     if (feature.id === location.id) return location;
-   });
-   if (location) {
-     return '#FC625D'; // if the location is selected, color it red
-   }
-   else {
-    return '#337AB7'; // if the location is not selected, color it blue
-   }
- }
-
+  getFillColor(feature) {
+    const location = _.find(this.props.opnames.locations, location => {
+      if (feature.id === location.id) return location;
+    });
+    if (location) {
+      return "#FC625D"; // if the location is selected, color it red
+    } else {
+      return "#337AB7"; // if the location is not selected, color it blue
+    }
+  }
 
   render() {
-
-    const KRW_AREA_COLORS = {"1": "#B6B6B4", "2": "#D1D0CE", "3": "#989B9C"};
+    const KRW_AREA_COLORS = { "1": "#B6B6B4", "2": "#D1D0CE", "3": "#989B9C" };
 
     const position = [52.0741, 5.1432];
     const self = this;
 
+    const { isLoaded } = this.state;
+
+    if (!isLoaded) {
+      return (
+        <div
+          style={{
+            position: "absolute",
+            left: this.state.width / 2.7,
+            top: 200,
+            zIndex: 99999
+          }}
+        >
+          <Wave size={50} />
+        </div>
+      );
+    }
+
     return (
       <Map
-        ref='mapElement'
+        ref="mapElement"
         className={styles.Map}
         center={position}
         maxZoom={22}
-        zoom={11}>
+        zoom={11}
+      >
         <FeatureGroup>
           <EditControl
-            position='topleft'
-            onEdited={(e) => console.log('edited')}
-            onCreated={(e) => {
+            position="topleft"
+            onEdited={e => console.log("edited")}
+            onCreated={e => {
               const selectionPolygon = e.layer.toGeoJSON();
               const locationResults = {
-                'type': 'FeatureCollection',
-                'features': this.state.mapLocations.filter((location) => {
-                  if (_.has(location.geometry, 'coordinates')) {
+                type: "FeatureCollection",
+                features: this.state.mapLocations.filter(location => {
+                  if (_.has(location.geometry, "coordinates")) {
                     return location;
                   }
                   return false;
-                }),
+                })
               };
               var withinFilter = {
-                'type': 'FeatureCollection',
-                'features': [
+                type: "FeatureCollection",
+                features: [
                   {
-                    'type': 'Feature',
-                    'properties': '',
-                    'geometry': {
-                      'type': 'Polygon',
-                      'coordinates': selectionPolygon.geometry.coordinates,
-                    },
-                  },
-                ],
+                    type: "Feature",
+                    properties: "",
+                    geometry: {
+                      type: "Polygon",
+                      coordinates: selectionPolygon.geometry.coordinates
+                    }
+                  }
+                ]
               };
               const result = within(locationResults, withinFilter);
               const selectedLocations = result.features;
-              const selectedLocationIds = result.features.map((location) => {
+              const selectedLocationIds = result.features.map(location => {
                 return location.id;
               });
               this.props.dispatch(setLocations(selectedLocations));
@@ -285,91 +334,91 @@ reloadMap(meetStatusIds) {
               this.props.dispatch(fetchGreyFeatures());
               this.props.hideMapModal();
             }}
-            onDeleted={(e) => console.log('deleted')}
+            onDeleted={e => console.log("deleted")}
             draw={{
               polyline: false,
               circle: false,
               rectangle: false,
-              marker: false,
+              marker: false
             }}
             edit={{
-              remove: false,
+              remove: false
             }}
           />
-
         </FeatureGroup>
-        <LayersControl position='topright'>
-          <LayersControl.BaseLayer name='Topografisch' checked={true}>
+        <LayersControl position="topright">
+          <LayersControl.BaseLayer name="Topografisch" checked={true}>
             <TileLayer
-              url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.5641a12c/{z}/{x}/{y}.png'
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tiles.mapbox.com/v3/nelenschuurmans.5641a12c/{z}/{x}/{y}.png"
+              attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             />
           </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name='Satelliet'>
+          <LayersControl.BaseLayer name="Satelliet">
             <TileLayer
-              url='https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png'
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png"
+              attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             />
           </LayersControl.BaseLayer>
-          <LayersControl.Overlay name='Masker'>
+          <LayersControl.Overlay name="Masker">
             <GeoJSON
               onEachFeature={(feature, layer) => {
                 layer.setStyle({
-                  fillColor: '#ffffff',
-                  color: '#ffffff',
+                  fillColor: "#ffffff",
+                  color: "#ffffff",
                   opacity: 1,
-                  fillOpacity: 1,
+                  fillOpacity: 1
                 });
               }}
-              data={hdsrMaskData} />
+              data={hdsrMaskData}
+            />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name='KRW Waterlichamen'>
+          <LayersControl.Overlay name="KRW Waterlichamen">
             <GeoJSON
               onEachFeature={(feature, layer) => {
-
                 layer.setStyle({
-                  'fillColor': KRW_AREA_COLORS[layer.feature.properties.krw_color],
-                  'color': KRW_AREA_COLORS[layer.feature.properties.krw_color],
+                  fillColor:
+                    KRW_AREA_COLORS[layer.feature.properties.krw_color],
+                  color: KRW_AREA_COLORS[layer.feature.properties.krw_color]
                   // 'weight': (this.props.opnames.map.zoom - 17) * -1,
                 });
-                layer.on('mouseover', (e) => {
+                layer.on("mouseover", e => {
                   layer.setStyle({
-                    'fillColor': 'purple',
+                    fillColor: "purple"
                   });
                 });
-                layer.on('mouseout', (e) => {
+                layer.on("mouseout", e => {
                   layer.setStyle({
-                    'fillColor': 'pink',
+                    fillColor: "pink"
                   });
                 });
 
-                layer.on('click', (e) => {
+                layer.on("click", e => {
                   const locationResults = {
-                    'type': 'FeatureCollection',
-                    'features': this.state.mapLocations.filter((location) => {
-                      if (_.has(location.geometry, 'coordinates')) {
+                    type: "FeatureCollection",
+                    features: this.state.mapLocations.filter(location => {
+                      if (_.has(location.geometry, "coordinates")) {
                         return location;
                       }
                       return false;
-                    }),
+                    })
                   };
                   const withinFilter = {
-                    'type': 'FeatureCollection',
-                    'features': [
+                    type: "FeatureCollection",
+                    features: [
                       {
-                        'type': 'Feature',
-                        'properties': '',
-                        'geometry': {
-                          'type': 'MultiPolygon',
-                          'coordinates': feature.geometry.coordinates,
-                        },
-                      },
-                    ],
+                        type: "Feature",
+                        properties: "",
+                        geometry: {
+                          type: "MultiPolygon",
+                          coordinates: feature.geometry.coordinates
+                        }
+                      }
+                    ]
                   };
                   const result = within(locationResults, withinFilter);
 
                   const selectedLocations = result.features;
-                  const selectedLocationIds = result.features.map((location) => {
+                  const selectedLocationIds = result.features.map(location => {
                     return location.id;
                   });
                   this.props.dispatch(setLocations(selectedLocations));
@@ -379,45 +428,46 @@ reloadMap(meetStatusIds) {
                   this.props.hideMapModal();
                 });
               }}
-              data={krwAreas} />
+              data={krwAreas}
+            />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name='Afvoergebieden'>
+          <LayersControl.Overlay name="Afvoergebieden">
             <GeoJSON
               onEachFeature={(feature, layer) => {
                 layer.setStyle({
-                  'fillColor': 'pink',
-                  'color': '#fff',
-                  'weight': 2,
-                  'opacity': 1,
-                  'dashArray': 3,
-                  'fillOpacity': 0.3,
+                  fillColor: "pink",
+                  color: "#fff",
+                  weight: 2,
+                  opacity: 1,
+                  dashArray: 3,
+                  fillOpacity: 0.3
                 });
-                layer.on('click', (e) => {
+                layer.on("click", e => {
                   const locationResults = {
-                    'type': 'FeatureCollection',
-                    'features': this.state.mapLocations.filter((location) => {
-                      if (_.has(location.geometry, 'coordinates')) {
+                    type: "FeatureCollection",
+                    features: this.state.mapLocations.filter(location => {
+                      if (_.has(location.geometry, "coordinates")) {
                         return location;
                       }
                       return false;
-                    }),
+                    })
                   };
                   var withinFilter = {
-                    'type': 'FeatureCollection',
-                    'features': [
+                    type: "FeatureCollection",
+                    features: [
                       {
-                        'type': 'Feature',
-                        'properties': '',
-                        'geometry': {
-                          'type': 'Polygon',
-                          'coordinates': feature.geometry.coordinates,
-                        },
-                      },
-                    ],
+                        type: "Feature",
+                        properties: "",
+                        geometry: {
+                          type: "Polygon",
+                          coordinates: feature.geometry.coordinates
+                        }
+                      }
+                    ]
                   };
                   const result = within(locationResults, withinFilter);
                   const selectedLocations = result.features;
-                  const selectedLocationIds = result.features.map((location) => {
+                  const selectedLocationIds = result.features.map(location => {
                     return location.id;
                   });
                   this.props.dispatch(setLocations(selectedLocations));
@@ -428,21 +478,21 @@ reloadMap(meetStatusIds) {
                   this.props.dispatch(fetchFeatures());
                   this.props.hideMapModal();
                 });
-                layer.on('mouseover', (e) => {
+                layer.on("mouseover", e => {
                   layer.setStyle({
-                    'fillColor': 'purple',
+                    fillColor: "purple"
                   });
                 });
-                layer.on('mouseout', (e) => {
+                layer.on("mouseout", e => {
                   layer.setStyle({
-                    'fillColor': 'pink',
+                    fillColor: "pink"
                   });
                 });
               }}
-              data={afvoergebieden} />
+              data={afvoergebieden}
+            />
           </LayersControl.Overlay>
         </LayersControl>
-
       </Map>
     );
   }
