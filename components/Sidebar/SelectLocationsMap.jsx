@@ -96,9 +96,6 @@ class SelectLocationsMap extends Component {
     const self = this;
 
     fetchLocationsAndMeasuringStatuses().then(data => {
-      console.log("---locations--->", data.locations);
-      console.log("---statuses--->", data.statuses);
-
       this.setState(
         {
           isLoaded: true,
@@ -169,11 +166,7 @@ class SelectLocationsMap extends Component {
     var self = this;
     var filteredMapLocations = [];
     results.map(result => {
-      // console.log('desiredStatusIds', desiredStatusIds)
       var meetStatus = result.properties.meet_status_id;
-      // if (!desiredStatusIds){
-      //   return;
-      // }
       if (
         !(
           desiredStatusIds.indexOf(-1) > -1 ||
